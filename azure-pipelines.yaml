@@ -180,7 +180,7 @@ stages:
   - deployment: FakeRestAPI
     pool:
       vmImage: 'Ubuntu-18.04'      
-    environment: <environment name>   # ToDo
+    environment: 'test'   # ToDo
     strategy:
       runOnce:
         deploy:
