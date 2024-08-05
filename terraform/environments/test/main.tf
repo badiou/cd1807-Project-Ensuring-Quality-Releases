@@ -5,12 +5,13 @@ provider "azurerm" {
   client_secret   = "${var.client_secret}"
   features {}
 }
+
 terraform {
   backend "azurerm" {
-    storage_account_name = "tfstate1701619856"
+    storage_account_name = "tfstate93889841"
     container_name       = "tfstate"
     key                  = "test.terraform.tfstate"
-    access_key           = "RiL3zDo5xvUM4w6sJl0znNltQDIor/IDneRIAtwTEe3hlG4hk9i63Jah2KpaMSHRwNoMuIHOvuEg+AStWBzOlw=="
+    access_key           = "hAA9XDYJ8LyflJyIUeQZrYHqhSxCAdQuJemPN4HZVpdQQNs0cDDFuZvH2vBm6GglVI6RacLi8gdN+AStS5Mb9A=="
   }
 }
 module "resource_group" {
