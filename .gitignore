@@ -1,25 +1,51 @@
-**/*.tfstate
-**/*.json
-**/*.exe
-# Local .terraform directories
-**/.terraform/*
-
-# .tfstate files
+# Ignore Terraform state files
 *.tfstate
 *.tfstate.*
 
-# Crash log files
+# Ignore Terraform variable files
+*.tfvars
+
+# Ignore Terraform provider files
+.terraform/
+
+# Ignore Terraform plan files
+*.tfplan
+
+# Ignore backup files created by Terraform
+*.backup
+
+# Ignore crash log files created by Terraform
 crash.log
 
-# Ignore any .tfvars files that are generated automatically for each Terraform run. Most
-# .tfvars files are managed as part of configuration and so should be included in
-# version control.
-#
-# example.tfvars
+# Ignore any sensitive files (add your own patterns as needed)
+*.pem
+*.key
 
-# Ignore override files as they are usually used to override resources locally and so
-# are not checked in
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
+# General system and editor files
+.DS_Store
+Thumbs.db
+
+# Ignore logs
+*.log
+
+# Ignore build directories
+build/
+dist/
+
+# Ignore dependency directories
+node_modules/
+vendor/
+.terraform/
+# Ignorer le fichier terraform.tfvars spécifique à l'environnement de test
+terraform/environments/test/terraform.tfvars
+
+# Ignore Mac system files
+.DS_Store
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.tfplan
+*.tfplan.*
+.terraform/
