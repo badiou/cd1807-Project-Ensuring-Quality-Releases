@@ -24,6 +24,4 @@ variable address_space {
   default =  ["10.5.0.0/16"]
 }
 
-variable application_type {
-  default =  ["10.5.0.0/16"]
-}
+
