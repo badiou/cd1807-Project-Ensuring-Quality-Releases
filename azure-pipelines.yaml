@@ -18,7 +18,7 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   # Environment name
   environmentName: 'test'
-  storage_account_name: 'tfstate1481226622'
+  storage_account_name: 'tfstate678122071'
   container_name: 'tfstate'
   key: 'test.terraform.tfstate'
   resource_group_name_storage: 'AzuredevopsRG'
