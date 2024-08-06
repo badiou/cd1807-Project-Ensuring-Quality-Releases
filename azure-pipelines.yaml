@@ -85,7 +85,7 @@ stages:
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
-        command: 'apply'
+        command: 'apply -lock=false'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
         commandOptions: '-auto-approve'
