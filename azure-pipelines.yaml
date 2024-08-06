@@ -18,10 +18,10 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   # Environment name
   environmentName: 'test'
-  storage_account_name: 'tfstate93889841'
+  storage_account_name: 'tfstate1481226622'
   container_name: 'tfstate'
-  key: 'mytest.terraform.tfstate'
-  resource_group_name_storage: 'Azuredevops'
+  key: 'test.terraform.tfstate'
+  resource_group_name_storage: 'AzuredevopsRG'
   address_prefix_test: '["10.5.1.0/24"]'
   address_space: '["10.5.0.0/16"]'
 
@@ -87,7 +87,8 @@ stages:
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-        commandOptions: '-var="address_prefix_test=$(address_prefix_test)" -var="address_space=$(address_space)" -var="myapplication-ourobadiou=$(myapplication-ourobadiou)"-auto-approve'
+        commandOptions: '-auto-approve'
+        #commandOptions: '-var="address_prefix_test=$(address_prefix_test)" -var="address_space=$(address_space)" -var="myapplication-ourobadiou=$(myapplication-ourobadiou)"-auto-approve'
 
     # ToDo: Change the workingDirectory path, as applicable to you
     # Destroy the resources in Azure by running a separate pipeline. 
