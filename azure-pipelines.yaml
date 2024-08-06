@@ -41,6 +41,7 @@ stages:
       inputs:
         terraformVersion: '1.2.9'
     
+    
     # Run Terraform Init on the pipeline agent 
     # ToDo: Replace the resource group name, storage account name, and container name below
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
