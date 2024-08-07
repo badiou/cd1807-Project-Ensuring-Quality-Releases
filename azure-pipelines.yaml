@@ -200,7 +200,7 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Deploy Azure Web App'
             inputs:
-              azureSubscription: 'c6b49f87-b44b-4f50-9328-64efe17053d2'     # ToDo
+              azureSubscription: 'AzureDevopsConnection'     # ToDo
               appName: 'myapplication-ourobadiou-AppService'               # ToDo
               appType: webApp
               package: $(Pipeline.Workspace)/<artifact>/<archiveFile>       # ToDo: Use the published zip artifact. 
