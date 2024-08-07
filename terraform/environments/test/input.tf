@@ -16,7 +16,9 @@ variable "application_type" {
 }
 
 # Network
-variable virtual_network_name {}
+variable virtual_network_name {
+  default = "myapplication-ourobadiou"
+}
 variable address_prefix_test {
   default= ["10.5.1.0/24"]
 }
