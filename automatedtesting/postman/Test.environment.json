@@ -1,0 +1,43 @@
+{
+	"id": "2b59f709-46f9-42ac-9f8d-460261e390ce",
+	"name": "Test",
+	"values": [
+		{
+			"key": "url",
+			"value": "https://fakerestapi.azurewebsites.net/api/v1/activities",
+			"enabled": true
+		},
+		{
+			"key": "title",
+			"value": "Deploy App",
+			"enabled": true
+		},
+		{
+			"key": "nextRequest",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "dueDate",
+			"value": "\"2024-07-21T18:37:41.796Z\"",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "activity_id",
+			"value": "20",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "id",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-07-27T23:33:08.589Z",
+	"_postman_exported_using": "Postman/11.4.0"
+}

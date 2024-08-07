@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "e9473219-11a3-4504-b70f-72b7394c4e54",
+		"name": "ValidationTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4911123",
+		"_collection_link": "https://cloudy-moon-751267.postman.co/workspace/DummyAPI-Test~5cb88d2a-b2f1-4fdc-b293-e33a965cc79f/collection/4911123-e9473219-11a3-4504-b70f-72b7394c4e54?action=share&source=collection_link&creator=4911123"
+	},
+	"item": [
+		{
+			"name": "Create activity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Deploy App\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 20,\n  \"title\": \"{{title}}\",\n  \"dueDate\": {{dueDate}},\n  \"completed\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}",
+					"host": [
+						"{{url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get one activity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Activity\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/{{activity_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{activity_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all activities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"completed\");\r",
+							"});\r",
+							"pm.test(\"Successful response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"dueDate\");\r",
+							"});\r",
+							"pm.test(\"Successful response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"title\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}",
+					"host": [
+						"{{url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete activity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/{{activity_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{activity_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
