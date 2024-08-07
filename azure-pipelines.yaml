@@ -17,9 +17,9 @@ variables:
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
   # Environment name
-  
+
   environmentName: 'test'
-  storage_account_name: 'tfstate1438221553'
+  storage_account_name: 'tfstate2620117934'
   container_name: 'tfstate'
   key: 'test.terraform.tfstate'
   resource_group_name_storage: 'AzuredevopsRG'
