@@ -201,7 +201,7 @@ stages:
             displayName: 'Deploy Azure Web App'
             inputs:
               azureSubscription: '$(azureServiceConnectionId)'
-              appName: 'myApplication-AppService-ourobadiou'
+              appName: 'myapplication-ourobadiou-AppService'
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
               deploymentMethod: 'auto'      # ToDo: Use the published zip artifact. 
