@@ -50,6 +50,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
+        commandOptions: '-input=false -lock=false -no-color -upgrade'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         backendServiceArm: '$(azureServiceConnectionId)'
         backendAzureRmResourceGroupName: '$(resource_group_name_storage)'
