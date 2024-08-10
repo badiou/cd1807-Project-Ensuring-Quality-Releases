@@ -24,8 +24,8 @@ variables:
   container_name: 'tfstate'
   key: 'test.terraform.tfstate'
   resource_group_name_storage: 'AzuredevopsRG'
-  address_space : ["10.0.0.0/16"]
-  address_prefix_test : ["10.0.1.0/24"]
+  address_space : '["10.0.0.0/16"]'
+  address_prefix_test : '["10.0.1.0/24"]'
 
 stages:
 #--------------------------------------------#  
