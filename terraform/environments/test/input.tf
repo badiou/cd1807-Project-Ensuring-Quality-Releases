@@ -1,8 +1,8 @@
 # Azure GUIDS
 #variable "subscription_id" { default ="c6b49f87-b44b-4f50-9328-64efe17053d2"}
 variable "subscription_id" { default ="44ada2e4-89f9-41cc-8efc-3cf76cd05c0c"} 
-variable "client_id" {default ="ab9049c5-8694-4f9f-9eb8-3d5b54e5f1b3"}
-variable "client_secret" {default ="mis8Q~zPpOhFguuKVjfzHkzOE4NQiYHoPtLkIczO"}
+variable "client_id" {default ="89ff65cf-ded6-4154-b737-961b33bd070a"}
+variable "client_secret" {default ="gAw8Q~pM4kO673KOTEvN~Er54YrC86018wNpUawh"}
 variable "tenant_id" {default ="1d4ecdae-1850-4f9b-8f09-aedca77aa0f1"}
 
 
