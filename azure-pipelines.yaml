@@ -158,18 +158,6 @@ stages:
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
-          # Run JMeter test suite
-          - task: CmdLine@2
-            displayName: 'Run JMeter Performance Tests'
-            inputs:
-              script: |
-                wget "https://apache.mirrors.lucidnetworks.net//jmeter/binaries/apache-jmeter-5.6.3.tgz"
-                tar -xf apache-jmeter-5.6.3.tgz
-                unzip -o $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip
-                ./apache-jmeter-5.6.3/bin/jmeter -n -t Starter.jmx -j jmeter.log -f
-                cat jmeter.log
-              workingDirectory: $(Pipeline.Workspace)/drop-perftests
-
           # Run JMeter Stress Test
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
