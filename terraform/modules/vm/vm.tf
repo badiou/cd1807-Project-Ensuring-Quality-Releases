@@ -11,24 +11,35 @@ resource "azurerm_network_interface" "test" {
   }
 }
 
+# resource "tls_private_key" "test" {
+#   algorithm = "RSA"
+#   rsa_bits = 4096
+# }
+
+# output "tls_private_key" { 
+#     value = tls_private_key.test.private_key_pem
+# }
+
 resource "azurerm_linux_virtual_machine" "test" {
-  name                = "${var.application_type}-${var.resource_type}"
-  location            = "${var.location}"
-  resource_group_name = "${var.resource_group}"
-  size                = "Standard_DS2_v2"
-  admin_username      = "${var.admin_username}"
-  admin_password      = "${var.admin_password}"
-  disable_password_authentication = false
+  name                  = "${var.application_type}-${var.resource_type}"
+  location              = var.location
+  resource_group_name   = var.resource_group
+  size                  = "Standard_B1s"
+  admin_username        = var.admin_username
   network_interface_ids = [azurerm_network_interface.test.id]
 
   admin_ssh_key {
-    username   = "ourobadiou"
-    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDEL7hBFBLjSOBQKNXZl7zjOTIMa+YCmXrq18P9FKvCKF19ZqAVMrWYnaplO6JU7xegaevVkUvFcoRfA9X3NljZrajFS+aBUzr/wUkndDUv/HAkYxguyuURm1o7WP+GVc5ov4klVmpRtobNGj5qVLzswI4r7DuwQbsg9HxBSMx5m5cWl1hYb4WmWX487WMpO4ISmPKF4N76h7d08PNY51S//LQeAWNV6hRNInvjnYthR9pdmvR5urh5LKPXAtZsSl62dgds2uyhn12kbKMxGnimTgfYesBAaHAovlFx/I8dcSNuvMEbvWXGa7e6kMrgUnwnc84t3Sr039ur7Z8t47g7UEbTqX5XbrMPLLPsokvvk2GB2VAyvtir2xJg1elSzyOvSZo0n+FlV7Pjvhw2ge+v6hNe0kzGuTwmyOe1VGtqvo/yTDictLV/dR5YWLSMeRp7CJYrKaKl1dmw92QdF/Et2XXmnom2EaEnMcoyU0/JOURdJWoTEU+6Pw3KTJuLcN8="
+    username   = var.admin_username
+    public_key = var.public_key
+    # public_key = tls_private_key.test.public_key_openssh
+    # public_key = file("/Users/jenny/.ssh/id_rsa.pub")
   }
+
   os_disk {
-    caching           = "ReadWrite"
+    caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
+
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
@@ -36,6 +47,3 @@ resource "azurerm_linux_virtual_machine" "test" {
     version   = "latest"
   }
 }
-
-
-

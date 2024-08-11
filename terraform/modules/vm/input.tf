@@ -1,16 +1,11 @@
+# Resource Group/Location
+variable "location" {}
+variable "resource_group" {}
 
 variable "application_type" {}
 variable "resource_type" {}
-variable "public_ip_address_id" {}
-variable "location" {}
 variable "subnet_id" {}
-variable "resource_group" {}
-variable "admin_username" {
-   description = "username"
-   default     = "ourobadiou"
-}
+variable "public_ip_address_id" {}
 
-variable "admin_password" {
-   description  = "password"
-   default      = "B@diou2015"
-}
+variable "admin_username" {}
+variable "public_key" {}

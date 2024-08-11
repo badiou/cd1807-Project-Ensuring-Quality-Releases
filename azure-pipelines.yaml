@@ -12,7 +12,7 @@ trigger:
 #pool: myAgentPool
 
 variables:
-  python.version: '3.11.9'
+  python.version: '3.7.6'
   # ToDo: Replace the service connection name as used in the DevOps project settings
   azureServiceConnectionId: 'AzureDevopsConnection'
   # Project root folder. Point to the folder containing manage.py file.
@@ -24,8 +24,8 @@ variables:
   container_name: 'tfstate'
   key: 'test.terraform.tfstate'
   resource_group_name_storage: 'AzuredevopsRG'
-  address_space : '["10.0.0.0/16"]'
-  address_prefix_test : '["10.0.1.0/24"]'
+  address_space : '["10.5.0.0/16"]'
+  address_prefix_test : '["10.5.1.0/24"]'
 
 stages:
 #--------------------------------------------#  
