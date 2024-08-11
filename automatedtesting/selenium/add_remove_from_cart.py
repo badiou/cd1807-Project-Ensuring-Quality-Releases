@@ -47,12 +47,13 @@ def add_remove_from_cart(driver):
 # If this file is executed directly, perform the login and add/remove from cart actions
 if __name__ == "__main__":
     driver = login.login('standard_user', 'secret_sauce')
-    cart_icon = driver.find_element(By.CSS_SELECTOR, "a.shopping_cart_link")
-    cart_item_count = cart_icon.text
-    add_remove_from_cart(driver)
-    # Print the number of items in the cart
-    print(f"Number of items in the cart: {cart_item_count}")
-    # Optional: Add some wait time to see the results before the browser closes
-    time.sleep(5)  # Wait for 5 seconds
-    # Close the browser
-    #driver.quit()
+    try:
+        cart_icon = driver.find_element(By.CSS_SELECTOR, "a.shopping_cart_link")
+        cart_item_count = cart_icon.text
+        add_remove_from_cart(driver)
+        # Print the number of items in the cart
+        print(f"Number of items in the cart: {cart_item_count}")
+    finally:
+        # Optional: Add some wait time to see the results before the browser closes
+        time.sleep(5)  # Wait for 5 seconds
+        driver.quit()  # Close the browser

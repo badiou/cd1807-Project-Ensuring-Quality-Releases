@@ -18,7 +18,7 @@ def login(user, password):
     logger.info('Starting the browser...')
     
     options = ChromeOptions()
-    options.add_argument("--headless") 
+    options.add_argument("--headless")  # Exécuter en mode headless
     driver = webdriver.Chrome(options=options)
     
     # Start the browser and navigate to the website
@@ -63,4 +63,4 @@ def login(user, password):
 if __name__ == "__main__":
     driver = login('standard_user', 'secret_sauce')
     input("Press Enter to close the browser...")
-    #driver.quit()
+    driver.quit()  # Ferme le navigateur
