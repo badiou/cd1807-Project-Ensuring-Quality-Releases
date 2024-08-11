@@ -211,21 +211,34 @@ stages:
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: |           
-                sudo apt-get update -y
-                sudo apt-get upgrade -y
-                sudo apt-get install python3-pip -y
-                sudo apt-get install unzip -y
-                sudo apt-get install -y chromium-browser
-                sudo apt-get install wget -y
-                pip3 install selenium
-                # Télécharger et installer la bonne version de ChromeDriver
-                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_127) # Remplacez 127 par votre version de Chrome
-                wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
-                unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/local/bin/
-                sudo chmod +x /usr/local/bin/chromedriver
-                # Exécuter les tests Selenium
-                
-                python3 add_remove_from_cart.py
-                python3 login.py
+              script: |
+                    #! /bin/bash
+                    
+                    sudo apt-get update -y
+                    sudo apt-get upgrade -y
+                    sudo apt install unzip -y
+                    sudo apt-get install python3-pip -y
+                    pip install selenium
+
+                    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+                    sudo apt install ./google-chrome-stable_current_amd64.deb -y
+
+                    wget -qP /tmp/ "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/117.0.5938.88/linux64/chromedriver-linux64.zip"
+                    sudo unzip -oj /tmp/chromedriver-linux64.zip -d /usr/bin
+                    cd ~/
+                    rm -rf cd1807-Project-Ensuring-Quality-Releases
+                    DIR=/home/azureUser/app
+                    if [ ! -d "$DIR" ]; then
+                        mkdir app
+                    fi
+                    git clone https://github.com/badiou/cd1807-Project-Ensuring-Quality-Releases.git
+                    cd cd1807-Project-Ensuring-Quality-Releases/automatedtesting/selenium/
+                    
+                    echo "Starting Selenium test"
+                    python3 login.py >> ~/app/selenium.log
+                    python3 login.py >> sudo /var/log/selenium.log
+
+                    python3 add_remove_from_cart.py >> ~/app/selenium.log
+                    python3 add_remove_from_cart.py >> sudo /var/log/selenium.log
+                    cat ~/app/selenium.log
+                    echo "Finish Selelium test."
