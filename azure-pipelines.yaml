@@ -16,131 +16,125 @@ variables:
   address_prefix_test: '["10.5.1.0/24"]'
 
 stages:
-#--------------------------------------------#  
-# BUILD STAGE
-#--------------------------------------------#    
 - stage: Build
   jobs:
   - job: BuildInfrastructure
     steps:
-    # Install Terraform
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-      displayName: 'Install Terraform'
-      inputs:
-        terraformVersion: '1.2.9'
+      # Install Terraform
+      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+        displayName: 'Install Terraform'
+        inputs:
+          terraformVersion: '1.2.9'
 
-    # Terraform Init
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-      displayName: 'Terraform Init'
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        commandOptions: '-input=false -lock=false -no-color -upgrade'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        backendServiceArm: '$(azureServiceConnectionId)'
-        backendAzureRmResourceGroupName: '$(resource_group_name_storage)'
-        backendAzureRmStorageAccountName: '$(storage_account_name)'
-        backendAzureRmContainerName: '$(container_name)'
-        backendAzureRmKey: '$(key)'
-        backendAzureRmUseMsi: true
+      # Terraform Init
+      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+        displayName: 'Terraform Init'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          commandOptions: '-input=false -lock=false -no-color -upgrade'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+          backendServiceArm: '$(azureServiceConnectionId)'
+          backendAzureRmResourceGroupName: '$(resource_group_name_storage)'
+          backendAzureRmStorageAccountName: '$(storage_account_name)'
+          backendAzureRmContainerName: '$(container_name)'
+          backendAzureRmKey: '$(key)'
+          backendAzureRmUseMsi: true
 
-    # Terraform Validate
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-      displayName: 'Terraform Validate'
-      inputs:
-        provider: 'azurerm'
-        command: 'validate'
+      # Terraform Validate
+      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+        displayName: 'Terraform Validate'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
 
-    # Terraform Apply
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-      displayName: 'Terraform Apply'
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-        commandOptions: '-auto-approve'
+      # Terraform Apply
+      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+        displayName: 'Terraform Apply'
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+          environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+          commandOptions: '-auto-approve'
 
-    # Install Newman
-    - task: CmdLine@2
-      displayName: 'Install Newman'
-      inputs:
-        script: 'sudo npm install -g newman'
-        workingDirectory: $(System.DefaultWorkingDirectory)
+      # Install Newman
+      - task: CmdLine@2
+        displayName: 'Install Newman'
+        inputs:
+          script: 'sudo npm install -g newman'
+          workingDirectory: $(System.DefaultWorkingDirectory)
 
-    # Run Data Validation Tests
-    - task: CmdLine@2
-      displayName: 'Run Data Validation Tests'
-      continueOnError: true
-      inputs:
-        script: 'newman run DataValidationTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-DataValidation.xml'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      # Run Data Validation Tests
+      - task: CmdLine@2
+        displayName: 'Run Data Validation Tests'
+        continueOnError: true
+        inputs:
+          script: 'newman run DataValidationTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-DataValidation.xml'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
 
-    # Run Regression Tests
-    - task: CmdLine@2
-      displayName: 'Run Regression Tests'
-      continueOnError: true
-      inputs:
-        script: 'newman run RegressionTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-Regression.xml'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      # Run Regression Tests
+      - task: CmdLine@2
+        displayName: 'Run Regression Tests'
+        continueOnError: true
+        inputs:
+          script: 'newman run RegressionTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-Regression.xml'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
 
-    # Publish Postman Test Results
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/TEST-*.xml'
-        searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-        mergeTestResults: true
-        testRunTitle: 'Postman Tests'
+      # Publish Postman Test Results
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/TEST-*.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+          mergeTestResults: true
+          testRunTitle: 'Postman Tests'
 
-    # Archive UI Tests
-    - task: ArchiveFiles@2
-      displayName: 'Archive UI Tests'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
+      # Archive UI Tests
+      - task: ArchiveFiles@2
+        displayName: 'Archive UI Tests'
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
 
-    # Publish UI Tests
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip
-      displayName: 'Upload UI Tests'
-      artifact: drop-uitests
+      # Publish UI Tests
+      - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip
+        displayName: 'Upload UI Tests'
+        artifact: drop-uitests
 
-    # Archive FakeRestAPI
-    - task: ArchiveFiles@2
-      displayName: 'Archive FakeRestAPI'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+      # Archive FakeRestAPI
+      - task: ArchiveFiles@2
+        displayName: 'Archive FakeRestAPI'
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
 
-    # Publish FakeRestAPI
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-      displayName: 'Upload FakeRestAPI'
-      artifact: drop-fakerestapi
+      # Publish FakeRestAPI
+      - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+        displayName: 'Upload FakeRestAPI'
+        artifact: drop-fakerestapi
 
-    # Archive Performance Test Suite
-    - task: ArchiveFiles@2
-      displayName: 'Archive Performance Test Suite'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
+      # Archive Performance Test Suite
+      - task: ArchiveFiles@2
+        displayName: 'Archive Performance Test Suite'
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
 
-    # Publish Performance Test Suite
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
-      displayName: 'Upload Performance Test Suite'
-      artifact: drop-perftests
+      # Publish Performance Test Suite
+      - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
+        displayName: 'Upload Performance Test Suite'
+        artifact: drop-perftests
 
-#--------------------------------------------#  
-# DEPLOYMENT STAGE
-#--------------------------------------------#    
 - stage: Deploy
+  dependsOn: Build
   jobs:
-  # Deploy FakeRestAPI Web App
   - deployment: FakeRestAPI
     pool:
       vmImage: 'ubuntu-latest'
@@ -172,7 +166,7 @@ stages:
             displayName: 'Run JMeter Stress Test'
             inputs:
               script: |
-                ./apache-jmeter-5.6.3/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx \
+                ./apache-jmeter-5.6/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx \
                                                   -l log/jmeter/results_StressTest.csv \
                                                   -e -f -o log/jmeter/StressTestReport.html \
                                                   -j log/jmeter/JmeterStressTestReport.log
@@ -183,15 +177,14 @@ stages:
             displayName: 'Run JMeter Endurance Test'
             inputs:
               script: |
-                ./apache-jmeter-5.6.3/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx \
+                ./apache-jmeter-5.6/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx \
                                                   -l log/jmeter/results_EnduranceTest.csv \
                                                   -e -f -o log/jmeter/EnduranceTestReport.html \
                                                   -j log/jmeter/JmeterEnduranceTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
-  # Selenium | Functional UI Tests
-  # Déploiement de Selenium et configuration
   - deployment: VMDeploy
+    dependsOn: FakeRestAPI
     displayName: Selenium Tests
     environment:
       name: 'test'
@@ -206,7 +199,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |           
-                sudo apt-get upgrade -y
+                sudo apt-get update
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
