@@ -63,4 +63,4 @@ def login(user, password):
 if __name__ == "__main__":
     driver = login('standard_user', 'secret_sauce')
     input("Press Enter to close the browser...")
-    driver.quit()
+    #driver.quit()

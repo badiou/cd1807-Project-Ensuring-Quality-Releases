@@ -55,4 +55,4 @@ if __name__ == "__main__":
     # Optional: Add some wait time to see the results before the browser closes
     time.sleep(5)  # Wait for 5 seconds
     # Close the browser
-    driver.quit()
+    #driver.quit()

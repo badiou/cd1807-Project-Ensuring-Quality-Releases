@@ -164,7 +164,7 @@ stages:
             inputs:
               script: |
                 wget "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.tgz"
-                tar -xf apache-jmeter-5.6.3.tgz
+                tar -xf apache-jmeter-5.6.tgz
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
           # Run JMeter Stress Test
@@ -190,6 +190,7 @@ stages:
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
   # Selenium | Functional UI Tests
+  # Déploiement de Selenium et configuration
   - deployment: VMDeploy
     displayName: Selenium Tests
     environment:
@@ -209,7 +210,15 @@ stages:
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
+                sudo apt-get install wget -y
                 pip3 install selenium
+                # Télécharger et installer la bonne version de ChromeDriver
+                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_127) # Remplacez 127 par votre version de Chrome
+                wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/local/bin/
+                sudo chmod +x /usr/local/bin/chromedriver
+                # Exécuter les tests Selenium
                 cd ~/
                 DIR=/home/testuser/app
                 if [ ! -d "$DIR" ]; then
@@ -218,15 +227,5 @@ stages:
                 mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
                 cd app
                 unzip -o $(Build.BuildId)-uitests.zip
-                FILE=/home/testuser/app/chromedriver_linux64.zip
-                if [ ! -f "$FILE" ]; then
-                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                    wget http://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip
-                fi
-                unzip -o chromedriver_linux64.zip
-                sudo mv chromedriver /usr/local/bin/chromedriver
-                chmod +x /usr/local/bin/chromedriver
-                
-                # Run Selenium Tests
                 python3 add_remove_from_cart.py
                 python3 login.py
