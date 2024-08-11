@@ -11,7 +11,6 @@ trigger:
 # Otherwise, comment out the line below. 
 #pool: myAgentPool
 
-
 variables:
   python.version: '3.11.9'
   # ToDo: Replace the service connection name as used in the DevOps project settings
