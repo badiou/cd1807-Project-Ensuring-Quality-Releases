@@ -1,13 +1,28 @@
-# Azure GUIDS
-variable "subscription_id" {}
-variable "client_id" {}
-variable "client_secret" {}
-variable "tenant_id" {}
+# Azure 
+
+variable "subscription_id" {
+    default = "c6b49f87-b44b-4f50-9328-64efe17053d2"
+}
+variable "client_id" {
+    default = "0cacfd8f-8987-4c8c-8293-c168a3d33602"
+}
+variable "client_secret" {
+    default = "szM8Q~gZ.vv~tHr8_XOk9V-abCX4r1b~R20NGbMG"
+}
+variable "tenant_id" {
+    default = "1d4ecdae-1850-4f9b-8f09-aedca77aa0f1"
+}
 
 # Resource Group/Location
-variable "location" {}
-variable "resource_group" {}
-variable "application_type" {}
+variable "location" {
+    default = "East US"
+}
+variable "resource_group" {
+    default = "AzuredevopsRG"
+}
+variable "application_type" {
+    default = "myapplication-ourobadiou"
+}
 
 # Network
 variable "virtual_network_name" {}
