@@ -199,6 +199,7 @@ stages:
 
   - deployment: VMDeploy
     displayName: Selenium Tests
+    dependsOn: FakeRestAPI
     environment:
       name: 'test'
     strategy:
@@ -211,39 +212,25 @@ stages:
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: |
-                    #! /bin/bash
-                    
-                    sudo apt-get update -y
-                    sudo apt-get upgrade -y
-                    sudo apt install unzip -y
-                    sudo apt-get install python3-pip -y
-
-                    # Install Google Chrome
-                    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-                    sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
-                    rm google-chrome-stable_current_amd64.deb
-
-                    # Install ChromeDriver
-                    CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                    wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
-                    unzip chromedriver_linux64.zip -d /usr/local/bin/
-                    rm chromedriver_linux64.zip
-                    sudo chmod +x /usr/local/bin/chromedriver
-
-                    # Install Python Dependencies
-                    pip3 install -r $(Pipeline.Workspace)/drop-uitests/automatedtesting/selenium/requirements.txt
-
-              workingDirectory: $(Pipeline.Workspace)/drop-uitests/automatedtesting/selenium
-
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: 'python3 login.py'
-              workingDirectory: $(Pipeline.Workspace)/drop-uitests/automatedtesting/selenium
-
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: 'python3 add_remove_from_cart.py'
-              workingDirectory: $(Pipeline.Workspace)/drop-uitests/automatedtesting/selenium
+              script: |           
+                sudo apt-get update
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                sudo apt-get install wget -y
+                pip3 install selenium
+                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_127) # Remplacez 127 par votre version de Chrome
+                wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/local/bin/
+                sudo chmod +x /usr/local/bin/chromedriver
+                cd ~/
+                DIR=/home/testuser/app
+                if [ ! -d "$DIR" ]; then
+                    mkdir app
+                fi
+                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
+                cd app
+                unzip -o $(Build.BuildId)-uitests.zip
+                python3 add_remove_from_cart.py
+                python3 login.py
