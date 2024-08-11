@@ -150,7 +150,7 @@ stages:
     displayName: Selenium Tests
     environment:
       name: 'test'
-      tags: selenium
+      #tags: selenium
     strategy:
       runOnce:
         deploy:
