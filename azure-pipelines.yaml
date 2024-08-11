@@ -183,6 +183,14 @@ stages:
                 ls -la $(Pipeline.Workspace)/drop-perftests
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
+          # List Directory Contents of ZIP File
+          - task: CmdLine@2
+            displayName: 'List Directory Contents of ZIP File'
+            inputs:
+              script: |
+                unzip -l $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip
+              workingDirectory: $(Pipeline.Workspace)/drop-perftests
+
           # List Directory Contents After Extraction
           - task: CmdLine@2
             displayName: 'List Directory Contents After Extraction'
@@ -196,10 +204,10 @@ stages:
             displayName: 'Run JMeter Stress Test'
             inputs:
               script: |
-                ./apache-jmeter-5.6/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx \
-                                              -l log/jmeter/results_StressTest.csv \
-                                              -e -f -o log/jmeter/StressTestReport.html \
-                                              -j log/jmeter/JmeterStressTestReport.log
+                $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter/StressTest.jmx \
+                                                  -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_StressTest.csv \
+                                                  -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/StressTestReport.html \
+                                                  -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterStressTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
           # Run JMeter Endurance Test
@@ -207,10 +215,10 @@ stages:
             displayName: 'Run JMeter Endurance Test'
             inputs:
               script: |
-                ./apache-jmeter-5.6/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx \
-                                              -l log/jmeter/results_EnduranceTest.csv \
-                                              -e -f -o log/jmeter/EnduranceTestReport.html \
-                                              -j log/jmeter/JmeterEnduranceTestReport.log
+                $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter/EnduranceTest.jmx \
+                                                  -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_EnduranceTest.csv \
+                                                  -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/EnduranceTestReport.html \
+                                                  -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
   # Selenium | Functional UI Tests
