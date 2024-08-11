@@ -175,6 +175,14 @@ stages:
                 unzip -o $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip -d $(Pipeline.Workspace)/drop-perftests/
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
+          # List Directory Contents Before Extraction
+          - task: CmdLine@2
+            displayName: 'List Directory Contents Before Extraction'
+            inputs:
+              script: |
+                ls -la $(Pipeline.Workspace)/drop-perftests
+              workingDirectory: $(Pipeline.Workspace)/drop-perftests
+
           # List Directory Contents After Extraction
           - task: CmdLine@2
             displayName: 'List Directory Contents After Extraction'
@@ -205,8 +213,8 @@ stages:
                                               -j log/jmeter/JmeterEnduranceTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
+  # Selenium | Functional UI Tests
   - deployment: VMDeploy
-    dependsOn: FakeRestAPI
     displayName: Selenium Tests
     environment:
       name: 'test'
@@ -217,11 +225,27 @@ stages:
           - download: current
             artifact: drop-uitests
 
+          # Unzip UI Tests
+          - task: CmdLine@2
+            displayName: 'Unzip UI Tests'
+            inputs:
+              script: |
+                unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/testuser/app
+              workingDirectory: /home/testuser/app
+
+          # List Directory Contents
+          - task: CmdLine@2
+            displayName: 'List Directory Contents'
+            inputs:
+              script: |
+                ls -la /home/testuser/app
+              workingDirectory: /home/testuser/app
+
           - task: Bash@3
             inputs:
               targetType: 'inline'
               script: |           
-                sudo apt-get update
+                sudo apt-get upgrade -y
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
@@ -234,13 +258,6 @@ stages:
                 sudo mv chromedriver /usr/local/bin/
                 sudo chmod +x /usr/local/bin/chromedriver
                 # Exécuter les tests Selenium
-                cd ~/
-                DIR=/home/testuser/app
-                if [ ! -d "$DIR" ]; then
-                    mkdir app
-                fi
-                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
-                cd app
-                unzip -o $(Build.BuildId)-uitests.zip
+                cd /home/testuser/app
                 python3 add_remove_from_cart.py
                 python3 login.py
