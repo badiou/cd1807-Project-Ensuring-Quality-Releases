@@ -33,6 +33,7 @@ variable "address_space" {
     default=["10.5.0.0/16"]
 }
 
+
 #Credentials
 variable "admin_username" {
     default = "ourobadiou"
