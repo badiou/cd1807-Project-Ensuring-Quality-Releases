@@ -168,12 +168,11 @@ stages:
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
           # List Directory Contents Before Extraction
-          - task: CmdLine@2
+          - task: Bash@3
             displayName: 'List Directory Contents Before Extraction'
             inputs:
-              script: |
-                ls -la $(Pipeline.Workspace)/drop-perftests
-              workingDirectory: $(Pipeline.Workspace)/drop-perftests
+              targetType: 'inline'
+              script: 'ls -la $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter'
 
           # Run JMeter Stress Test
           - task: CmdLine@2
