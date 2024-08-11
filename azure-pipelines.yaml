@@ -226,6 +226,6 @@ stages:
                 sudo mv chromedriver /usr/local/bin/
                 sudo chmod +x /usr/local/bin/chromedriver
                 # Exécuter les tests Selenium
-                cd /home/testuser/app
+                
                 python3 add_remove_from_cart.py
                 python3 login.py
