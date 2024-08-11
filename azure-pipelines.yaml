@@ -20,7 +20,7 @@ variables:
   # Environment name
 
   environmentName: 'test'
-  storage_account_name: 'tfstate966721195'
+  storage_account_name: 'tfstate224873291'
   container_name: 'tfstate'
   key: 'test.terraform.tfstate'
   resource_group_name_storage: 'AzuredevopsRG'

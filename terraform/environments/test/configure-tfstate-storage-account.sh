@@ -7,7 +7,7 @@ CONTAINER_NAME="tfstate"
 # Create resource group
 az group create --name $RESOURCE_GROUP_NAME --location eastus
 
-az ad sp create-for-rbac --name "myapplication-test" --role Contributor --scopes /subscriptions/c6b49f87-b44b-4f50-9328-64efe17053d2 --query "{ client_id: appId, client_secret: password, tenant_id: tenant }"
+az ad sp create-for-rbac --role Contributor --scopes /subscriptions/c6b49f87-b44b-4f50-9328-64efe17053d2 --query "{ client_id: appId, client_secret: password, tenant_id: tenant }"
 
 # Create storage account
 az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob
