@@ -161,6 +161,14 @@ stages:
                 tar -xf apache-jmeter-5.6.tgz
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
+          # List Contents for Debugging
+          - task: CmdLine@2
+            displayName: 'List Directory Contents'
+            inputs:
+              script: |
+                ls -la $(Pipeline.Workspace)/drop-perftests
+              workingDirectory: $(Pipeline.Workspace)/drop-perftests
+
           # Run JMeter Stress Test
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
