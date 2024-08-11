@@ -20,7 +20,7 @@ variables:
   # Environment name
 
   environmentName: 'test'
-  storage_account_name: 'tfstate2816211709'
+  storage_account_name: 'tfstate966721195'
   container_name: 'tfstate'
   key: 'test.terraform.tfstate'
   resource_group_name_storage: 'AzuredevopsRG'
@@ -204,7 +204,7 @@ stages:
               azureSubscription: '$(azureServiceConnectionId)'
               appName: 'myapplication-ourobadiou-AppService'
               appType: webApp
-              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+              package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'      # ToDo: Use the published zip artifact. 
           #--------------------------------------------#    
           # Run JMeter test suite against the App Service
@@ -225,7 +225,6 @@ stages:
     displayName: Selenium Tests
     environment:
       name: 'test'        # ToDo: Change/provide a name
-      resourceType: VirtualMachine
       tags: selenium
     strategy:
       runOnce:
