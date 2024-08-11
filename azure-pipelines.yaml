@@ -183,21 +183,6 @@ stages:
                 ls -la $(Pipeline.Workspace)/drop-perftests
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
-          # List Directory Contents of ZIP File
-          - task: CmdLine@2
-            displayName: 'List Directory Contents of ZIP File'
-            inputs:
-              script: |
-                unzip -l $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip
-              workingDirectory: $(Pipeline.Workspace)/drop-perftests
-
-          # List Directory Contents After Extraction
-          - task: CmdLine@2
-            displayName: 'List Directory Contents After Extraction'
-            inputs:
-              script: |
-                ls -la $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter
-              workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
           # Run JMeter Stress Test
           - task: CmdLine@2
