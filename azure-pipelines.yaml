@@ -177,26 +177,14 @@ stages:
               targetType: 'inline'
               script: 'ls -la $(Pipeline.Workspace)/drop-perftests'
 
-          # Extraire le contenu de l'archive ZIP
+          # Extraire l'archive ZIP
           - task: Bash@3
             displayName: 'Extract ZIP Archive'
             inputs:
               targetType: 'inline'
               script: |
-                ZIP_FILE=$(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip
-                if [ -f "$ZIP_FILE" ]; then
-                  unzip "$ZIP_FILE" -d $(Pipeline.Workspace)/drop-perftests/
-                else
-                  echo "Fichier ZIP non trouvé : $ZIP_FILE"
-                  exit 1
-                fi
+                unzip $(Pipeline.Workspace)/drop-perftests/609-perftests.zip -d $(Pipeline.Workspace)/drop-perftests
 
-          # Lister le contenu du répertoire jmeter après l'extraction
-          - task: Bash@3
-            displayName: 'List Directory Contents After Extraction'
-            inputs:
-              targetType: 'inline'
-              script: 'ls -la $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter'
           # Créer les répertoires de logs s'ils n'existent pas
           - task: Bash@3
             displayName: 'Create Log Directory'
@@ -204,6 +192,14 @@ stages:
               targetType: 'inline'
               script: |
                 mkdir -p $(Pipeline.Workspace)/drop-perftests/log/jmeter
+
+          # Vérifier le contenu du répertoire après extraction
+          - task: Bash@3
+            displayName: 'List Directory Contents'
+            inputs:
+              targetType: 'inline'
+              script: |
+                ls -la $(Pipeline.Workspace)/drop-perftests
 
           # Run JMeter Stress Test
           - task: CmdLine@2
@@ -216,7 +212,7 @@ stages:
                                                           -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterStressTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
-          # Run JMeter Endurance Test
+# Run JMeter Endurance Test
           - task: CmdLine@2
             displayName: 'Run JMeter Endurance Test'
             inputs:
@@ -226,7 +222,6 @@ stages:
                                                           -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/EnduranceTestReport.html \
                                                           -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
-
 
   - deployment: VMDeploy
 
