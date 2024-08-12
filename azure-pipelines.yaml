@@ -197,16 +197,25 @@ stages:
             inputs:
               targetType: 'inline'
               script: 'ls -la $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter'
+          # Créer les répertoires de logs s'ils n'existent pas
+          - task: Bash@3
+            displayName: 'Create Log Directory'
+            inputs:
+              targetType: 'inline'
+              script: |
+                mkdir -p $(Pipeline.Workspace)/drop-perftests/log/jmeter
+
+
 
           # Run JMeter Stress Test
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
             inputs:
               script: |
-                $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter/StressTest.jmx \
-                                                  -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_StressTest.csv \
-                                                  -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/StressTestReport.html \
-                                                  -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterStressTestReport.log
+                $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/StressTest.jmx \
+                                                          -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_StressTest.csv \
+                                                          -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/StressTestReport.html \
+                                                          -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterStressTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
           # Run JMeter Endurance Test
@@ -214,10 +223,10 @@ stages:
             displayName: 'Run JMeter Endurance Test'
             inputs:
               script: |
-                $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter/EnduranceTest.jmx \
-                                                  -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_EnduranceTest.csv \
-                                                  -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/EnduranceTestReport.html \
-                                                  -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log
+                $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/EnduranceTest.jmx \
+                                                          -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_EnduranceTest.csv \
+                                                          -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/EnduranceTestReport.html \
+                                                          -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
 
