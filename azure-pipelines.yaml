@@ -205,8 +205,6 @@ stages:
               script: |
                 mkdir -p $(Pipeline.Workspace)/drop-perftests/log/jmeter
 
-
-
           # Run JMeter Stress Test
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
