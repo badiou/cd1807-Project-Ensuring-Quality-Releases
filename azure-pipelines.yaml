@@ -174,7 +174,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                unzip $(Pipeline.Workspace)/drop-perftests/605-perftests.zip -d $(Pipeline.Workspace)/drop-perftests/
+                unzip $(Pipeline.Workspace)/drop-perftests -d $(Pipeline.Workspace)/drop-perftests/
 
           # Lister le contenu du répertoire jmeter après l'extraction
           - task: Bash@3
