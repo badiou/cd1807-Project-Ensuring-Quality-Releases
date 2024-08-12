@@ -207,7 +207,6 @@ stages:
           steps:
           - download: current
             artifact: drop-uitests
-
           - task: Bash@3
             inputs:
               targetType: 'inline'
