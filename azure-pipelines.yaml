@@ -197,6 +197,7 @@ stages:
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
   - deployment: VMDeploy
+  
     displayName: Selenium Tests
     dependsOn: FakeRestAPI
     environment:
@@ -208,7 +209,7 @@ stages:
           - download: current
             artifact: drop-uitests
           - task: Bash@3
-          
+
             inputs:
               targetType: 'inline'
               script: |           
