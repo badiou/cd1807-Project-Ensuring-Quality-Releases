@@ -170,49 +170,7 @@ stages:
                 tar -xf apache-jmeter-5.6.tgz
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
-          # Lister le contenu du répertoire avant l'extraction
-          - task: Bash@3
-            displayName: 'List Directory Contents Before Extraction'
-            inputs:
-              targetType: 'inline'
-              script: 'ls -la $(Pipeline.Workspace)/drop-perftests'
-
-          # Extraire le contenu de l'archive ZIP
-          - task: Bash@3
-            displayName: 'Extract ZIP Archive'
-            inputs:
-              targetType: 'inline'
-              script: |
-                ZIP_FILE=$(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip
-                if [ -f "$ZIP_FILE" ]; then
-                  unzip "$ZIP_FILE" -d $(Pipeline.Workspace)/drop-perftests/
-                else
-                  echo "Fichier ZIP non trouvé : $ZIP_FILE"
-                  exit 1
-                fi
-
-          # Lister le contenu du répertoire jmeter après l'extraction
-          - task: Bash@3
-            displayName: 'List Directory Contents After Extraction'
-            inputs:
-              targetType: 'inline'
-              script: 'ls -la $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter'
-          # Créer les répertoires de logs s'ils n'existent pas
-          - task: Bash@3
-            displayName: 'Create Log Directory'
-            inputs:
-              targetType: 'inline'
-              script: |
-                mkdir -p $(Pipeline.Workspace)/drop-perftests/log/jmeter
-
-          # Vérifier le contenu du répertoire après extraction
-          - task: Bash@3
-            displayName: 'List Directory Contents'
-            inputs:
-              targetType: 'inline'
-              script: |
-                ls -la $(Pipeline.Workspace)/drop-perftests
-
+          
           # Run JMeter Stress Test
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
