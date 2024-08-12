@@ -168,6 +168,14 @@ stages:
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
           # List Directory Contents Before Extraction
+          # Diagnostiquer le contenu des répertoires parents
+          - task: Bash@3
+            displayName: 'List Parent Directory Contents'
+            inputs:
+              targetType: 'inline'
+              script: 'ls -la $(Pipeline.Workspace)/drop-perftests'
+
+          # Lister le contenu du répertoire jmeter
           - task: Bash@3
             displayName: 'List Directory Contents Before Extraction'
             inputs:
@@ -197,7 +205,7 @@ stages:
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
   - deployment: VMDeploy
-  
+
     displayName: Selenium Tests
     dependsOn: FakeRestAPI
     environment:
