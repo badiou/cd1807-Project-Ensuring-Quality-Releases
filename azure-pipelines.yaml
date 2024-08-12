@@ -167,7 +167,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                unzip $(Pipeline.Workspace)/drop-perftests/609-perftests.zip -d $(Pipeline.Workspace)/drop-perftests
+                unzip $(Pipeline.Workspace)/drop-perftests/perftests.zip -d $(Pipeline.Workspace)/drop-perftests
 
           # Créer les répertoires de logs s'ils n'existent pas
           - task: Bash@3
