@@ -158,36 +158,33 @@ stages:
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
-          # Créer les répertoires de logs s'ils n'existent pas
           - task: Bash@3
             displayName: 'Create Log Directory'
             inputs:
               targetType: 'inline'
               script: |
-                mkdir -p $(Pipeline.Workspace)/drop-perftests/log/jmeter
+                mkdir -p /home/vsts/work/1/drop-perftests/log/jmeter
 
-          # Vérifier le contenu du répertoire après extraction
           - task: Bash@3
-            displayName: 'List Directory Contents'
+            displayName: 'List Contents of Drop Directory'
             inputs:
               targetType: 'inline'
               script: |
-                ls -la $(Pipeline.Workspace)/drop-perftests
+                ls -la /home/vsts/work/1/drop-perftests
+                ls -la /home/vsts/work/1/drop-perftests/apache-jmeter-5.6/bin
 
-          # Extraire l'archive ZIP contenant les tests JMeter
           - task: Bash@3
-            displayName: 'Extract Performance Test Suite ZIP'
+            displayName: 'Make JMeter Executable'
             inputs:
               targetType: 'inline'
               script: |
-                unzip $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip -d $(Pipeline.Workspace)/drop-perftests
+                chmod +x /home/vsts/work/1/drop-perftests/apache-jmeter-5.6/bin/jmeter
 
-   # Exécuter le test de stress avec JMeter
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
             inputs:
               script: |
-                /home/vsts/work/1/drop-perftests/jmeter/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/StressTest.jmx \
+                /home/vsts/work/1/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/StressTest.jmx \
                     -l /home/vsts/work/1/drop-perftests/log/jmeter/results_StressTest.csv \
                     -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/StressTestReport.html \
                     -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterStressTestReport.log \
@@ -195,20 +192,17 @@ stages:
                     -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
               workingDirectory: /home/vsts/work/1/drop-perftests
 
-# Exécuter le test d'endurance avec JMeter
           - task: CmdLine@2
             displayName: 'Run JMeter Endurance Test'
             inputs:
               script: |
-                /home/vsts/work/1/drop-perftests/jmeter/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/EnduranceTest.jmx \
+                /home/vsts/work/1/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/EnduranceTest.jmx \
                     -l /home/vsts/work/1/drop-perftests/log/jmeter/results_EnduranceTest.csv \
                     -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/EnduranceTestReport.html \
                     -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log \
                     -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
                     -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
               workingDirectory: /home/vsts/work/1/drop-perftests
-
-
 
   - deployment: VMDeploy
     displayName: Selenium Tests
