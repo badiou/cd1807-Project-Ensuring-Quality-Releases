@@ -215,6 +215,7 @@ stages:
                     -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
               workingDirectory: /home/vsts/work/1/drop-perftests
 
+              
           # Publier les résultats des tests JMeter
           - task: PublishBuildArtifacts@1
             displayName: 'Publish JMeter Test Results'
