@@ -175,8 +175,7 @@ stages:
               script: |
                 echo "Listing contents of /home/vsts/work/1/drop-perftests"
                 ls -la /home/vsts/work/1/drop-perftests
-                ls -la /home/vsts/work/1/drop-perftests/log
-
+                
           # Installer JMeter (si nécessaire)
           - task: Bash@3
             displayName: 'Install JMeter'
