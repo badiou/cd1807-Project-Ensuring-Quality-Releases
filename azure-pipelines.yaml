@@ -44,14 +44,14 @@ stages:
         backendAzureRmKey: '$(key)'
         backendAzureRmUseMsi: true
 
-    # Terraform Validate
+# Terraform Validate
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: 'Terraform Validate'
       inputs:
         provider: 'azurerm'
         command: 'validate'
 
-    # Terraform Apply
+# Terraform Apply
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: 'Terraform Apply'
       inputs:
@@ -158,13 +158,14 @@ stages:
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
-          # Créer les répertoires de logs s'ils n'existent pas
+          # Extraction du fichier ZIP contenant JMeter et les fichiers de test
           - task: Bash@3
-            displayName: 'Create Log Directory'
+            displayName: 'Extract Performance Test Suite ZIP'
             inputs:
               targetType: 'inline'
               script: |
-                mkdir -p $(Pipeline.Workspace)/drop-perftests/log/jmeter
+                mkdir -p /home/vsts/work/1/drop-perftests
+                unzip /home/vsts/work/1/drop-perftests/627-perftests.zip -d /home/vsts/work/1/drop-perftests
 
           # Vérifier le contenu du répertoire après extraction
           - task: Bash@3
@@ -172,8 +173,11 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
+                echo "Listing contents of /home/vsts/work/1/drop-perftests"
                 ls -la /home/vsts/work/1/drop-perftests
+                echo "Listing contents of /home/vsts/work/1/drop-perftests/jmeter"
                 ls -la /home/vsts/work/1/drop-perftests/jmeter
+                echo "Listing contents of /home/vsts/work/1/drop-perftests/log"
                 ls -la /home/vsts/work/1/drop-perftests/log
 
           # Exécuter le test de stress avec JMeter
@@ -181,7 +185,7 @@ stages:
             displayName: 'Run JMeter Stress Test'
             inputs:
               script: |
-                /home/vsts/work/1/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/StressTest.jmx \
+                /home/vsts/work/1/drop-perftests/jmeter/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/StressTest.jmx \
                     -l /home/vsts/work/1/drop-perftests/log/jmeter/results_StressTest.csv \
                     -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/StressTestReport.html \
                     -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterStressTestReport.log \
@@ -194,13 +198,21 @@ stages:
             displayName: 'Run JMeter Endurance Test'
             inputs:
               script: |
-                /home/vsts/work/1/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/EnduranceTest.jmx \
+                /home/vsts/work/1/drop-perftests/jmeter/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/EnduranceTest.jmx \
                     -l /home/vsts/work/1/drop-perftests/log/jmeter/results_EnduranceTest.csv \
                     -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/EnduranceTestReport.html \
                     -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log \
                     -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
                     -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
               workingDirectory: /home/vsts/work/1/drop-perftests
+
+          # Publier les résultats des tests JMeter
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish JMeter Test Results'
+            inputs:
+              pathToPublish: '/home/vsts/work/1/drop-perftests/log/jmeter'
+              artifactName: 'jmeter-test-results'
+              publishLocation: 'Container'
 
   - deployment: VMDeploy
     displayName: Selenium Tests
