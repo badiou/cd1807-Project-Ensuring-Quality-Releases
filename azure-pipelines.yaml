@@ -158,28 +158,25 @@ stages:
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
+          # Créer les répertoires de logs s'ils n'existent pas
           - task: Bash@3
             displayName: 'Create Log Directory'
             inputs:
               targetType: 'inline'
               script: |
-                mkdir -p /home/vsts/work/1/drop-perftests/log/jmeter
+                mkdir -p $(Pipeline.Workspace)/drop-perftests/log/jmeter
 
+          # Vérifier le contenu du répertoire après extraction
           - task: Bash@3
             displayName: 'List Contents of Drop Directory'
             inputs:
               targetType: 'inline'
               script: |
                 ls -la /home/vsts/work/1/drop-perftests
-                ls -la /home/vsts/work/1/drop-perftests/apache-jmeter-5.6/bin
+                ls -la /home/vsts/work/1/drop-perftests/jmeter
+                ls -la /home/vsts/work/1/drop-perftests/log
 
-          - task: Bash@3
-            displayName: 'Make JMeter Executable'
-            inputs:
-              targetType: 'inline'
-              script: |
-                chmod +x /home/vsts/work/1/drop-perftests/apache-jmeter-5.6/bin/jmeter
-
+          # Exécuter le test de stress avec JMeter
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
             inputs:
@@ -192,6 +189,7 @@ stages:
                     -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
               workingDirectory: /home/vsts/work/1/drop-perftests
 
+          # Exécuter le test d'endurance avec JMeter
           - task: CmdLine@2
             displayName: 'Run JMeter Endurance Test'
             inputs:
