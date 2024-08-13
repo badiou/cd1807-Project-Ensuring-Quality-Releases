@@ -210,7 +210,7 @@ stages:
   - deployment: VMDeploy
 
     displayName: Selenium Tests
-    dependsOn: FakeRestAPI
+    #dependsOn: FakeRestAPI
     environment:
       name: 'test'
     strategy:
