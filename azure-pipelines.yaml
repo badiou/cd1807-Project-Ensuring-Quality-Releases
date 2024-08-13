@@ -182,31 +182,32 @@ stages:
               script: |
                 unzip $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip -d $(Pipeline.Workspace)/drop-perftests
 
-          # Exécuter le test de stress avec JMeter
+   # Exécuter le test de stress avec JMeter
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
             inputs:
               script: |
-                $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/StressTest.jmx \
-                    -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_StressTest.csv \
-                    -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/StressTestReport.html \
-                    -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterStressTestReport.log \
-                    -JexampleCSV=$(Pipeline.Workspace)/drop-perftests/exempleCsv.csv \
-                    -JresultsCSV=$(Pipeline.Workspace)/drop-perftests/results.csv
-              workingDirectory: $(Pipeline.Workspace)/drop-perftests
+                /home/vsts/work/1/drop-perftests/jmeter/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/StressTest.jmx \
+                    -l /home/vsts/work/1/drop-perftests/log/jmeter/results_StressTest.csv \
+                    -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/StressTestReport.html \
+                    -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterStressTestReport.log \
+                    -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
+                    -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
+              workingDirectory: /home/vsts/work/1/drop-perftests
 
-          # Exécuter le test d'endurance avec JMeter
+# Exécuter le test d'endurance avec JMeter
           - task: CmdLine@2
             displayName: 'Run JMeter Endurance Test'
             inputs:
               script: |
-                $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/EnduranceTest.jmx \
-                    -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_EnduranceTest.csv \
-                    -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/EnduranceTestReport.html \
-                    -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log \
-                    -JexampleCSV=$(Pipeline.Workspace)/drop-perftests/exempleCsv.csv \
-                    -JresultsCSV=$(Pipeline.Workspace)/drop-perftests/results.csv
-              workingDirectory: $(Pipeline.Workspace)/drop-perftests
+                /home/vsts/work/1/drop-perftests/jmeter/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/EnduranceTest.jmx \
+                    -l /home/vsts/work/1/drop-perftests/log/jmeter/results_EnduranceTest.csv \
+                    -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/EnduranceTestReport.html \
+                    -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log \
+                    -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
+                    -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
+              workingDirectory: /home/vsts/work/1/drop-perftests
+
 
 
   - deployment: VMDeploy
