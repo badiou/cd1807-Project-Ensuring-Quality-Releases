@@ -161,13 +161,14 @@ stages:
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
-                    # Extraire l'archive ZIP
+          # Extraire l'archive ZIP
           - task: Bash@3
             displayName: 'Extract ZIP Archive'
             inputs:
               targetType: 'inline'
               script: |
                 unzip $(Pipeline.Workspace)/drop-perftests/perftests.zip -d $(Pipeline.Workspace)/drop-perftests
+
 
           # Créer les répertoires de logs s'ils n'existent pas
           - task: Bash@3
@@ -185,26 +186,26 @@ stages:
               script: |
                 ls -la $(Pipeline.Workspace)/drop-perftests
 
-          # Run JMeter Stress Test
+          # Exécuter le test de stress avec JMeter
           - task: CmdLine@2
             displayName: 'Run JMeter Stress Test'
             inputs:
               script: |
                 $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter/StressTest.jmx \
-                                                          -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_StressTest.csv \
-                                                          -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/StressTestReport.html \
-                                                          -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterStressTestReport.log
+                    -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_StressTest.csv \
+                    -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/StressTestReport.html \
+                    -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterStressTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
-          # Run JMeter Endurance Test
+          # Exécuter le test d'endurance avec JMeter
           - task: CmdLine@2
             displayName: 'Run JMeter Endurance Test'
             inputs:
               script: |
                 $(Pipeline.Workspace)/drop-perftests/apache-jmeter-5.6/bin/jmeter -n -t $(Pipeline.Workspace)/drop-perftests/automatedtesting/jmeter/EnduranceTest.jmx \
-                                                          -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_EnduranceTest.csv \
-                                                          -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/EnduranceTestReport.html \
-                                                          -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log
+                    -l $(Pipeline.Workspace)/drop-perftests/log/jmeter/results_EnduranceTest.csv \
+                    -e -f -o $(Pipeline.Workspace)/drop-perftests/log/jmeter/EnduranceTestReport.html \
+                    -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
   - deployment: VMDeploy
@@ -245,6 +246,3 @@ stages:
                 unzip -o $(Build.BuildId)-uitests.zip
                 python3 add_remove_from_cart.py > selenium.log
                 python3 login.py > selenium.log
-
-                cat selenium.log
-                sudo cp selenium.log /var/logs
