@@ -161,14 +161,13 @@ stages:
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
-              
-          # Extraire l'archive ZIP
-          - task: Bash@3
-            displayName: 'Extract ZIP Archive'
-            inputs:
-              targetType: 'inline'
-              script: |
-                unzip $(Pipeline.Workspace)/drop-perftests/perftests.zip -d $(Pipeline.Workspace)/drop-perftests
+          # # Extraire l'archive ZIP
+          # - task: Bash@3
+          #   displayName: 'Extract ZIP Archive'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       unzip $(Pipeline.Workspace)/drop-perftests/perftests.zip -d $(Pipeline.Workspace)/drop-perftests
 
           # Créer les répertoires de logs s'ils n'existent pas
           - task: Bash@3
