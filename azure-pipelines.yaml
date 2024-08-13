@@ -175,9 +175,9 @@ stages:
               script: |
                 echo "Listing contents of /home/vsts/work/1/drop-perftests"
                 ls -la /home/vsts/work/1/drop-perftests
-                
+                ls -la /home/vsts/work/1/drop-perftests/log
 
-          # Télécharger JMeter si nécessaire (exemple)
+          # Installer JMeter (si nécessaire)
           - task: Bash@3
             displayName: 'Install JMeter'
             inputs:
@@ -194,7 +194,7 @@ stages:
               targetType: 'inline'
               script: |
                 /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/StressTest.jmx \
-                    -l /home/vsts/work/1/drop-perftests/log/jmeter/results_StressTest.csv \
+                    -l /home/vsts/work/1/drop-perftests/results_StressTest.csv \
                     -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/StressTestReport \
                     -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterStressTestReport.log \
                     -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
@@ -208,14 +208,13 @@ stages:
               targetType: 'inline'
               script: |
                 /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/EnduranceTest.jmx \
-                    -l /home/vsts/work/1/drop-perftests/log/jmeter/results_EnduranceTest.csv \
+                    -l /home/vsts/work/1/drop-perftests/results_EnduranceTest.csv \
                     -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/EnduranceTestReport \
                     -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log \
                     -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
                     -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
               workingDirectory: /home/vsts/work/1/drop-perftests
 
-              
           # Publier les résultats des tests JMeter
           - task: PublishBuildArtifacts@1
             displayName: 'Publish JMeter Test Results'
@@ -225,7 +224,6 @@ stages:
               publishLocation: 'Container'
 
   - deployment: VMDeploy
-
     displayName: Selenium Tests
     dependsOn: FakeRestAPI
     environment:
@@ -237,7 +235,6 @@ stages:
           - download: current
             artifact: drop-uitests
           - task: Bash@3
-
             inputs:
               targetType: 'inline'
               script: |           
@@ -247,20 +244,16 @@ stages:
                 sudo apt-get install -y chromium-browser
                 sudo apt-get install wget -y
                 pip3 install selenium
-                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_127) # Remplacez 127 par votre version de Chrome
-                wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
+                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_127) #Update for your version
+                wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
                 unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/local/bin/
-                sudo chmod +x /usr/local/bin/chromedriver
-                cd ~/
-                DIR=/home/testuser/app
-                if [ ! -d "$DIR" ]; then
-                    mkdir app
-                fi
-                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
-                cd app
-                unzip -o $(Build.BuildId)-uitests.zip
-                python3 add_remove_from_cart.py
-                python3 login.py
-
-
+                sudo mv -f chromedriver /usr/local/share/chromedriver
+                sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+                sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+                sudo apt-get -f install
+                cd $(Pipeline.Workspace)/drop-uitests
+                python3 -u login.py
+                python3 -u add_remove_from_cart.py
+          - publish: $(Pipeline.Workspace)/drop-uitests
+            displayName: 'Upload Test Results'
+            artifact: uitestresults
