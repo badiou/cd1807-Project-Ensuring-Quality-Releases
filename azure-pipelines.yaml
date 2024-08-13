@@ -161,6 +161,7 @@ stages:
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
+              
           # Extraire l'archive ZIP
           - task: Bash@3
             displayName: 'Extract ZIP Archive'
