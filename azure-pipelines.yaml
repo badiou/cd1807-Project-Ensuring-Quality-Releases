@@ -169,7 +169,6 @@ stages:
               script: |
                 unzip $(Pipeline.Workspace)/drop-perftests/perftests.zip -d $(Pipeline.Workspace)/drop-perftests
 
-
           # Créer les répertoires de logs s'ils n'existent pas
           - task: Bash@3
             displayName: 'Create Log Directory'
