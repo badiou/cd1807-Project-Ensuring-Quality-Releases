@@ -52,7 +52,7 @@ if __name__ == "__main__":
         cart_item_count = cart_icon.text
         add_remove_from_cart(driver)
         # Print the number of items in the cart
-        print(f"Number of items in the cart: {cart_item_count}")
+        #print(f"Number of items in the cart: {cart_item_count}")
     finally:
         # Optional: Add some wait time to see the results before the browser closes
         time.sleep(5)  # Wait for 5 seconds
