@@ -4,7 +4,7 @@ trigger:
 - main
 
 variables:
-  python.version: '3.7.6'
+  python_version: '3.7.6'
   azureServiceConnectionId: 'AzureDevopsConnection'
   projectRoot: $(System.DefaultWorkingDirectory)
   environmentName: 'test'
@@ -138,9 +138,6 @@ stages:
 #--------------------------------------------#  
 # DEPLOYMENT STAGE
 #--------------------------------------------#    
-#--------------------------------------------#  
-# DEPLOYMENT STAGE
-#--------------------------------------------#    
 - stage: Deploy
   dependsOn: Build
   jobs:
@@ -160,14 +157,6 @@ stages:
               appType: webApp
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
-
-          # # Extraire l'archive ZIP
-          # - task: Bash@3
-          #   displayName: 'Extract ZIP Archive'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       unzip $(Pipeline.Workspace)/drop-perftests/perftests.zip -d $(Pipeline.Workspace)/drop-perftests
 
           # Créer les répertoires de logs s'ils n'existent pas
           - task: Bash@3
@@ -208,7 +197,6 @@ stages:
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
   - deployment: VMDeploy
-
     displayName: Selenium Tests
     dependsOn: FakeRestAPI
     environment:
@@ -220,7 +208,6 @@ stages:
           - download: current
             artifact: drop-uitests
           - task: Bash@3
-
             inputs:
               targetType: 'inline'
               script: |           
@@ -230,18 +217,16 @@ stages:
                 sudo apt-get install -y chromium-browser
                 sudo apt-get install wget -y
                 pip3 install selenium
-                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_127) # Remplacez 127 par votre version de Chrome
-                wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
+                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_127) #Update for your version
+                wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
                 unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/local/bin/
-                sudo chmod +x /usr/local/bin/chromedriver
-                cd ~/
-                DIR=/home/testuser/app
-                if [ ! -d "$DIR" ]; then
-                    mkdir app
-                fi
-                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
-                cd app
-                unzip -o $(Build.BuildId)-uitests.zip
-                python3 add_remove_from_cart.py
-                python3 login.py
+                sudo mv -f chromedriver /usr/local/share/chromedriver
+                sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+                sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+                sudo apt-get -f install
+                cd $(Pipeline.Workspace)/drop-uitests
+                python3 -u login.py
+                python3 -u add_remove_from_cart.py
+          - publish: $(Pipeline.Workspace)/drop-uitests
+            displayName: 'Upload Test Results'
+            artifact: uitestresults
