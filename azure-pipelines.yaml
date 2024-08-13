@@ -16,20 +16,15 @@ variables:
   address_prefix_test: '["10.5.1.0/24"]'
 
 stages:
-#--------------------------------------------#  
-# BUILD STAGE
-#--------------------------------------------#    
 - stage: Build
   jobs:
   - job: BuildInfrastructure
     steps:
-    # Install Terraform
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
       displayName: 'Install Terraform'
       inputs:
         terraformVersion: '1.2.9'
 
-    # Terraform Init
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: 'Terraform Init'
       inputs:
@@ -44,14 +39,12 @@ stages:
         backendAzureRmKey: '$(key)'
         backendAzureRmUseMsi: true
 
-# Terraform Validate
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: 'Terraform Validate'
       inputs:
         provider: 'azurerm'
         command: 'validate'
 
-# Terraform Apply
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: 'Terraform Apply'
       inputs:
@@ -61,14 +54,12 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
         commandOptions: '-auto-approve'
 
-    # Install Newman
     - task: CmdLine@2
       displayName: 'Install Newman'
       inputs:
         script: 'sudo npm install -g newman'
         workingDirectory: $(System.DefaultWorkingDirectory)
 
-    # Run Data Validation Tests
     - task: CmdLine@2
       displayName: 'Run Data Validation Tests'
       continueOnError: true
@@ -76,7 +67,6 @@ stages:
         script: 'newman run DataValidationTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-DataValidation.xml'
         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
 
-    # Run Regression Tests
     - task: CmdLine@2
       displayName: 'Run Regression Tests'
       continueOnError: true
@@ -84,7 +74,6 @@ stages:
         script: 'newman run RegressionTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-Regression.xml'
         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
 
-    # Publish Postman Test Results
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'JUnit'
@@ -93,7 +82,6 @@ stages:
         mergeTestResults: true
         testRunTitle: 'Postman Tests'
 
-    # Archive UI Tests
     - task: ArchiveFiles@2
       displayName: 'Archive UI Tests'
       inputs:
@@ -102,12 +90,10 @@ stages:
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
 
-    # Publish UI Tests
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip
       displayName: 'Upload UI Tests'
       artifact: drop-uitests
 
-    # Archive FakeRestAPI
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
@@ -116,12 +102,10 @@ stages:
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
 
-    # Publish FakeRestAPI
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
       displayName: 'Upload FakeRestAPI'
       artifact: drop-fakerestapi
 
-    # Archive Performance Test Suite
     - task: ArchiveFiles@2
       displayName: 'Archive Performance Test Suite'
       inputs:
@@ -130,14 +114,10 @@ stages:
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
 
-    # Publish Performance Test Suite
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
       displayName: 'Upload Performance Test Suite'
       artifact: drop-perftests
 
-#--------------------------------------------#  
-# DEPLOYMENT STAGE
-#--------------------------------------------#    
 - stage: Deploy
   dependsOn: Build
   jobs:
@@ -158,7 +138,6 @@ stages:
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
-          # Extraction du fichier ZIP contenant les fichiers de test
           - task: Bash@3
             displayName: 'Extract Performance Test Suite ZIP'
             inputs:
@@ -166,18 +145,8 @@ stages:
               script: |
                 mkdir -p /home/vsts/work/1/drop-perftests
                 unzip /home/vsts/work/1/drop-perftests/*perftests.zip -d /home/vsts/work/1/drop-perftests
-
-          # Vérifier le contenu du répertoire après extraction
-          - task: Bash@3
-            displayName: 'List Contents of Drop Directory'
-            inputs:
-              targetType: 'inline'
-              script: |
-                echo "Listing contents of /home/vsts/work/1/drop-perftests"
                 ls -la /home/vsts/work/1/drop-perftests
-                
 
-          # Télécharger JMeter si nécessaire (exemple)
           - task: Bash@3
             displayName: 'Install JMeter'
             inputs:
@@ -187,7 +156,6 @@ stages:
                 tar -xzf apache-jmeter-5.6.2.tgz -C /home/vsts/work/1/drop-perftests
                 ls -la /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2
 
-          # Exécuter le test de stress avec JMeter
           - task: Bash@3
             displayName: 'Run JMeter Stress Test'
             inputs:
@@ -201,7 +169,6 @@ stages:
                     -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
               workingDirectory: /home/vsts/work/1/drop-perftests
 
-          # Exécuter le test d'endurance avec JMeter
           - task: Bash@3
             displayName: 'Run JMeter Endurance Test'
             inputs:
@@ -215,7 +182,6 @@ stages:
                     -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
               workingDirectory: /home/vsts/work/1/drop-perftests
 
-          # Publier les résultats des tests JMeter
           - task: PublishBuildArtifacts@1
             displayName: 'Publish JMeter Test Results'
             inputs:
@@ -224,7 +190,6 @@ stages:
               publishLocation: 'Container'
 
   - deployment: VMDeploy
-
     displayName: Selenium Tests
     dependsOn: FakeRestAPI
     environment:
@@ -236,18 +201,16 @@ stages:
           - download: current
             artifact: drop-uitests
           - task: Bash@3
-
             inputs:
               targetType: 'inline'
-              script: |           
+              script: |
                 sudo apt-get update
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
                 sudo apt-get install wget -y
                 pip3 install selenium
-                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com) 
-                
+                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/114.0.5735.90)
                 wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
                 unzip chromedriver_linux64.zip
                 sudo mv chromedriver /usr/local/bin/
@@ -255,14 +218,16 @@ stages:
                 cd ~/
                 DIR=/home/testuser/app
                 if [ ! -d "$DIR" ]; then
-                    mkdir app
+                    mkdir -p app
                 fi
                 mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
                 cd app
                 unzip -o $(Build.BuildId)-uitests.zip
-                python3 add_remove_from_cart.py
-                python3 login.py
+                python3 add_remove_from_cart.py > selenium.log
+                python3 login.py >> selenium.log
 
-
-
-
+          - task: PublishPipelineArtifact@1
+            displayName: Publish selenium logs
+            inputs:
+              targetPath: '$(Pipeline.Workspace)/selenium.log'
+              artifactName: 'selenium-logs'
