@@ -207,8 +207,6 @@ stages:
                                                           -j $(Pipeline.Workspace)/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log
               workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
-
-
   - deployment: VMDeploy
 
     displayName: Selenium Tests
