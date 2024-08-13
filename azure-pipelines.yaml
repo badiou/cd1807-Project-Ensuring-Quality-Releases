@@ -185,6 +185,7 @@ stages:
                 wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz
                 tar -xzf apache-jmeter-5.6.2.tgz -C /home/vsts/work/1/drop-perftests
                 ls -la /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2
+                
 
           # Exécuter le test de stress avec JMeter
           - task: Bash@3
@@ -243,8 +244,6 @@ stages:
                 sudo apt-get install -y chromium-browser
                 sudo apt-get install wget -y
                 pip3 install selenium
-                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_127) #Update for your version
-                wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
                 unzip chromedriver_linux64.zip
                 sudo mv -f chromedriver /usr/local/share/chromedriver
                 sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
