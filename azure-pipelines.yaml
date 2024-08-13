@@ -165,7 +165,7 @@ stages:
               targetType: 'inline'
               script: |
                 mkdir -p /home/vsts/work/1/drop-perftests
-                unzip /home/vsts/work/1/drop-perftests/627-perftests.zip -d /home/vsts/work/1/drop-perftests
+                unzip /home/vsts/work/1/drop-perftests/*perftests.zip -d /home/vsts/work/1/drop-perftests
 
           # Vérifier le contenu du répertoire après extraction
           - task: Bash@3
