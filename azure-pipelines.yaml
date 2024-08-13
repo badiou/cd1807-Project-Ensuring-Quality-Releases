@@ -243,5 +243,8 @@ stages:
                 mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
                 cd app
                 unzip -o $(Build.BuildId)-uitests.zip
-                python3 add_remove_from_cart.py
-                python3 login.py
+                python3 add_remove_from_cart.py > selenium.log
+                python3 login.py > selenium.log
+
+                cat selenium.log
+                sudo cp selenium.log /var/logs
