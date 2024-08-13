@@ -211,7 +211,7 @@ stages:
   - deployment: VMDeploy
 
     displayName: Selenium Tests
-    #dependsOn: FakeRestAPI
+    dependsOn: FakeRestAPI
     environment:
       name: 'test'
     strategy:
@@ -244,5 +244,5 @@ stages:
                 mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
                 cd app
                 unzip -o $(Build.BuildId)-uitests.zip
-                python3 add_remove_from_cart.py > selenium.log
-                python3 login.py > selenium.log
+                python3 add_remove_from_cart.py
+                python3 login.py
