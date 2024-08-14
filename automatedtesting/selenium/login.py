@@ -59,6 +59,7 @@ def login(user, password):
 
     return driver
 
+
 # If this file is executed directly, perform a login
 if __name__ == "__main__":
     driver = login('standard_user', 'secret_sauce')
