@@ -226,7 +226,7 @@ stages:
                       pip3 install selenium
 
                       # Determine the correct ChromeDriver version
-                      CHROME_DRIVER_VERSION="114.0.5735.90"  # Spécifiez la version exacte de ChromeDriver
+                      CHROME_DRIVER_VERSION="127.0.6533.119" 
                       CHROME_DRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_DRIVER_VERSION%.*}")
 
                       # Download and install ChromeDriver
