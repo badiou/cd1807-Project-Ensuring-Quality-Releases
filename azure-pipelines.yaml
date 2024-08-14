@@ -218,40 +218,36 @@ stages:
                   inputs:
                     targetType: 'inline'
                     script: |
-                      sudo apt-get update
-                      sudo apt-get install python3-pip -y
-                      sudo apt-get install unzip -y
-                      sudo apt-get install -y chromium-browser
-                      sudo apt-get install wget -y
-                      pip3 install selenium
-                      wget -O bin/chromedriver.zip $WEBDRIVER_PATH
-                      rm -f bin/chromedriver
-                      unzip -o -d bin bin/chromedriver.zip
-                      rm bin/chromedriver.zip
-                      echo "installation done"
-                                            
-                                            sudo mv chromedriver /usr/local/bin/
-                                            sudo chmod +x /usr/local/bin/chromedriver
+                    #! /bin/bash
+                    
+                    sudo apt-get update -y
+                    sudo apt-get upgrade -y
+                    sudo apt install unzip -y
+                    sudo apt-get install python3-pip -y
+                    pip install selenium
 
-                      # Verify installation
-                      chromedriver --version
+                    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+                    sudo apt install ./google-chrome-stable_current_amd64.deb -y
 
-                # Run Selenium Tests
-                - task: Bash@3
-                  displayName: 'Run Selenium Tests'
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                      # Ensure Chromedriver is correctly installed
-                      chromedriver --version
+                    wget -qP /tmp/ "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/117.0.5938.88/linux64/chromedriver-linux64.zip"
+                    sudo unzip -oj /tmp/chromedriver-linux64.zip -d /usr/bin
+                    cd ~/
+                    rm -rf cd1807-Project-Ensuring-Quality-Releases
+                    DIR=/home/azureUser/app
+                    if [ ! -d "$DIR" ]; then
+                        mkdir app
+                    fi
+                    cd /home/vsts/work/1/drop-uitests
+                    
+                    echo "Starting Selenium test"
+                    python3 login.py >> ~/app/selenium.log
+                    python3 login.py >> sudo /var/log/selenium.log
 
-                      # Run tests and log output
-                      cd /home/vsts/work/1/drop-uitests
-                      python3 add_remove_from_cart.py > selenium.log 2>&1
-                      python3 login.py >> selenium.log 2>&1
-
-                      # Ensure that the test process exits
-                      echo "Tests completed. Check selenium.log for details."
+                    python3 add_remove_from_cart.py >> ~/app/selenium.log
+                    python3 add_remove_from_cart.py >> sudo /var/log/selenium.log
+                    cat ~/app/selenium.log
+                    echo "Finish Selelium test."
+                
 
                 # Display the content of selenium.log
                 - task: Bash@3
