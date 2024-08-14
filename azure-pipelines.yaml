@@ -225,15 +225,28 @@ stages:
                       sudo apt-get install wget -y
                       pip3 install selenium
 
-                      # Determine the correct ChromeDriver version
-                      CHROME_DRIVER_VERSION="127.0.6533.119" 
-                      CHROME_DRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_DRIVER_VERSION%.*}")
+                      echo "## dev installation ##"
+                      echo "installling webdriver"
 
-                      # Download and install ChromeDriver
-                      wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
-                      unzip chromedriver_linux64.zip
-                      sudo mv chromedriver /usr/local/bin/
-                      sudo chmod +x /usr/local/bin/chromedriver
+                      LATEST_RELEASE=`curl http://chromedriver.storage.googleapis.com/LATEST_RELEASE`
+
+                      VERSION=`uname -p`
+
+                      if [ "$VERSION" = "x86_64" ]; then
+                        WEBDRIVER_PATH="http://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip"
+                      else
+                        WEBDRIVER_PATH="http://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux32.zip"
+                      fi
+
+                      wget -O bin/chromedriver.zip $WEBDRIVER_PATH
+                      rm -f bin/chromedriver
+                      unzip -o -d bin bin/chromedriver.zip
+                      rm bin/chromedriver.zip
+
+                      echo "installation done"
+                                            unzip chromedriver_linux64.zip
+                                            sudo mv chromedriver /usr/local/bin/
+                                            sudo chmod +x /usr/local/bin/chromedriver
 
                       # Verify installation
                       chromedriver --version
