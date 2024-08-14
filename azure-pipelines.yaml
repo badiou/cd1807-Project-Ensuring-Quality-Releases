@@ -1,7 +1,7 @@
 name: Azure Pipelines
 
 trigger:
-  - main
+- main
 
 variables:
   python_version: '3.7.6'
@@ -14,253 +14,221 @@ variables:
   resource_group_name_storage: 'AzuredevopsRG'
   address_space: '["10.5.0.0/16"]'
   address_prefix_test: '["10.5.1.0/24"]'
-  chrome_version: '114.0.5735.90'  # Spécifiez la version exacte de Chrome
 
 stages:
-  - stage: Build
-    jobs:
-      - job: BuildInfrastructure
-        steps:
-          # Install Terraform
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-            displayName: 'Install Terraform'
-            inputs:
-              terraformVersion: '1.2.9'
+- stage: Build
+  jobs:
+  - job: BuildInfrastructure
+    steps:
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: '1.2.9'
 
-          # Initialize Terraform with Azure backend
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-            displayName: 'Terraform Init'
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              commandOptions: '-input=false -lock=false -no-color -upgrade'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-              backendServiceArm: '$(azureServiceConnectionId)'
-              backendAzureRmResourceGroupName: '$(resource_group_name_storage)'
-              backendAzureRmStorageAccountName: '$(storage_account_name)'
-              backendAzureRmContainerName: '$(container_name)'
-              backendAzureRmKey: '$(key)'
-              backendAzureRmUseMsi: true
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        commandOptions: '-input=false -lock=false -no-color -upgrade'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        backendServiceArm: '$(azureServiceConnectionId)'
+        backendAzureRmResourceGroupName: '$(resource_group_name_storage)'
+        backendAzureRmStorageAccountName: '$(storage_account_name)'
+        backendAzureRmContainerName: '$(container_name)'
+        backendAzureRmKey: '$(key)'
+        backendAzureRmUseMsi: true
 
-          # Validate Terraform configuration
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-            displayName: 'Terraform Validate'
-            inputs:
-              provider: 'azurerm'
-              command: 'validate'
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: 'Terraform Validate'
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
 
-          # Apply Terraform configuration
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-            displayName: 'Terraform Apply'
-            inputs:
-              provider: 'azurerm'
-              command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-              environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-              commandOptions: '-auto-approve'
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: 'Terraform Apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+        commandOptions: '-auto-approve'
 
-          # Install Newman for API testing
-          - task: CmdLine@2
-            displayName: 'Install Newman'
-            inputs:
-              script: 'sudo npm install -g newman'
-              workingDirectory: $(System.DefaultWorkingDirectory)
+    - task: CmdLine@2
+      displayName: 'Install Newman'
+      inputs:
+        script: 'sudo npm install -g newman'
+        workingDirectory: $(System.DefaultWorkingDirectory)
 
-          # Run Data Validation Tests using Newman
-          - task: CmdLine@2
-            displayName: 'Run Data Validation Tests'
-            continueOnError: true
-            inputs:
-              script: 'newman run DataValidationTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-DataValidation.xml'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+    - task: CmdLine@2
+      displayName: 'Run Data Validation Tests'
+      continueOnError: true
+      inputs:
+        script: 'newman run DataValidationTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-DataValidation.xml'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
 
-          # Run Regression Tests using Newman
-          - task: CmdLine@2
-            displayName: 'Run Regression Tests'
-            continueOnError: true
-            inputs:
-              script: 'newman run RegressionTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-Regression.xml'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+    - task: CmdLine@2
+      displayName: 'Run Regression Tests'
+      continueOnError: true
+      inputs:
+        script: 'newman run RegressionTestStarterAPIspostman_collection.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-Regression.xml'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
 
-          # Publish test results from Newman
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFormat: 'JUnit'
-              testResultsFiles: '**/TEST-*.xml'
-              searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-              mergeTestResults: true
-              testRunTitle: 'Postman Tests'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
+        searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+        mergeTestResults: true
+        testRunTitle: 'Postman Tests'
 
-          # Archive UI test results
-          - task: ArchiveFiles@2
-            displayName: 'Archive UI Tests'
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
+    - task: ArchiveFiles@2
+      displayName: 'Archive UI Tests'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
 
-          # Upload archived UI test results
-          - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip
-            displayName: 'Upload UI Tests'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip
+      displayName: 'Upload UI Tests'
+      artifact: drop-uitests
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload FakeRestAPI'
+      artifact: drop-fakerestapi
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive Performance Test Suite'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
+
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
+      displayName: 'Upload Performance Test Suite'
+      artifact: drop-perftests
+
+- stage: Deploy
+  dependsOn: Build
+  jobs:
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'test'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: '$(azureServiceConnectionId)'
+              appName: 'myapplication-ourobadiou-appservice'
+              appType: webApp
+              package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
+              deploymentMethod: 'auto'
+
+          - task: Bash@3
+            displayName: 'Extract Performance Test Suite ZIP'
+            inputs:
+              targetType: 'inline'
+              script: |
+                mkdir -p /home/vsts/work/1/drop-perftests
+                unzip /home/vsts/work/1/drop-perftests/*perftests.zip -d /home/vsts/work/1/drop-perftests
+                ls -la /home/vsts/work/1/drop-perftests
+
+          - task: Bash@3
+            displayName: 'Install JMeter'
+            inputs:
+              targetType: 'inline'
+              script: |
+                wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz
+                tar -xzf apache-jmeter-5.6.2.tgz -C /home/vsts/work/1/drop-perftests
+                ls -la /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2
+
+          - task: Bash@3
+            displayName: 'Run JMeter Stress Test'
+            inputs:
+              targetType: 'inline'
+              script: |
+                /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/StressTest.jmx \
+                    -l /home/vsts/work/1/drop-perftests/log/jmeter/results_StressTest.csv \
+                    -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/StressTestReport \
+                    -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterStressTestReport.log \
+                    -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
+                    -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
+              workingDirectory: /home/vsts/work/1/drop-perftests
+
+          - task: Bash@3
+            displayName: 'Run JMeter Endurance Test'
+            inputs:
+              targetType: 'inline'
+              script: |
+                /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/EnduranceTest.jmx \
+                    -l /home/vsts/work/1/drop-perftests/log/jmeter/results_EnduranceTest.csv \
+                    -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/EnduranceTestReport \
+                    -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log \
+                    -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
+                    -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
+              workingDirectory: /home/vsts/work/1/drop-perftests
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish JMeter Test Results'
+            inputs:
+              pathToPublish: '/home/vsts/work/1/drop-perftests/log/jmeter'
+              artifactName: 'jmeter-test-results'
+              publishLocation: 'Container'
+
+  - deployment: VMDeploy
+    displayName: Selenium Tests
+    dependsOn: FakeRestAPI
+    environment:
+      name: 'test'
+    strategy:
+      runOnce:
+        deploy:
+        
+          steps:
+          - download: current
             artifact: drop-uitests
-
-          # Archive FakeRestAPI test results
-          - task: ArchiveFiles@2
-            displayName: 'Archive FakeRestAPI'
+          - task: Bash@3
             inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+              targetType: 'inline'
+              script: |
+                sudo apt-get update
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                sudo apt-get install wget -y
+                pip3 install selenium
+                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/114.0.5735.90)
+                wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/local/bin/
+                sudo chmod +x /usr/local/bin/chromedriver
+                cd ~/
+                DIR=/home/testuser/app
+                if [ ! -d "$DIR" ]; then
+                    mkdir -p app
+                fi
+                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
+                cd app
+                unzip -o $(Build.BuildId)-uitests.zip
+                python3 add_remove_from_cart.py > selenium.log
+                python3 login.py >> selenium.log
 
-          # Upload archived FakeRestAPI test results
-          - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-            displayName: 'Upload FakeRestAPI'
-            artifact: drop-fakerestapi
-
-          # Archive Performance Test Suite results
-          - task: ArchiveFiles@2
-            displayName: 'Archive Performance Test Suite'
+          - task: PublishPipelineArtifact@1
+            displayName: Publish selenium logs
             inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
-
-          # Upload archived Performance Test Suite results
-          - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
-            displayName: 'Upload Performance Test Suite'
-            artifact: drop-perftests
-
-  - stage: Deploy
-    dependsOn: Build
-    jobs:
-      - deployment: FakeRestAPI
-        pool:
-          vmImage: 'ubuntu-latest'
-        environment: 'test'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                # Deploy FakeRestAPI to Azure Web App
-                - task: AzureWebApp@1
-                  displayName: 'Deploy Azure Web App'
-                  inputs:
-                    azureSubscription: '$(azureServiceConnectionId)'
-                    appName: 'myapplication-ourobadiou-appservice'
-                    appType: webApp
-                    package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
-                    deploymentMethod: 'auto'
-
-                # Extract Performance Test Suite ZIP
-                - task: Bash@3
-                  displayName: 'Extract Performance Test Suite ZIP'
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                      mkdir -p /home/vsts/work/1/drop-perftests
-                      unzip /home/vsts/work/1/drop-perftests/*perftests.zip -d /home/vsts/work/1/drop-perftests
-                      ls -la /home/vsts/work/1/drop-perftests
-
-                # Install JMeter for performance testing
-                - task: Bash@3
-                  displayName: 'Install JMeter'
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                      wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz
-                      tar -xzf apache-jmeter-5.6.2.tgz -C /home/vsts/work/1/drop-perftests
-                      ls -la /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2
-
-                # Run JMeter Stress Test
-                - task: Bash@3
-                  displayName: 'Run JMeter Stress Test'
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                      /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/StressTest.jmx \
-                        -l /home/vsts/work/1/drop-perftests/log/jmeter/results_StressTest.csv \
-                        -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/StressTestReport \
-                        -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterStressTestReport.log \
-                        -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
-                        -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
-                    workingDirectory: /home/vsts/work/1/drop-perftests
-
-                # Run JMeter Endurance Test
-                - task: Bash@3
-                  displayName: 'Run JMeter Endurance Test'
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                      /home/vsts/work/1/drop-perftests/apache-jmeter-5.6.2/bin/jmeter -n -t /home/vsts/work/1/drop-perftests/EnduranceTest.jmx \
-                        -l /home/vsts/work/1/drop-perftests/log/jmeter/results_EnduranceTest.csv \
-                        -e -f -o /home/vsts/work/1/drop-perftests/log/jmeter/EnduranceTestReport \
-                        -j /home/vsts/work/1/drop-perftests/log/jmeter/JmeterEnduranceTestReport.log \
-                        -JexampleCSV=/home/vsts/work/1/drop-perftests/exempleCsv.csv \
-                        -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
-                    workingDirectory: /home/vsts/work/1/drop-perftests
-
-                # Extract Selenium UI Tests ZIP
-                - task: Bash@3
-                  displayName: 'Extract Selenium UI Tests ZIP'
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                      mkdir -p /home/vsts/work/1/drop-uitests
-                      unzip /home/vsts/work/1/drop-uitests/*uitests.zip -d /home/vsts/work/1/drop-uitests
-                      ls -la /home/vsts/work/1/drop-uitests
-
-                # Install Selenium and ChromeDriver
-                - task: Bash@3
-                  displayName: 'Install Selenium and ChromeDriver'
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                    #! /bin/bash
-                    
-                    sudo apt-get update -y
-                    sudo apt-get upgrade -y
-                    sudo apt install unzip -y
-                    sudo apt-get install python3-pip -y
-                    pip install selenium
-
-                    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-                    sudo apt install ./google-chrome-stable_current_amd64.deb -y
-
-                    wget -qP /tmp/ "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/117.0.5938.88/linux64/chromedriver-linux64.zip"
-                    sudo unzip -oj /tmp/chromedriver-linux64.zip -d /usr/bin
-                    cd ~/
-                    rm -rf cd1807-Project-Ensuring-Quality-Releases
-                    DIR=/home/azureUser/app
-                    if [ ! -d "$DIR" ]; then
-                        mkdir app
-                    fi
-                    cd /home/vsts/work/1/drop-uitests
-                    
-                    echo "Starting Selenium test"
-                    python3 login.py >> ~/app/selenium.log
-                    python3 login.py >> sudo /var/log/selenium.log
-
-                    python3 add_remove_from_cart.py >> ~/app/selenium.log
-                    python3 add_remove_from_cart.py >> sudo /var/log/selenium.log
-                    cat ~/app/selenium.log
-                    echo "Finish Selelium test."
-                
-
-                # Display the content of selenium.log
-                - task: Bash@3
-                  displayName: 'Display Selenium Log'
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                      echo "Displaying Selenium log content:"
-                      cat /home/vsts/work/1/drop-uitests/selenium.log
-
-                # Publish Selenium test results
-                - task: PublishPipelineArtifact@1
-                  displayName: 'Publish Selenium Logs'
-                  inputs:
-                    targetPath: '/home/vsts/work/1/drop-uitests/selenium.log'
-                    artifactName: 'selenium-logs'
+              targetPath: '$(Pipeline.Workspace)/selenium.log'
+              artifactName: 'selenium-logs'
