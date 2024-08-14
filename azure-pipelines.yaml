@@ -197,7 +197,6 @@ stages:
     strategy:
       runOnce:
         deploy:
-        
           steps:
           - download: current
             artifact: drop-uitests
@@ -211,7 +210,8 @@ stages:
                 sudo apt-get install -y chromium-browser
                 sudo apt-get install wget -y
                 pip3 install selenium
-                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/114.0.5735.90)
+                
+                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_72.0.3626)
                 wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
                 unzip chromedriver_linux64.zip
                 sudo mv chromedriver /usr/local/bin/
