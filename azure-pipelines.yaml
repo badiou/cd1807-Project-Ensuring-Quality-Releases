@@ -255,6 +255,15 @@ stages:
                       # Ensure that the test process exits
                       echo "Tests completed. Check selenium.log for details."
 
+                # Display the content of selenium.log
+                - task: Bash@3
+                  displayName: 'Display Selenium Log'
+                  inputs:
+                    targetType: 'inline'
+                    script: |
+                      echo "Displaying Selenium log content:"
+                      cat /home/vsts/work/1/drop-uitests/selenium.log
+
                 # Publish Selenium test results
                 - task: PublishPipelineArtifact@1
                   displayName: 'Publish Selenium Logs'
