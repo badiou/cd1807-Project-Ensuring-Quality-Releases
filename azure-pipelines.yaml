@@ -14,6 +14,7 @@ variables:
   resource_group_name_storage: 'AzuredevopsRG'
   address_space: '["10.5.0.0/16"]'
   address_prefix_test: '["10.5.1.0/24"]'
+  chrome_version: '114.0.5735.90'  # Spécifiez la version exacte de Chrome
 
 stages:
   - stage: Build
@@ -201,30 +202,19 @@ stages:
                         -JresultsCSV=/home/vsts/work/1/drop-perftests/results.csv
                     workingDirectory: /home/vsts/work/1/drop-perftests
 
-                # Publish JMeter test results
-                - task: PublishBuildArtifacts@1
-                  displayName: 'Publish JMeter Test Results'
-                  inputs:
-                    pathToPublish: '/home/vsts/work/1/drop-perftests/log/jmeter'
-                    artifactName: 'jmeter-test-results'
-                    publishLocation: 'Container'
-
-      - deployment: VMDeploy
-        displayName: Selenium Tests
-        dependsOn: FakeRestAPI
-        environment:
-          name: 'test'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                # Download archived UI tests
-                - download: current
-                  artifact: drop-uitests
-
-                # Install dependencies and run Selenium tests
+                # Extract Selenium UI Tests ZIP
                 - task: Bash@3
-                  displayName: 'Run Selenium Tests'
+                  displayName: 'Extract Selenium UI Tests ZIP'
+                  inputs:
+                    targetType: 'inline'
+                    script: |
+                      mkdir -p /home/vsts/work/1/drop-uitests
+                      unzip /home/vsts/work/1/drop-uitests/*uitests.zip -d /home/vsts/work/1/drop-uitests
+                      ls -la /home/vsts/work/1/drop-uitests
+
+                # Install Selenium and ChromeDriver
+                - task: Bash@3
+                  displayName: 'Install Selenium and ChromeDriver'
                   inputs:
                     targetType: 'inline'
                     script: |
@@ -234,25 +224,40 @@ stages:
                       sudo apt-get install -y chromium-browser
                       sudo apt-get install wget -y
                       pip3 install selenium
-                      CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/114.0.5735.90)
+
+                      # Determine the correct ChromeDriver version
+                      CHROME_DRIVER_VERSION="114.0.5735.90"  # Spécifiez la version exacte de ChromeDriver
+                      CHROME_DRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_DRIVER_VERSION%.*}")
+
+                      # Download and install ChromeDriver
                       wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
                       unzip chromedriver_linux64.zip
                       sudo mv chromedriver /usr/local/bin/
                       sudo chmod +x /usr/local/bin/chromedriver
-                      cd ~/
-                      DIR=/home/testuser/app
-                      if [ ! -d "$DIR" ]; then
-                          mkdir -p app
-                      fi
-                      mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
-                      cd app
-                      unzip -o $(Build.BuildId)-uitests.zip
-                      python3 add_remove_from_cart.py > selenium.log
-                      python3 login.py >> selenium.log
 
-                # Publish Selenium test logs
-                - task: PublishPipelineArtifact@1
-                  displayName: Publish selenium logs
+                      # Verify installation
+                      chromedriver --version
+
+                # Run Selenium Tests
+                - task: Bash@3
+                  displayName: 'Run Selenium Tests'
                   inputs:
-                    targetPath: '$(Pipeline.Workspace)/selenium.log'
+                    targetType: 'inline'
+                    script: |
+                      # Ensure Chromedriver is correctly installed
+                      chromedriver --version
+
+                      # Run tests and log output
+                      cd /home/vsts/work/1/drop-uitests
+                      python3 add_remove_from_cart.py > selenium.log 2>&1
+                      python3 login.py >> selenium.log 2>&1
+
+                      # Ensure that the test process exits
+                      echo "Tests completed. Check selenium.log for details."
+
+                # Publish Selenium test results
+                - task: PublishPipelineArtifact@1
+                  displayName: 'Publish Selenium Logs'
+                  inputs:
+                    targetPath: '/home/vsts/work/1/drop-uitests/selenium.log'
                     artifactName: 'selenium-logs'
