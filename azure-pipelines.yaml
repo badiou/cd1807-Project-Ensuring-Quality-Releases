@@ -212,6 +212,8 @@ stages:
                 unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
                 # Listez les fichiers pour vérifier l'extraction
                 ls -la /home/vsts/work/1/drop-uitests
+                
+                
 
           - task: Bash@3
             displayName: 'Install ChromeDriver and Google Chrome'
@@ -219,6 +221,7 @@ stages:
               targetType: 'inline'
               script: |
                 # Mettez à jour le système et installez les dépendances nécessaires
+                cd /home/vsts/work/1/drop-uitests
                 sudo apt-get update -y
                 sudo apt-get upgrade -y
                 sudo apt-get install -y python3-pip unzip chromium-browser
@@ -232,19 +235,19 @@ stages:
                     mkdir -p $DIR
                 fi
 
-                # Déplacez et décompressez l'archive ZIP
-                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
-                cd $DIR
-                unzip -o $(Build.BuildId)-uitests.zip
+                # # Déplacez et décompressez l'archive ZIP
+                # mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
+                # cd $DIR
+                # unzip -o $(Build.BuildId)-uitests.zip
 
-                # Téléchargez et installez ChromeDriver si nécessaire
-                CHROMEDRIVER_PATH=$DIR/chromedriver
-                if [ ! -f "$CHROMEDRIVER_PATH" ]; then
-                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-                    unzip -o chromedriver_linux64.zip
-                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
-                fi
+                # # Téléchargez et installez ChromeDriver si nécessaire
+                # CHROMEDRIVER_PATH=$DIR/chromedriver
+                # if [ ! -f "$CHROMEDRIVER_PATH" ]; then
+                #     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                #     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                #     unzip -o chromedriver_linux64.zip
+                #     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                # fi
 
                 # Exécutez les tests Selenium
                 echo "Starting Selenium Tests"
