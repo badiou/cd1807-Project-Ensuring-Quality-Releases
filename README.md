@@ -114,6 +114,43 @@ The Azure Pipeline automates the deployment and testing process. Here is an over
 - Runs UI tests using Selenium, and publishes the test results.
 <img width="1427" alt="20- Run selenium test" src="https://github.com/user-attachments/assets/11dd0e32-cf35-457b-ab67-7f92144740ac">
 
+## Azure artifact
+## Viewing Pipeline Logs
+
+After executing your pipeline, you can view the logs generated during the pipeline run directly in Azure DevOps. This helps in diagnosing issues and reviewing the details of each step in your pipeline.
+
+### Azure DevOps Pipeline Logs
+
+To view the logs for your pipeline runs:
+
+1. **Go to your Azure DevOps project**: Open your Azure DevOps portal and navigate to the project where your pipeline is configured.
+   
+2. **Navigate to Pipelines**: Click on the "Pipelines" menu option on the left-hand side of the page.
+
+3. **Select the pipeline**: Click on the pipeline that you want to review.
+
+4. **Choose a specific run**: Click on the specific run you want to examine to view detailed logs.
+
+5. **View logs**: The logs for each stage and job within the pipeline run will be displayed. You can click on individual jobs to see more granular logs.
+
+![Azure DevOps Pipeline Logs](path/to/your/azure-devops-logs.png)
+
+*Above is a screenshot showing how to access and view pipeline logs in Azure DevOps.*
+
+### Azure Artifacts Logs
+
+Azure Artifacts helps in managing build artifacts, which may include logs from your pipeline runs. To view logs related to artifacts:
+
+1. **Go to Azure Artifacts**: Navigate to the Azure Artifacts section of your Azure DevOps project.
+
+2. **Select the appropriate feed**: Choose the feed or artifact repository where your logs are stored.
+
+3. **View the list of artifacts**: Locate the logs associated with your pipeline runs.
+
+![Azure Artifacts Logs](path/to/your/azure-artifacts-logs.png)
+
+*Above is a screenshot illustrating how to view logs and artifacts in Azure Artifacts.*
+
 
 **Free Software, Hell Yeah!**
 
