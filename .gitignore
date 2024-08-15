@@ -49,3 +49,5 @@ terraform/environments/test/terraform.tfvars
 *.tfplan
 *.tfplan.*
 .terraform/
+!/screenshoot/*.log
+
