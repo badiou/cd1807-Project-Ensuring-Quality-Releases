@@ -252,4 +252,6 @@ stages:
                 # Exécutez les tests Selenium
                 echo "Starting Selenium Tests"
                 python3 add_remove_from_cart.py >> selenium.log
+                python3 login.py >> selenium.log
+                cat selenium.log
                 echo "Completed Selenium Tests. Check selenium.log for results."
