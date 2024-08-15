@@ -200,39 +200,37 @@ stages:
           steps:
           - download: current
             artifact: drop-uitests
+
+          - task: UsePythonVersion@0
+            displayName: 'Use Python $(python_version)'
+            inputs:
+              versionSpec: '$(python_version)'
+              addToPath: true
+
+          - script: |
+              pip install -r /home/testuser/app/requirements.txt
+            displayName: 'Install Python dependencies'
+
+          - script: |
+              python /home/testuser/app/login.py >> /home/testuser/app/selenium.log
+              python /home/testuser/app/add_remove_from_cart.py >> /home/testuser/app/selenium.log
+            displayName: 'Run Selenium Tests'
+
           - task: Bash@3
+            displayName: 'Check selenium.log existence'
             inputs:
               targetType: 'inline'
-              script: |           
-                #! /bin/bash
-                
-                sudo apt-get upgrade -y
-                sudo apt-get install python3-pip -y
-                sudo apt-get install unzip -y
-                sudo apt-get install -y chromium-browser
-                pip3 install selenium
-                cd ~/
-                DIR=/home/testuser/app
-                if [ ! -d "$DIR" ]; then
-                    mkdir app
+              script: |
+                if [ -f "/home/testuser/app/selenium.log" ]; then
+                  echo "selenium.log exists."
+                else
+                  echo "selenium.log does not exist."
+                  exit 1
                 fi
-                mv /home/testuser/azagent/_work/1/drop-uitests/$(Build.BuildId)-uitests.zip app
-                cd app
-                unzip -o $(Build.BuildId)-uitests.zip
-                FILE=/home/testuser/app/chromedriver_linux64.zip
-                if [ ! -f "$FILE" ]; then
-                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-                    unzip -o chromedriver_linux64.zip
-                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
-                fi
-                export PATH=$PATH:/home/testuser/app
-                echo "Starting Selenium Tests"
-                python3 add_remove_from_cart.py >> selenium.log
-                echo "Completed Selenium Tests. Check selenium.log for results."
-                
+
           - task: PublishPipelineArtifact@1
             displayName: Publish selenium logs
             inputs:
-              targetPath: '$(Pipeline.Workspace)/selenium.log'
+              targetPath: '/home/testuser/app/selenium.log'
               artifactName: 'selenium-logs'
+
