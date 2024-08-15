@@ -58,7 +58,7 @@ stages:
       displayName: 'Install Newman'
       inputs:
         script: 'sudo npm install -g newman'
-        workingDirectory: $(System.DefaultWorkingDirectory)
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
 
     - task: CmdLine@2
       displayName: 'Run Data Validation Tests'
@@ -134,7 +134,7 @@ stages:
             inputs:
               azureSubscription: '$(azureServiceConnectionId)'
               appName: 'myapplication-ourobadiou-appservice'
-              appType: webApp
+              appType: 'webApp'
               package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
               deploymentMethod: 'auto'
 
@@ -144,7 +144,7 @@ stages:
               targetType: 'inline'
               script: |
                 mkdir -p /home/vsts/work/1/drop-perftests
-                unzip /home/vsts/work/1/drop-perftests/*perftests.zip -d /home/vsts/work/1/drop-perftests
+                unzip $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip -d /home/vsts/work/1/drop-perftests
                 ls -la /home/vsts/work/1/drop-perftests
 
           - task: Bash@3
@@ -190,57 +190,56 @@ stages:
               publishLocation: 'Container'
 
   - deployment: VMDeploy
-  displayName: Selenium Tests
-  dependsOn: FakeRestAPI
-  environment:
-    name: 'test'
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - download: current
-          artifact: drop-uitests
+    displayName: Selenium Tests
+    environment:
+      name: 'test'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop-uitests
 
-        - task: Bash@3
-          displayName: 'Unzip UI Tests'
-          inputs:
-            targetType: 'inline'
-            script: |
-              # Créez un répertoire pour décompresser les fichiers si nécessaire
-              mkdir -p /home/vsts/work/1/drop-uitests
-              # Décompressez l'archive ZIP
-              unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
-              # Listez les fichiers pour vérifier l'extraction
-              ls -la /home/vsts/work/1/drop-uitests
+          - task: Bash@3
+            displayName: 'Unzip UI Tests'
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Créez un répertoire pour décompresser les fichiers si nécessaire
+                mkdir -p /home/vsts/work/1/drop-uitests
+                # Décompressez l'archive ZIP
+                unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
+                # Listez les fichiers pour vérifier l'extraction
+                ls -la /home/vsts/work/1/drop-uitests
 
-        - task: Bash@3
-          displayName: 'Install ChromeDriver and Google Chrome'
-          inputs:
-            targetType: 'inline'
-            script: |
-              # Installez Google Chrome et ChromeDriver
-              CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 1)
-              DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-              wget -q "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
-              unzip chromedriver_linux64.zip
-              sudo mv chromedriver /usr/local/bin/
-              # Vérifiez l'installation
-              ls -la /usr/local/bin/chromedriver
+          - task: Bash@3
+            displayName: 'Install ChromeDriver and Google Chrome'
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Installez Google Chrome et ChromeDriver
+                CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 1)
+                DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+                wget -q "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/local/bin/
+                # Vérifiez l'installation
+                ls -la /usr/local/bin/chromedriver
 
-        - task: Bash@3
-          displayName: 'Run Selenium Tests'
-          inputs:
-            targetType: 'inline'
-            script: |
-              # Accédez au répertoire où les fichiers ont été extraits
-              cd /home/vsts/work/1/drop-uitests
+          - task: Bash@3
+            displayName: 'Run Selenium Tests'
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Accédez au répertoire où les fichiers ont été extraits
+                cd /home/vsts/work/1/drop-uitests
 
-              # Vérifiez que les fichiers Python sont présents
-              ls -la
+                # Vérifiez que les fichiers Python sont présents
+                ls -la
 
-              # Exécutez les scripts Selenium
-              python3 login.py >> selenium.log
-              python3 add_remove_from_cart.py >> selenium.log
+                # Exécutez les scripts Selenium
+                python3 login.py >> selenium.log
+                python3 add_remove_from_cart.py >> selenium.log
 
-              # Affichez les logs
-              cat selenium.log
+                # Affichez les logs
+                cat selenium.log
