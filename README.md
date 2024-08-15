@@ -561,7 +561,7 @@ Click on the button with class Add cart successful
 The button has transformed into Remove
 ```
 
-## Jmeter HTML Report: Donwload from azure artifact
+## Jmeter HTML Report: Download from azure artifact
 <img width="733" alt="Capture d’écran 2024-08-15 à 21 24 07" src="https://github.com/user-attachments/assets/f06434d5-cc59-45ec-b74c-7a2af5387fa4">
 <img width="733" alt="Capture d’écran 2024-08-15 à 21 24 38" src="https://github.com/user-attachments/assets/46b05182-0a90-4207-9f70-85d58b09a49f">
 <img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/c13ed03e-edd3-4029-88e3-cf548b11f4ca">
