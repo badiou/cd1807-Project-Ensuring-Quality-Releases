@@ -565,12 +565,9 @@ The button has transformed into Remove
 <img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/c13ed03e-edd3-4029-88e3-cf548b11f4ca">
 
 ## Creation of http404 alert
-<img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/7564e02c-9bc3-434f-a496-eb18018eca84">
-
-## Receive an email alert upon receiving an HTTP 404 error.
 <img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/dfd04a3d-a77d-4009-961a-5551f2f2d99d">
-
-
+## Receive an email alert upon receiving an HTTP 404 error.
+<img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/7564e02c-9bc3-434f-a496-eb18018eca84">
 **Free Software, Hell Yeah!**
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
