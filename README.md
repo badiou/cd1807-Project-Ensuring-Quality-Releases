@@ -1,9 +1,7 @@
 # Azure DevOps Nanodegree Project
 ## _Udacity Nanodegree Cloud DevOps with Microsoft Azure_
 [![Build Status](https://dev.azure.com/obbadiou/cd1807-Project-Ensuring-Quality-Releases/_apis/build/status%2Fbadiou.cd1807-Project-Ensuring-Quality-Releases?branchName=main)](https://dev.azure.com/obbadiou/cd1807-Project-Ensuring-Quality-Releases/_build/latest?definitionId=61&branchName=main)
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 ## Project Overview
 The project involves creating, deploying, and testing infrastructure and applications on Azure using Terraform and Azure DevOps pipelines. Key tasks include:
 
