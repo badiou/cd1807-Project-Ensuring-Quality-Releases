@@ -1,0 +1,31 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1723727260845,419,Get All Activities,200,OK,Starter 1-5,text,true,,3109,209,9,9,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=5,419,0,310
+1723727260742,522,Get All Activities,200,OK,Starter 1-4,text,true,,3109,209,9,9,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=4,522,0,421
+1723727260572,692,Get All Activities,200,OK,Starter 1-2,text,true,,3109,209,9,9,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=2,692,0,596
+1723727260663,600,Get All Activities,200,OK,Starter 1-3,text,true,,3109,209,9,9,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=3,600,0,505
+1723727260566,707,Get All Activities,200,OK,Starter 1-1,text,true,,3109,209,9,9,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=1,707,0,596
+1723727260943,347,Get All Activities,200,OK,Starter 1-6,text,true,,3079,209,9,9,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=6,347,0,264
+1723727261272,74,Post activity,200,OK,Starter 1-1,text,true,,338,325,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,74,0,0
+1723727261269,78,Post activity,200,OK,Starter 1-5,text,true,,338,325,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,78,0,0
+1723727261273,76,Post activity,200,OK,Starter 1-3,text,true,,338,325,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,75,0,0
+1723727261280,69,Post activity,200,OK,Starter 1-2,text,true,,338,325,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,69,0,0
+1723727261280,72,Post activity,200,OK,Starter 1-4,text,true,,338,325,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,72,0,0
+1723727261037,326,Get All Activities,200,OK,Starter 1-7,text,true,,3109,209,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=7,326,0,254
+1723727261290,74,Post activity,200,OK,Starter 1-6,text,true,,338,325,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,74,0,0
+1723727261363,69,Post activity,200,OK,Starter 1-7,text,true,,338,325,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,69,0,0
+1723727261140,311,Get All Activities,200,OK,Starter 1-8,text,true,,3109,209,10,10,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=8,311,0,242
+1723727261348,134,Get one activity,200,OK,Starter 1-5,text,true,,352,207,10,10,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,134,0,66
+1723727261349,135,Get one activity,200,OK,Starter 1-2,text,true,,352,207,10,10,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,135,0,67
+1723727261349,135,Get one activity,200,OK,Starter 1-3,text,true,,352,207,10,10,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,135,0,67
+1723727261353,135,Get one activity,200,OK,Starter 1-4,text,true,,352,207,7,7,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,135,0,66
+1723727261348,142,Get one activity,200,OK,Starter 1-1,text,true,,352,207,6,6,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,142,0,70
+1723727261365,142,Get one activity,200,OK,Starter 1-6,text,true,,352,207,5,5,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,142,0,73
+1723727261452,69,Post activity,200,OK,Starter 1-8,text,true,,338,325,4,4,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,69,0,0
+1723727261240,295,Get All Activities,200,OK,Starter 1-9,text,true,,3109,209,4,4,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=9,295,0,225
+1723727261433,135,Get one activity,200,OK,Starter 1-7,text,true,,352,207,4,4,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,135,0,67
+1723727261535,69,Post activity,200,OK,Starter 1-9,text,true,,338,325,3,3,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,69,0,0
+1723727261338,294,Get All Activities,200,OK,Starter 1-10,text,true,,3109,210,3,3,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?page=10,294,0,225
+1723727261522,135,Get one activity,200,OK,Starter 1-8,text,true,,352,207,3,3,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,135,0,67
+1723727261633,70,Post activity,200,OK,Starter 1-10,text,true,,338,325,2,2,https://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities,70,0,0
+1723727261606,136,Get one activity,200,OK,Starter 1-9,text,true,,352,207,2,2,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,136,0,67
+1723727261704,137,Get one activity,200,OK,Starter 1-10,text,true,,352,207,1,1,http://myapplication-ourobadiou-appservice.azurewebsites.net/api/Activities?id=5,137,0,68
