@@ -1,5 +1,5 @@
 # Azure DevOps Nanodegree Project
-## _Udacity Nanodegree
+## _Udacity Nanodegree_
 
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
