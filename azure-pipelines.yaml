@@ -227,6 +227,6 @@ stages:
 
                 python3 add_remove_from_cart.py >> ~/app/selenium.log
                 python3 add_remove_from_cart.py >> sudo /var/log/selenium.log
-                
+
                 cat ~/app/selenium.log
-                echo "Completed Sleenium Tests. Check selenium.log for results."
+                echo "End Selenium Test."
