@@ -208,7 +208,7 @@ stages:
               addToPath: true
 
           - script: |
-              pip install -r /home/testuser/app/requirements.txt
+              pip3 install -r /home/testuser/app/requirements.txt
             displayName: 'Install Python dependencies'
 
           - script: |
