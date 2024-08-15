@@ -1,30 +1,29 @@
 # Azure DevOps Nanodegree Project
-## _Udacity Nanodegree_
+## _The Last Markdown Editor, Ever_
 
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
 This project is part of the Cloud DevOps Nanodegree using Azure offered by Udacity. The primary objective is to demonstrate the integration of various DevOps practices and tools learned throughout the course, with a focus on using:
-Azure DevOps, Terraform, application monitoring, and automated testing, postman (Data validation test, Regression test), Jmeter (Stress test and Endurance Test).
-![Capture d’écran 2024-08-15 à 19 49 36](https://github.com/user-attachments/assets/3d34eb25-6e8d-4456-a00c-5e86c815cc88)
+A, Terraform, application monitoring, and automated testing.
 
-- Azure DevOps
-- Application monitoring
-- Automated testing
+- zure DevOps
+- application monitoring
+- automated testing
 ## Prerequisites
-
-Before you begin, ensure you have the following installed and configured:
-
-- **[Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)**: Command-line tool for managing Azure resources.
-- **[Terraform](https://www.terraform.io/downloads)**: Infrastructure as code tool for provisioning and managing cloud resources.
-- **[JMeter](https://jmeter.apache.org/download_jmeter.cgi)**: Tool for performance testing and load testing.
-- **[Postman](https://www.postman.com/downloads/)**: API development and testing tool.
-- **[Python](https://www.python.org/downloads/)**: Programming language used for scripting and automation tasks.
-- **[Selenium](https://www.selenium.dev/downloads/)**: Tool for automating web browser interactions.
-
-Ensure these tools are properly installed and configured before proceeding with the setup and execution of the pipeline.
-
+Before you begin, ensure you have the following prerequisites:
+- Azure Subscription: An active Azure account is required to create and manage resources.
+- Azure DevOps Account: Access to Azure DevOps for setting up the CI/CD pipeline.
+- Terraform Installed: Terraform should be installed locally if you plan to test infrastructure changes outside the pipeline. You can download it from Terraform's official website Terraform : https://www.terraform.io/downloads.html
+- Node.js and npm Installed: Required for installing and running Newman for API testing. Install them from the official Node.js website https://nodejs.org/
+- Postman Collection and Environment Files: Ensure you have the necessary Postman collections and environment files for API testing. These files should be stored in the automatedtesting/postman directory.
+- JMeter Installed: Apache JMeter should be installed if you wish to run performance tests locally. It can be downloaded from JMeter's official website. https://jmeter.apache.org/download_jmeter.cgi
+- Basic Knowledge of Azure and DevOps: Familiarity with Azure services, Terraform, CI/CD pipelines, and basic scripting is essential to understand and work with this project
+- Selenium WebDriver Installed: If you intend to run Selenium tests locally, make sure Selenium WebDriver is installed, along with ChromeDriver for your local environment.
+- Git Installed: You will need Git for version control and for cloning the repository. Download it from Git's official website. https://git-scm.com/downloads
+Markdown is a lightweight markup language based on the formatting conventions
+that people naturally use in email.
 
 ## Create storage
 
@@ -55,12 +54,29 @@ ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME
 export ARM_ACCESS_KEY=$ACCOUNT_KEY
 
 
-# Create blob container
-az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
-echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME"
-echo "STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME"
-echo "CONTAINER_NAME=$CONTAINER_NAME"
-echo "ACCOUNT_KEY=$ACCOUNT_KEY"
+# Script Output
+The script will produce the following output, which you will use to configure Terraform:
+RESOURCE_GROUP_NAME: The name of the Azure resource group created.
+STORAGE_ACCOUNT_NAME: The name of the Azure storage account created.
+CONTAINER_NAME: The name of the blob container created within the storage account.
+ACCOUNT_KEY: The access key for the storage account.
+These parameters will be used to configure the Terraform backend for state management, ensuring that your Terraform configurations use the correct Azure storage account (main.tf file) for storing the state file 
+```sh
+terraform {
+  backend "azurerm" {
+    storage_account_name = "tfstate224873291"
+    container_name       = "tfstate"
+    key                  = "test.terraform.tfstate"
+    access_key           = "4YtNNk70105FbwJhCRUsm+AKbPDdvoROQ/eRpBI4qt4DPudMiiiiwmVVBgAyL4Us54ljevoWDee1+ASt2YzCRw=="
+  }
+}
+```
+```sh
+...
+    storage_account_name: 'tfstate224873291'
+    container_name: 'tfstate'
+    key: 'test.terraform.tfstate'
+  ....
 ```
 Verifying the Created Azure Storage
 After running the configure-tfstate-storage-account.sh script, you can verify that the Azure Storage resources have been created successfully by checking the Azure Portal
