@@ -11,6 +11,8 @@ The project involves creating, deploying, and testing infrastructure and applica
 - Continuous Integration/Continuous Deployment (CI/CD): Implementing a CI/CD pipeline to deploy the application to Azure.
 - Automated Testing: Running performance tests with JMeter and UI tests with Selenium.
 - Application Monitoring: Setting up monitoring and alerts to ensure the application is performing as expected.
+![Capture d’écran 2024-08-15 à 19 49 36](https://github.com/user-attachments/assets/d9388e67-868c-4c63-a4d5-f480806e3279)
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed and configured:
