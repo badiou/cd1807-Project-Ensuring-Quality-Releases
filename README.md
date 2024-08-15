@@ -74,10 +74,8 @@ terraform {
 }
 ```
 
-Verifying the Created Azure Storage
-After running the configure-tfstate-storage-account.sh script, you can verify that the Azure Storage resources have been created successfully by checking the Azure Portal
-
-Open a terminal and change to the directory containing the configure-tfstate-storage-account.sh file. Use the following command to navigate to the appropriate directory:
+## Secure File Configuration in Azure Pipeline
+For managing sensitive Terraform variables, we use `terraform.tfvars`, which contains crucial configuration details for our Terraform setup. To ensure that these variables are handled securely, we have added `terraform.tfvars` as a secure file in Azure Pipelines.
 
 - [AngularJS] - HTML enhanced for web apps!
 - [Ace Editor] - awesome web-based text editor
