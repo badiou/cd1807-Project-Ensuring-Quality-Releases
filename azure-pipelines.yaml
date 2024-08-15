@@ -58,7 +58,7 @@ stages:
       displayName: 'Install Newman'
       inputs:
         script: 'sudo npm install -g newman'
-        workingDirectory: $(System.DefaultWorkingDirectory)
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
 
     - task: CmdLine@2
       displayName: 'Run Data Validation Tests'
@@ -190,9 +190,9 @@ stages:
               publishLocation: 'Container'
 
   - deployment: VMDeploy
-    displayName: 'Selenium Tests'
-    dependsOn: FakeRestAPI
-    environment: 'test'
+    displayName: Selenium Tests
+    environment:
+      name: 'test'
     strategy:
       runOnce:
         deploy:
@@ -217,40 +217,35 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                # Installez Google Chrome et ChromeDriver
-                CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 1)
-                DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-                wget -q "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
-                unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/local/bin/
-                # Vérifiez l'installation
-                ls -la /usr/local/bin/chromedriver
-
-          - task: Bash@3
-            displayName: 'Run Selenium Tests'
-            inputs:
-              targetType: 'inline'
-              script: |
-                # Accédez au répertoire où les fichiers ont été extraits
-                cd /home/vsts/work/1/drop-uitests
-
-                # Vérifiez que les fichiers Python sont présents
-                ls -la
-
-                # Exécutez les scripts Selenium
+                # Mettez à jour le système et installez les dépendances nécessaires
                 sudo apt-get update -y
                 sudo apt-get upgrade -y
-                sudo apt install unzip -y
-                sudo apt-get install python3-pip -y
-                pip install selenium
+                sudo apt-get install -y python3-pip unzip chromium-browser
 
-                wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-                sudo apt install ./google-chrome-stable_current_amd64.deb -y
+                # Installez Selenium
+                pip3 install selenium
 
-                wget -qP /tmp/ "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/117.0.5938.88/linux64/chromedriver-linux64.zip"
-                sudo unzip -oj /tmp/chromedriver-linux64.zip -d /usr/bin
-                python3 login.py >> selenium.log
+                # Créez un répertoire pour les fichiers
+                DIR=/home/vsts/work/1/drop-uitests
+                if [ ! -d "$DIR" ]; then
+                    mkdir -p $DIR
+                fi
+
+                # Déplacez et décompressez l'archive ZIP
+                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
+                cd $DIR
+                unzip -o $(Build.BuildId)-uitests.zip
+
+                # Téléchargez et installez ChromeDriver si nécessaire
+                CHROMEDRIVER_PATH=$DIR/chromedriver
+                if [ ! -f "$CHROMEDRIVER_PATH" ]; then
+                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                    unzip -o chromedriver_linux64.zip
+                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                fi
+
+                # Exécutez les tests Selenium
+                echo "Starting Selenium Tests"
                 python3 add_remove_from_cart.py >> selenium.log
-
-                # Affichez les logs
-                cat selenium.log
+                echo "Completed Selenium Tests. Check selenium.log for results."
