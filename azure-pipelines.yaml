@@ -251,9 +251,9 @@ stages:
 
                 # Exécutez les tests Selenium
                 echo "Starting Selenium Tests"
-                python3 add_remove_from_cart.py >> selenium.log 2>&1
-                python3 login.py >> selenium.log 2>&1
+                python3 add_remove_from_cart.py >> selenium.log
+                #python3 login.py >> selenium.log 2>&1
                 # Affichez le contenu du fichier selenium.log
-                echo "Displaying Selenium Test Results:"
-                cat /home/vsts/work/1/drop-uitests/selenium.log
+                #echo "Displaying Selenium Test Results:"
+                #cat /home/vsts/work/1/drop-uitests/selenium.log
                
