@@ -8,9 +8,9 @@
 This project is part of the Cloud DevOps Nanodegree using Azure offered by Udacity. The primary objective is to demonstrate the integration of various DevOps practices and tools learned throughout the course, with a focus on using:
 A, Terraform, application monitoring, and automated testing.
 
-- zure DevOps
-- application monitoring
-- automated testing
+- Azure DevOps
+- Application monitoring
+- Automated testing
 ## Prerequisites
 Before you begin, ensure you have the following prerequisites:
 - Azure Subscription: An active Azure account is required to create and manage resources.
