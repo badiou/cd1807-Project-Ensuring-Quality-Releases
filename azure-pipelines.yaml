@@ -189,20 +189,17 @@ stages:
               artifactName: 'jmeter-test-results'
               publishLocation: 'Container'
 
-  #--------------------------------------------#  
-  # Selenium | Functional UI Tests
-  # ToDo: 
   - deployment: VMDeploy
     displayName: Selenium Tests
+    dependsOn: FakeRestAPI
     environment:
-      resourceType: VirtualMachine
+      name: 'test'
     strategy:
       runOnce:
         deploy:
           steps:
           - download: current
-            artifact: drop-ui-tests     # ToDo: Change/provide a name
-            
+            artifact: drop-uitests
           - task: Bash@3
             inputs:
               targetType: 'inline'
@@ -231,6 +228,11 @@ stages:
                 fi
                 export PATH=$PATH:/home/testuser/app
                 echo "Starting Selenium Tests"
-                python3 login.py >> selenium.log
                 python3 add_remove_from_cart.py >> selenium.log
                 echo "Completed Selenium Tests. Check selenium.log for results."
+                
+          - task: PublishPipelineArtifact@1
+            displayName: Publish selenium logs
+            inputs:
+              targetPath: '$(Pipeline.Workspace)/selenium.log'
+              artifactName: 'selenium-logs'
