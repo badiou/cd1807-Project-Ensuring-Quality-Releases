@@ -4,13 +4,13 @@
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+## Project Overview
+The project involves creating, deploying, and testing infrastructure and applications on Azure using Terraform and Azure DevOps pipelines. Key tasks include:
 
-This project is part of the Cloud DevOps Nanodegree using Azure offered by Udacity. The primary objective is to demonstrate the integration of various DevOps practices and tools learned throughout the course, with a focus on using:
-A, Terraform, application monitoring, and automated testing.
-
-- zure DevOps
-- application monitoring
-- automated testing
+Infrastructure Management: Using Terraform to manage the Azure infrastructure.
+Continuous Integration/Continuous Deployment (CI/CD): Implementing a CI/CD pipeline to deploy the application to Azure.
+Automated Testing: Running performance tests with JMeter and UI tests with Selenium.
+Application Monitoring: Setting up monitoring and alerts to ensure the application is performing as expected.
 ## Prerequisites
 
 Before you begin, ensure you have the following installed and configured:
@@ -24,7 +24,6 @@ Before you begin, ensure you have the following installed and configured:
 
 Ensure these tools are properly installed and configured before proceeding with the setup and execution of the pipeline.
 ## Create storage
-
 Running the Azure Configuration Script
 To set up your Azure environment, follow the steps below to execute the configure-tfstate-storage-account.sh script:
 ```sh
@@ -72,13 +71,7 @@ terraform {
   }
 }
 ```
-```sh
-...
-    storage_account_name: 'tfstate224873291'
-    container_name: 'tfstate'
-    key: 'test.terraform.tfstate'
-  ....
-```
+
 Verifying the Created Azure Storage
 After running the configure-tfstate-storage-account.sh script, you can verify that the Azure Storage resources have been created successfully by checking the Azure Portal
 
