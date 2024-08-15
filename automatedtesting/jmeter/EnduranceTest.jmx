@@ -88,7 +88,7 @@
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">content-type</stringProp>
@@ -97,10 +97,10 @@
           </collectionProp>
         </HeaderManager>
         <hashTree/>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="filename">/Users/ourobadiou/Desktop/cd1807-Project-Ensuring-Quality-Releases/automatedtesting/jmeter/exempleCsv.csv</stringProp>
+          <stringProp name="filename">exempleCsv.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
@@ -109,7 +109,7 @@
           <stringProp name="variableNames">csvPageNumber</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
           <collectionProp name="Arguments.arguments">
             <elementProp name="id" elementType="Argument">
               <stringProp name="Argument.name">id</stringProp>
@@ -197,7 +197,7 @@
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">/Users/ourobadiou/Desktop/cd1807-Project-Ensuring-Quality-Releases/automatedtesting/jmeter/results.csv</stringProp>
+          <stringProp name="filename">results_EnduranceTest.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
