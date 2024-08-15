@@ -256,5 +256,4 @@ stages:
                 # Affichez le contenu du fichier selenium.log
                 echo "Displaying Selenium Test Results:"
                 cat /home/vsts/work/1/drop-uitests/selenium.log
-                
                
