@@ -568,7 +568,7 @@ The button has transformed into Remove
 <img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/7564e02c-9bc3-434f-a496-eb18018eca84">
 
 ## Receive an email alert upon receiving an HTTP 404 error.
-<img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src=https://github.com/user-attachments/assets/dfd04a3d-a77d-4009-961a-5551f2f2d99d">
+<img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/dfd04a3d-a77d-4009-961a-5551f2f2d99d">
 
 
 **Free Software, Hell Yeah!**
