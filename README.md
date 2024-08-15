@@ -77,7 +77,7 @@ terraform {
 ## Terraform configuration
 For managing sensitive Terraform variables, we use `terraform.tfvars`, which contains crucial configuration details for our Terraform setup. To ensure that these variables are handled securely, we have added `terraform.tfvars` as a secure file in Azure Pipelines.
 ![Capture d’écran 2024-08-15 à 20 34 11](https://github.com/user-attachments/assets/59e4d6e4-5918-4689-b290-4d1b3491daa9)
-### Manual Terraform Commands:
+### Manual Terraform Commands: Create ressources
 Before using the Azure Pipeline, manually initialize and apply Terraform configurations as follows:
 ```sh
 terraform init
@@ -85,10 +85,9 @@ terraform plan
 terraform apply
 ```
 
-Destroy Resources:To clean up resources, use:
+### Destroy Resources: To clean up resources, use:
 ```sh
 terraform destroy
-
 ```
 
 ```sh
