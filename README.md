@@ -74,29 +74,22 @@ terraform {
 }
 ```
 
-## Secure File Configuration in Azure Pipeline
+## Terraform configuration
 For managing sensitive Terraform variables, we use `terraform.tfvars`, which contains crucial configuration details for our Terraform setup. To ensure that these variables are handled securely, we have added `terraform.tfvars` as a secure file in Azure Pipelines.
 ![Capture d’écran 2024-08-15 à 20 34 11](https://github.com/user-attachments/assets/59e4d6e4-5918-4689-b290-4d1b3491daa9)
+### Manual Terraform Commands:
+Before using the Azure Pipeline, manually initialize and apply Terraform configurations as follows:
+```sh
+terraform init
+terraform plan
+terraform apply
+```
 
-- [AngularJS] - HTML enhanced for web apps!
-- [Ace Editor] - awesome web-based text editor
-- [markdown-it] - Markdown parser done right. Fast and easy to extend.
-- [Twitter Bootstrap] - great UI boilerplate for modern web apps
-- [node.js] - evented I/O for the backend
-- [Express] - fast node.js network app framework [@tjholowaychuk]
-- [Gulp] - the streaming build system
-- [Breakdance](https://breakdance.github.io/breakdance/) - HTML
-to Markdown converter
-- [jQuery] - duh
+Destroy Resources:To clean up resources, use:
+```sh
+terraform destroy
 
-And of course Dillinger itself is open source with a [public repository][dill]
- on GitHub.
-
-## Installation
-
-Dillinger requires [Node.js](https://nodejs.org/) v10+ to run.
-
-Install the dependencies and devDependencies and start the server.
+```
 
 ```sh
 cd dillinger
