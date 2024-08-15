@@ -200,37 +200,33 @@ stages:
           steps:
           - download: current
             artifact: drop-uitests
-
-          - task: UsePythonVersion@0
-            displayName: 'Use Python $(python_version)'
-            inputs:
-              versionSpec: '$(python_version)'
-              addToPath: true
-
           - script: |
-              pip3 install -r /home/testuser/app/requirements.txt
-            displayName: 'Install Python dependencies'
+              sudo apt-get update -y
+                sudo apt-get upgrade -y
+                sudo apt install unzip -y
+                sudo apt-get install python3-pip -y
+                pip install selenium
 
-          - script: |
-              python /home/testuser/app/login.py >> /home/testuser/app/selenium.log
-              python /home/testuser/app/add_remove_from_cart.py >> /home/testuser/app/selenium.log
-            displayName: 'Run Selenium Tests'
+                wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+                sudo apt install ./google-chrome-stable_current_amd64.deb -y
 
-          - task: Bash@3
-            displayName: 'Check selenium.log existence'
-            inputs:
-              targetType: 'inline'
-              script: |
-                if [ -f "/home/testuser/app/selenium.log" ]; then
-                  echo "selenium.log exists."
-                else
-                  echo "selenium.log does not exist."
-                  exit 1
+                wget -qP /tmp/ "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/117.0.5938.88/linux64/chromedriver-linux64.zip"
+                sudo unzip -oj /tmp/chromedriver-linux64.zip -d /usr/bin
+                cd ~/
+                rm -rf cd1807-Project-Ensuring-Quality-Releases
+                DIR=/home/azureUser/app
+                if [ ! -d "$DIR" ]; then
+                    mkdir app
                 fi
+                git clone https://github.com/fodare/cd1807-Project-Ensuring-Quality-Releases.git
+                cd cd1807-Project-Ensuring-Quality-Releases/automatedtesting/selenium/
+                
+                echo "Starting Selenium Tests"
+                python3 login.py >> ~/app/selenium.log
+                python3 login.py >> sudo /var/log/selenium.log
 
-          - task: PublishPipelineArtifact@1
-            displayName: Publish selenium logs
-            inputs:
-              targetPath: '/home/testuser/app/selenium.log'
-              artifactName: 'selenium-logs'
-
+                python3 add_remove_from_cart.py >> ~/app/selenium.log
+                python3 add_remove_from_cart.py >> sudo /var/log/selenium.log
+                
+                cat ~/app/selenium.log
+                echo "Completed Sleenium Tests. Check selenium.log for results."
