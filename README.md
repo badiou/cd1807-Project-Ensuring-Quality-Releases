@@ -7,6 +7,7 @@
 
 This project is part of the Cloud DevOps Nanodegree using Azure offered by Udacity. The primary objective is to demonstrate the integration of various DevOps practices and tools learned throughout the course, with a focus on using:
 A, Terraform, application monitoring, and automated testing.
+![Capture d’écran 2024-08-15 à 19 49 36](https://github.com/user-attachments/assets/3d34eb25-6e8d-4456-a00c-5e86c815cc88)
 
 - Azure DevOps
 - Application monitoring
