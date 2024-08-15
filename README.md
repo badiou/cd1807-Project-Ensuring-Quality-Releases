@@ -113,9 +113,12 @@ The Azure Pipeline automates the deployment and testing process. Here is an over
 <img width="1427" alt="17- Jmeter EnduranceTest" src="https://github.com/user-attachments/assets/ed3e329d-6954-4493-a8b5-1d52f83e3b5f">
 - Runs UI tests using Selenium, and publishes the test results.
 <img width="1427" alt="20- Run selenium test" src="https://github.com/user-attachments/assets/11dd0e32-cf35-457b-ab67-7f92144740ac">
-- Fakerestapi 
-<img width="1427" alt="20- Run selenium test" src="https://github.com/user-attachments/assets/72299763-a8c7-485d-a5e8-24abffe3a90f">
 
+- Fakerestapi 
+<img width="1427" alt="20- Fakerestapi" src="https://github.com/user-attachments/assets/72299763-a8c7-485d-a5e8-24abffe3a90f">
+
+- All resource created on azure
+<img width="1427" alt="20- Fakerestapi" src="https://github.com/user-attachments/assets/b344b79a-0f7f-4381-a1ae-93fc05fd0f36">
 
 ## Azure artifact: Viewing Pipeline Logs
 
