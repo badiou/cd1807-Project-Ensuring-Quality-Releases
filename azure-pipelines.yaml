@@ -253,13 +253,8 @@ stages:
                 echo "Starting Selenium Tests"
                 python3 add_remove_from_cart.py >> selenium.log
                 python3 login.py >> selenium.log
+                # Affichez le contenu du fichier selenium.log
+                echo "Displaying Selenium Test Results:"
+                cat /home/vsts/work/1/drop-uitests/selenium.log
                 
-                echo "Completed Selenium Tests. Check selenium.log for results."
-          - task: Bash@3
-                    displayName: 'Display Selenium Test Results'
-                    inputs:
-                      targetType: 'inline'
-                      script: |
-                        # Affichez le contenu du fichier selenium.log
-                        echo "Displaying Selenium Test Results:"
-                        cat /home/vsts/work/1/drop-uitests/selenium.log
+               
