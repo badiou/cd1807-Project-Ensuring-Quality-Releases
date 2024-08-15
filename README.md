@@ -7,10 +7,10 @@
 ## Project Overview
 The project involves creating, deploying, and testing infrastructure and applications on Azure using Terraform and Azure DevOps pipelines. Key tasks include:
 
-Infrastructure Management: Using Terraform to manage the Azure infrastructure.
-Continuous Integration/Continuous Deployment (CI/CD): Implementing a CI/CD pipeline to deploy the application to Azure.
-Automated Testing: Running performance tests with JMeter and UI tests with Selenium.
-Application Monitoring: Setting up monitoring and alerts to ensure the application is performing as expected.
+- Infrastructure Management: Using Terraform to manage the Azure infrastructure.
+- Continuous Integration/Continuous Deployment (CI/CD): Implementing a CI/CD pipeline to deploy the application to Azure.
+- Automated Testing: Running performance tests with JMeter and UI tests with Selenium.
+- Application Monitoring: Setting up monitoring and alerts to ensure the application is performing as expected.
 ## Prerequisites
 
 Before you begin, ensure you have the following installed and configured:
