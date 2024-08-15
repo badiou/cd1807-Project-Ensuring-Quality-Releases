@@ -13,18 +13,18 @@ A, Terraform, application monitoring, and automated testing.
 - Application monitoring
 - Automated testing
 ## Prerequisites
-Before you begin, ensure you have the following prerequisites:
-- Azure Subscription: An active Azure account is required to create and manage resources.
-- Azure DevOps Account: Access to Azure DevOps for setting up the CI/CD pipeline.
-- Terraform Installed: Terraform should be installed locally if you plan to test infrastructure changes outside the pipeline. You can download it from Terraform's official website Terraform : https://www.terraform.io/downloads.html
-- Node.js and npm Installed: Required for installing and running Newman for API testing. Install them from the official Node.js website https://nodejs.org/
-- Postman Collection and Environment Files: Ensure you have the necessary Postman collections and environment files for API testing. These files should be stored in the automatedtesting/postman directory.
-- JMeter Installed: Apache JMeter should be installed if you wish to run performance tests locally. It can be downloaded from JMeter's official website. https://jmeter.apache.org/download_jmeter.cgi
-- Basic Knowledge of Azure and DevOps: Familiarity with Azure services, Terraform, CI/CD pipelines, and basic scripting is essential to understand and work with this project
-- Selenium WebDriver Installed: If you intend to run Selenium tests locally, make sure Selenium WebDriver is installed, along with ChromeDriver for your local environment.
-- Git Installed: You will need Git for version control and for cloning the repository. Download it from Git's official website. https://git-scm.com/downloads
-Markdown is a lightweight markup language based on the formatting conventions
-that people naturally use in email.
+
+Before you begin, ensure you have the following installed and configured:
+
+- **[Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)**: Command-line tool for managing Azure resources.
+- **[Terraform](https://www.terraform.io/downloads)**: Infrastructure as code tool for provisioning and managing cloud resources.
+- **[JMeter](https://jmeter.apache.org/download_jmeter.cgi)**: Tool for performance testing and load testing.
+- **[Postman](https://www.postman.com/downloads/)**: API development and testing tool.
+- **[Python](https://www.python.org/downloads/)**: Programming language used for scripting and automation tasks.
+- **[Selenium](https://www.selenium.dev/downloads/)**: Tool for automating web browser interactions.
+
+Ensure these tools are properly installed and configured before proceeding with the setup and execution of the pipeline.
+
 
 ## Create storage
 
