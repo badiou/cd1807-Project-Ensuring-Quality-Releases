@@ -191,6 +191,7 @@ stages:
 
   - deployment: VMDeploy
     displayName: Selenium Tests
+    dependsOn: FakeRestAPI
     environment:
       name: 'test'
     strategy:
