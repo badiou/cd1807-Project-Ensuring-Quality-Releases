@@ -97,11 +97,24 @@ The Azure Pipeline automates the deployment and testing process. Here is an over
 
 - Build Stage
 - Terraform Initialization: Installs Terraform, initializes it, and configures the backend.
+<img width="1427" alt="6-Terraform install in pipeline" src="https://github.com/user-attachments/assets/29f23229-bd15-4b60-8a2a-b6222f331b0d">
+<img width="1427" alt="9-terraform apply" src="https://github.com/user-attachments/assets/ea0d1ebd-6e62-4a3e-9a40-7fb44ace9c96">
 - Executes Newman tests for data validation and regression, archives test results, and publishes artifacts.
+<img width="1427" alt="10-Install newman" src="https://github.com/user-attachments/assets/7184be9a-d46f-4bac-8da0-39251a2b6fd7">
+<img width="1427" alt="11-Run Data validation Test suite" src="https://github.com/user-attachments/assets/7a0631a8-32ec-4ba4-8b6b-f63c2b5ba37f">
+<img width="1427" alt="12-Run Regression Test suite" src="https://github.com/user-attachments/assets/01d5095c-b2fd-4019-a3a1-c54fa2e8540f">
 - Deploys the application to Azure Web App.
-- Run JMeter Performance Tests:
-- Executes performance and stress tests using JMeter, and publishes the results.
+<img width="1427" alt="13- Deploy Azure Web app" src="https://github.com/user-attachments/assets/ccffc875-321f-40e4-8b2e-964a59be244c">
+
+- Run JMeter Performance Tests: Executes performance and stress tests using JMeter, and publishes the results.
+
+<img width="1427" alt="15-Jmeter Installation" src="https://github.com/user-attachments/assets/3f43054d-c48f-478e-9aa9-e553b791118f">
+<img width="1427" alt="16- Jmeter StressTest" src="https://github.com/user-attachments/assets/a41a0354-d017-44c9-9e56-f04f406153a4">
+<img width="1427" alt="17- Jmeter EnduranceTest" src="https://github.com/user-attachments/assets/ed3e329d-6954-4493-a8b5-1d52f83e3b5f">
 - Runs UI tests using Selenium, and publishes the test results.
+<img width="1427" alt="20- Run selenium test" src="https://github.com/user-attachments/assets/11dd0e32-cf35-457b-ab67-7f92144740ac">
+
+
 **Free Software, Hell Yeah!**
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
