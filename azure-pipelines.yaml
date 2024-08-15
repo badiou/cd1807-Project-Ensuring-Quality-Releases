@@ -189,46 +189,50 @@ stages:
               artifactName: 'jmeter-test-results'
               publishLocation: 'Container'
 
+  #--------------------------------------------#  
+  # Selenium | Functional UI Tests
+  # ToDo: 
   - deployment: VMDeploy
     displayName: Selenium Tests
-    dependsOn: FakeRestAPI
     environment:
-      name: 'test'
+      name:  'test'       # ToDo: Change/provide a name
+      resourceType: VirtualMachine
+      tags: selenium
     strategy:
       runOnce:
         deploy:
           steps:
           - download: current
-            artifact: drop-uitests
+            artifact: drop-ui-tests     # ToDo: Change/provide a name
+            
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: |
-                sudo apt-get update
+              script: |           
+                #! /bin/bash
+                
+                sudo apt-get upgrade -y
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
-                sudo apt-get install wget -y
                 pip3 install selenium
-                
-                CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_72.0.3626)
-                wget "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
-                unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/local/bin/
-                sudo chmod +x /usr/local/bin/chromedriver
                 cd ~/
                 DIR=/home/testuser/app
                 if [ ! -d "$DIR" ]; then
-                    mkdir -p app
+                    mkdir app
                 fi
-                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip app
+                mv /home/testuser/azagent/_work/1/drop-uitests/$(Build.BuildId)-uitests.zip app
                 cd app
                 unzip -o $(Build.BuildId)-uitests.zip
-                python3 add_remove_from_cart.py > selenium.log
+                FILE=/home/testuser/app/chromedriver_linux64.zip
+                if [ ! -f "$FILE" ]; then
+                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                    unzip -o chromedriver_linux64.zip
+                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                fi
+                export PATH=$PATH:/home/testuser/app
+                echo "Starting Selenium Tests"
                 python3 login.py >> selenium.log
-
-          - task: PublishPipelineArtifact@1
-            displayName: Publish selenium logs
-            inputs:
-              targetPath: '$(Pipeline.Workspace)/selenium.log'
-              artifactName: 'selenium-logs'
+                python3 add_remove_from_cart.py >> selenium.log
+                echo "Completed Selenium Tests. Check selenium.log for results."
