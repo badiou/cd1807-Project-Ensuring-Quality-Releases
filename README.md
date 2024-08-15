@@ -84,11 +84,13 @@ terraform init
 terraform plan
 terraform apply
 ```
+![2-terraform apply (Create all resources)](https://github.com/user-attachments/assets/f2c16806-285d-425f-ae0c-7518c6d0a3d2)
 
 ### Destroy Resources: To clean up resources, use:
 ```sh
 terraform destroy
 ```
+![4-terraform destroy resource confirmation](https://github.com/user-attachments/assets/fc850bb2-71f8-4683-812d-559e1026e868)
 
 ```sh
 cd dillinger
