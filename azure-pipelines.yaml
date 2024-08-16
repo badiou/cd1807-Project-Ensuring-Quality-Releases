@@ -256,7 +256,6 @@ stages:
                 # Affichez le contenu du fichier selenium.log
                 #echo "Finish Selenium Test"
                 #cat /home/vsts/work/1/drop-uitests/selenium.log
-
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Selenium Test Results'
             inputs:
