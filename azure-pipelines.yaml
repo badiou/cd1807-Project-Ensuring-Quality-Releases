@@ -264,44 +264,44 @@ stages:
               publishLocation: 'Container'
 
 
-          - task: Bash@3
-            displayName: 'Send SeleniumLogs to Azure Monitor'
-            inputs:
-              targetType: 'inline'
-              script: |
-                #!/bin/bash
+          # - task: Bash@3
+          #   displayName: 'Send SeleniumLogs to Azure Monitor'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       #!/bin/bash
 
-                # Variables principales
-                workspaceId="f03ae6be-c562-4a3f-9e40-add610b2a47a"
-                primaryKey="ZnZiOgtVMglaCHvTuAxiuB7/jv659srOo+B5Gw3SSQVjfbjSVYK/tJkk9iIugnEQhhKJf3JJ3zpHXidPQuly9A=="
-                logType="SeleniumLogs"
-                timeGenerated=$(date -u +"%a, %d %b %Y %H:%M:%S GMT")
+          #       # Variables principales
+          #       workspaceId="f03ae6be-c562-4a3f-9e40-add610b2a47a"
+          #       primaryKey="ZnZiOgtVMglaCHvTuAxiuB7/jv659srOo+B5Gw3SSQVjfbjSVYK/tJkk9iIugnEQhhKJf3JJ3zpHXidPQuly9A=="
+          #       logType="SeleniumLogs"
+          #       timeGenerated=$(date -u +"%a, %d %b %Y %H:%M:%S GMT")
 
-                # Formater les logs en JSON valide
-                logData=$(cat <<EOF
-                {
-                  "time": "$timeGenerated",
-                  "log": "$(cat /home/vsts/work/1/drop-uitests/selenium.log | sed 's/"/\\"/g')"
-                }
-                EOF
-                )
+          #       # Formater les logs en JSON valide
+          #       logData=$(cat <<EOF
+          #       {
+          #         "time": "$timeGenerated",
+          #         "log": "$(cat /home/vsts/work/1/drop-uitests/selenium.log | sed 's/"/\\"/g')"
+          #       }
+          #       EOF
+          #       )
 
-                # Calculer la signature d'autorisation
-                contentLength=$(echo -n "$logData" | wc -c)
-                stringToSign="POST\n$contentLength\napplication/json\nx-ms-date:$timeGenerated\n/api/logs"
-                echo "String to Sign: $stringToSign" # Debug: Afficher la chaîne à signer
+          #       # Calculer la signature d'autorisation
+          #       contentLength=$(echo -n "$logData" | wc -c)
+          #       stringToSign="POST\n$contentLength\napplication/json\nx-ms-date:$timeGenerated\n/api/logs"
+          #       echo "String to Sign: $stringToSign" # Debug: Afficher la chaîne à signer
 
-                # Générer la signature
-                authSignature=$(echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$primaryKey" -binary | openssl enc -base64)
-                echo "Auth Signature: $authSignature" # Debug: Afficher la signature
+          #       # Générer la signature
+          #       authSignature=$(echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$primaryKey" -binary | openssl enc -base64)
+          #       echo "Auth Signature: $authSignature" # Debug: Afficher la signature
 
-                # Envoyer les logs à Azure Monitor
-                response=$(curl -X POST \
-                  "https://$workspaceId.ods.opinsights.azure.com/api/logs?api-version=2016-04-01" \
-                  -H "Content-Type: application/json" \
-                  -H "Log-Type: $logType" \
-                  -H "x-ms-date: $timeGenerated" \
-                  -H "Authorization: SharedKey $workspaceId:$authSignature" \
-                  -d "$logData")
+          #       # Envoyer les logs à Azure Monitor
+          #       response=$(curl -X POST \
+          #         "https://$workspaceId.ods.opinsights.azure.com/api/logs?api-version=2016-04-01" \
+          #         -H "Content-Type: application/json" \
+          #         -H "Log-Type: $logType" \
+          #         -H "x-ms-date: $timeGenerated" \
+          #         -H "Authorization: SharedKey $workspaceId:$authSignature" \
+          #         -d "$logData")
 
-                echo "Response: $response" # Debug: Afficher la réponse du serveur
+          #       echo "Response: $response" # Debug: Afficher la réponse du serveur
