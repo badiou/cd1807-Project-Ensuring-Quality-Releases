@@ -268,31 +268,32 @@ stages:
               targetType: 'inline'
               script: |
                 #!/bin/bash
-                  workspaceId="f03ae6be-c562-4a3f-9e40-add610b2a47a"
-                  primaryKey="Gv3loqkUkURLAaSf+XZKJWaSLim2U7lKYJxThr0fDAc/CIuL8zypcRzCAf7nOQlVQvFddztqOH7yNz4RrMHtfQ=="
-                  logType="SeleniumLogs"
-                  timeGenerated=$(date -u +"%a, %d %b %Y %H:%M:%S GMT")
 
-                  # Formater les logs pour être en JSON valide
-                  logData=$(cat <<EOF
-                  {
-                    "time": "$timeGenerated",
-                    "log": "$(cat /home/vsts/work/1/drop-uitests/selenium.log | sed 's/"/\\"/g')"
-                  }
-                  EOF
-                  )
+                workspaceId="f03ae6be-c562-4a3f-9e40-add610b2a47a"
+                primaryKey="Gv3loqkUkURLAaSf+XZKJWaSLim2U7lKYJxThr0fDAc/CIuL8zypcRzCAf7nOQlVQvFddztqOH7yNz4RrMHtfQ=="
+                logType="SeleniumLogs"
+                timeGenerated=$(date -u +"%a, %d %b %Y %H:%M:%S GMT")
 
-                  # Calculer la signature d'autorisation
-                  contentLength=$(echo -n "$logData" | wc -c)
-                  stringToSign="POST\n$contentLength\napplication/json\nx-ms-date:$timeGenerated\n/api/logs"
-                  authSignature=$(echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$primaryKey" -binary | openssl enc -base64)
+                # Formater les logs pour être en JSON valide
+                logData=$(cat <<EOF
+                {
+                  "time": "$timeGenerated",
+                  "log": "$(cat /home/vsts/work/1/drop-uitests/selenium.log | sed 's/"/\\"/g')"
+                }
+                EOF
+                )
 
-                  # Envoyer les logs à Azure Monitor
-                  curl -X POST \
-                    "https://$workspaceId.ods.opinsights.azure.com/api/logs?api-version=2016-04-01" \
-                    -H "Content-Type: application/json" \
-                    -H "Log-Type: $logType" \
-                    -H "x-ms-date: $timeGenerated" \
-                    -H "Authorization: SharedKey $workspaceId:$authSignature" \
-                    -d "$logData"
+                # Calculer la signature d'autorisation
+                contentLength=$(echo -n "$logData" | wc -c)
+                stringToSign="POST\n$contentLength\napplication/json\nx-ms-date:$timeGenerated\n/api/logs"
+                authSignature=$(echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$primaryKey" -binary | openssl enc -base64)
+
+                # Envoyer les logs à Azure Monitor
+                curl -X POST \
+                  "https://$workspaceId.ods.opinsights.azure.com/api/logs?api-version=2016-04-01" \
+                  -H "Content-Type: application/json" \
+                  -H "Log-Type: $logType" \
+                  -H "x-ms-date: $timeGenerated" \
+                  -H "Authorization: SharedKey $workspaceId:$authSignature" \
+                  -d "$logData"
                
