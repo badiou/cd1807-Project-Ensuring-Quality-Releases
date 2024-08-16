@@ -263,7 +263,7 @@ stages:
               artifactName: 'selenium-test-results'
               publishLocation: 'Container'
 
-              
+
           - task: Bash@3
             displayName: 'Send SeleniumLogs to Azure Monitor'
             inputs:
@@ -273,7 +273,7 @@ stages:
 
                 # Variables principales
                 workspaceId="f03ae6be-c562-4a3f-9e40-add610b2a47a"
-                primaryKey="Gv3loqkUkURLAaSf+XZKJWaSLim2U7lKYJxThr0fDAc/CIuL8zypcRzCAf7nOQlVQvFddztqOH7yNz4RrMHtfQ=="
+                primaryKey="ZnZiOgtVMglaCHvTuAxiuB7/jv659srOo+B5Gw3SSQVjfbjSVYK/tJkk9iIugnEQhhKJf3JJ3zpHXidPQuly9A=="
                 logType="SeleniumLogs"
                 timeGenerated=$(date -u +"%a, %d %b %Y %H:%M:%S GMT")
 
