@@ -263,7 +263,7 @@ stages:
               artifactName: 'selenium-test-results'
               publishLocation: 'Container'
           - task: Bash@3
-            displayName: 'Send SeleliumLogs to Azure Monitor'
+            displayName: 'Send SeleniumLogs to Azure Monitor'
             inputs:
               targetType: 'inline'
               script: |
@@ -296,4 +296,5 @@ stages:
                   -H "x-ms-date: $timeGenerated" \
                   -H "Authorization: SharedKey $workspaceId:$authSignature" \
                   -d "$logData"
-               
+
+                        
