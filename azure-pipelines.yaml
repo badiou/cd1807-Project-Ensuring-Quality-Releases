@@ -291,6 +291,7 @@ stages:
                 stringToSign="POST\n$contentLength\napplication/json\nx-ms-date:$timeGenerated\n/api/logs"
                 echo "String to Sign: $stringToSign" # Debug: Afficher la chaîne à signer
 
+                # Générer la signature
                 authSignature=$(echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$primaryKey" -binary | openssl enc -base64)
                 echo "Auth Signature: $authSignature" # Debug: Afficher la signature
 
