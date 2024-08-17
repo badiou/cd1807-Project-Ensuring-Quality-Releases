@@ -270,7 +270,7 @@ stages:
               script: |
                 #!/bin/bash
                 # Variables principales
-                workspaceId="aee36f6d-42ce-412a-9d4a-d58910526bae"
+                workspaceId="5e440360-58aa-4484-95f9-b84911ee111f"
                 primaryKey="uLrjWHFM8kc09WXFnQbhOpIBwTFhRmj0hnSv424clAEgB3m3bXDHAXL3zJ7e5KhcH4HqF7S4jbPx3JHVJC3/nQ=="
                 logType="SeleniumLogs"
                 timeGenerated=$(date -u +"%a, %d %b %Y %H:%M:%S GMT")
@@ -278,15 +278,19 @@ stages:
                 # Formater les logs en JSON valide
                 logData=$(cat <<EOF
                 {
-                  "time": "$timeGenerated",
+                  "time": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
                   "log": "$(cat /home/vsts/work/1/drop-uitests/selenium.log | sed 's/"/\\"/g')"
                 }
                 EOF
                 )
 
-                # Calculer la signature d'autorisation
+                # Calculer la longueur du contenu
                 contentLength=$(echo -n "$logData" | wc -c)
+
+                # Construire la chaîne à signer
                 stringToSign="POST\n$contentLength\napplication/json\nx-ms-date:$timeGenerated\n/api/logs"
+
+                # Calculer la signature d'autorisation
                 authSignature=$(echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$primaryKey" -binary | openssl enc -base64)
 
                 # Envoyer les logs à Azure Monitor
@@ -297,6 +301,4 @@ stages:
                   -H "x-ms-date: $timeGenerated" \
                   -H "Authorization: SharedKey $workspaceId:$authSignature" \
                   -d "$logData"
-
-
 

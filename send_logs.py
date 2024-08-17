@@ -5,8 +5,8 @@ import base64
 from datetime import datetime
 
 # Configuration
-workspace_id = 'aee36f6d-42ce-412a-9d4a-d58910526bae'  # ID du workspace
-primary_key = 'uLrjWHFM8kc09WXFnQbhOpIBwTFhRmj0hnSv424clAEgB3m3bXDHAXL3zJ7e5KhcH4HqF7S4jbPx3JHVJC3/nQ=='  # Clé primaire
+workspace_id = '5e440360-58aa-4484-95f9-b84911ee111f'  # ID du workspace
+primary_key = 'eTVD47ULP7k3ELmrV9oGX8y6ULYleg3h2pPo27kNotrKJjuKOWY9BAaXkB5qfZYN2UPTcPxlQfYx9O/7NKA9iw=='  # Clé primaire
 log_type = 'SeleniumLogs'
 api_version = '2016-04-01'
 
