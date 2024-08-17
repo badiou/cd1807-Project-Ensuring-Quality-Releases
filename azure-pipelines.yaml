@@ -263,7 +263,6 @@ stages:
               artifactName: 'selenium-test-results'
               publishLocation: 'Container'
 
-
           # - task: Bash@3
           #   displayName: 'Send SeleniumLogs to Azure Monitor'
           #   inputs:
