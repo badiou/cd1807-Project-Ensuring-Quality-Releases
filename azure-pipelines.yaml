@@ -279,7 +279,7 @@ stages:
                 logData=$(cat <<EOF
                 {
                   "time": "$timeGenerated",
-                  "log": "$(cat /chemin/vers/votre/selenium.log | sed 's/"/\\"/g')"
+                  "log": "$(cat /home/vsts/work/1/drop-uitests/selenium.log | sed 's/"/\\"/g')"
                 }
                 EOF
                 )
