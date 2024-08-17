@@ -271,8 +271,8 @@ stages:
           #     script: |
           #       #!/bin/bash
           #       # Variables principales
-          #       workspaceId="5e440360-58aa-4484-95f9-b84911ee111f"
-          #       primaryKey="uLrjWHFM8kc09WXFnQbhOpIBwTFhRmj0hnSv424clAEgB3m3bXDHAXL3zJ7e5KhcH4HqF7S4jbPx3JHVJC3/nQ=="
+          #       workspaceId="b7def82e-8f8a-4f30-ae2d-19fbca38427e"
+          #       primaryKey="/c+muE6qnt2jB70X6R5OF9LlrXIIGzo9LWR0BpFKRky54BP0RjJL1EHXtbxoO4+EjIp0tsLgfV80PXL8OXDt3w=="
           #       logType="SeleniumLogs"
           #       timeGenerated=$(date -u +"%a, %d %b %Y %H:%M:%S GMT")
 

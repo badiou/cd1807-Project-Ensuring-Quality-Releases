@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Variables
-workspaceId="5e440360-58aa-4484-95f9-b84911ee111f"  # Nom du workspace
-primary_key = 'eTVD47ULP7k3ELmrV9oGX8y6ULYleg3h2pPo27kNotrKJjuKOWY9BAaXkB5qfZYN2UPTcPxlQfYx9O/7NKA9iw==' # Clé Primaire
+workspaceId="b7def82e-8f8a-4f30-ae2d-19fbca38427e"
+primaryKey="/c+muE6qnt2jB70X6R5OF9LlrXIIGzo9LWR0BpFKRky54BP0RjJL1EHXtbxoO4+EjIp0tsLgfV80PXL8OXDt3w==" 
 logType="SeleniumLogs"
 echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$primaryKey" -binary | openssl enc -base64
 
