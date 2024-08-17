@@ -291,7 +291,12 @@ stages:
                 stringToSign="POST\n$contentLength\napplication/json\nx-ms-date:$timeGenerated\n/api/logs"
 
                 # Calculer la signature d'autorisation
-                authSignature=$(echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$primaryKey" -binary | openssl enc -base64)
+                authSignature=$(echo -n "$stringToSign" | openssl dgst -sha256 -hmac "$(echo -n "$primaryKey" | base64 -d)" -binary | openssl enc -base64)
+
+                # Afficher les variables pour le débogage
+                echo "Content-Length: $contentLength"
+                echo "String to Sign: $stringToSign"
+                echo "Signature: $authSignature"
 
                 # Envoyer les logs à Azure Monitor
                 curl -X POST \
@@ -301,4 +306,5 @@ stages:
                   -H "x-ms-date: $timeGenerated" \
                   -H "Authorization: SharedKey $workspaceId:$authSignature" \
                   -d "$logData"
+
 
