@@ -43,6 +43,7 @@ def add_remove_from_cart(driver):
     except Exception as e:
         logger.error(f"An error occurred: {e}")
 
+
 # If this file is executed directly, perform the login and add/remove from cart actions
 if __name__ == "__main__":
     driver = login.login('standard_user', 'secret_sauce')
