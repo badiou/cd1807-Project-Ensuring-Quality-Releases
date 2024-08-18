@@ -212,8 +212,6 @@ stages:
                 unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
                 # Listez les fichiers pour vérifier l'extraction
                 ls -la /home/vsts/work/1/drop-uitests
-                
-                
 
           - task: Bash@3
             displayName: 'Install ChromeDriver and Google Chrome'
