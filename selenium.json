@@ -1,0 +1,24 @@
+{
+    "customLogs": {
+      "name": "Selenium Logs",
+      "path": "/home/vsts/work/1/drop-uitests/selenium*.log",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "level": {
+            "type": "string",
+            "enum": ["INFO", "ERROR", "DEBUG", "WARN"]
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": ["timestamp", "level", "message"]
+      }
+    }
+  }
+  

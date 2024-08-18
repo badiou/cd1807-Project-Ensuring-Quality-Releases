@@ -194,6 +194,7 @@ stages:
     dependsOn: FakeRestAPI
     environment:
       name: 'test'
+
     strategy:
       runOnce:
         deploy:
