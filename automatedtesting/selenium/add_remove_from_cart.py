@@ -9,7 +9,7 @@ import login  # Import the login module
 
 # Configure logging
 logging.basicConfig(
-    filename='selenium.log',
+    filename='/home/selenium.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
