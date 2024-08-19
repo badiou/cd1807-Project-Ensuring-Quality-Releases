@@ -211,8 +211,10 @@ stages:
                 mkdir -p /home/vsts/work/1/drop-uitests
                 # Décompressez l'archive ZIP
                 unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
+                sudo mkdir /var/logs
                 # Listez les fichiers pour vérifier l'extraction
                 ls -la /home/vsts/work/1/drop-uitests
+                sudo mv selenium.log /var/logs
 
           - task: Bash@3
             displayName: 'Run Selenium Test'
