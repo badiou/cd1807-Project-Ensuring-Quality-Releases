@@ -207,27 +207,54 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
+                # Créez un répertoire pour décompresser les fichiers si nécessaire
                 mkdir -p /home/vsts/work/1/drop-uitests
+                # Décompressez l'archive ZIP
                 unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
+                # Listez les fichiers pour vérifier l'extraction
                 ls -la /home/vsts/work/1/drop-uitests
 
           - task: Bash@3
-            displayName: 'Selenium Test'
+            displayName: 'Install ChromeDriver and Google Chrome'
             inputs:
               targetType: 'inline'
               script: |
+                # Mettez à jour le système et installez les dépendances nécessaires
+                cd /home/vsts/work/1/drop-uitests
                 sudo apt-get update -y
                 sudo apt-get upgrade -y
                 sudo apt-get install -y python3-pip unzip chromium-browser
+
+                # Installez Selenium
                 pip3 install selenium
 
-                echo "Starting Selenium Tests"
-                python3 /home/vsts/work/1/drop-uitests/add_remove_from_cart.py >> /home/vsts/work/1/drop-uitests/selenium.log
+                # Créez un répertoire pour les fichiers
+                DIR=/home/vsts/work/1/drop-uitests
+                if [ ! -d "$DIR" ]; then
+                    mkdir -p $DIR
+                fi
 
-                # Copie du fichier selenium.log vers le dossier /home
-                cp /home/vsts/work/1/drop-uitests/selenium.log /home/selenium.log
-                echo "Selenium log copied to /home/selenium.log"
+                # # Déplacez et décompressez l'archive ZIP
+                # mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
+                # cd $DIR
+                # unzip -o $(Build.BuildId)-uitests.zip
+
+                # # Téléchargez et installez ChromeDriver si nécessaire
+                # CHROMEDRIVER_PATH=$DIR/chromedriver
+                # if [ ! -f "$CHROMEDRIVER_PATH" ]; then
+                #     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                #     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                #     unzip -o chromedriver_linux64.zip
+                #     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                # fi
+
+                # Exécutez les tests Selenium
+                echo "Starting Selenium Tests"
+                python3 add_remove_from_cart.py >> selenium.log
+                #python3 login.py >> selenium.log 2>&1
                 cat /home/vsts/work/1/drop-uitests/selenium.log
+                # Affichez le contenu du fichier selenium.log
+                #echo "Finish Selenium Test"
 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Selenium Test Results'
