@@ -235,19 +235,19 @@ stages:
                 fi
 
                 # # Déplacez et décompressez l'archive ZIP
-                # mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
-                # cd $DIR
+                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
+                cd $DIR
                 # unzip -o $(Build.BuildId)-uitests.zip
 
                 # # Téléchargez et installez ChromeDriver si nécessaire
-                # CHROMEDRIVER_PATH=$DIR/chromedriver
-                # if [ ! -f "$CHROMEDRIVER_PATH" ]; then
-                #     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                #     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-                #     unzip -o chromedriver_linux64.zip
+                CHROMEDRIVER_PATH=$DIR/chromedriver
+                if [ ! -f "$CHROMEDRIVER_PATH" ]; then
+                     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                     unzip -o chromedriver_linux64.zip
                 #     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
                       wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w 858c47ad-62cc-4166-b7eb-7583bca19e51 -s TUmPChDRu6Ytg4WmgLy8q3Yrp3i6uMUtmu0WfzcOrAwBCM5QJfXZIMDUR6XiAkUEu3kLQJpfVT+Enm2J/BUC0g== -d opinsights.azure.com
-                # fi
+                fi
 
                 # Exécutez les tests Selenium
                 echo "Starting Selenium Tests"
