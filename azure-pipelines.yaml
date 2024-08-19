@@ -206,49 +206,59 @@ stages:
             displayName: 'Unzip UI Tests'
             inputs:
               targetType: 'inline'
-
               script: |
-                # Créez un répertoire dans un emplacement accessible pour l'agent
-                mkdir -p /home/vsts/work/1/temp-uitests
-                unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/temp-uitests
-                
-                ls -la /home/vsts/work/1/temp-uitests
+                # Créez un répertoire pour décompresser les fichiers si nécessaire
+                mkdir -p /home/vsts/work/1/drop-uitests
+                # Décompressez l'archive ZIP
+                unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
+                # Listez les fichiers pour vérifier l'extraction
+                ls -la /home/vsts/work/1/drop-uitests
+
           - task: Bash@3
-            displayName: 'Verify Directory and File Creation'
+            displayName: 'Install ChromeDriver and Google Chrome'
             inputs:
               targetType: 'inline'
               script: |
-                echo "Checking /home/vsts/work/1/temp-uitests:"
-                ls -la /home/vsts/work/1/temp-uitests
-                echo "Checking /home/vsts/work/1/temp-uitests:"
-                ls -la /home/vsts/work/1/temp-uitests
-
-          - task: Bash@3
-            displayName: 'Selenium Test'
-            inputs:
-              targetType: 'inline'
-              script: |
-                cd /home/vsts/work/1/temp-uitests
+                # Mettez à jour le système et installez les dépendances nécessaires
+                cd /home/vsts/work/1/drop-uitests
                 sudo apt-get update -y
+                sudo apt-get upgrade -y
                 sudo apt-get install -y python3-pip unzip chromium-browser
 
+                # Installez Selenium
                 pip3 install selenium
 
-                LOG_DIR=/home/vsts/work/1/temp-uitests
-                if [ ! -d "$LOG_DIR" ]; then
-                    mkdir -p $LOG_DIR
+                # Créez un répertoire pour les fichiers
+                DIR=/home/vsts/work/1/drop-uitests
+                if [ ! -d "$DIR" ]; then
+                    mkdir -p $DIR
                 fi
 
+                # # Déplacez et décompressez l'archive ZIP
+                # mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
+                # cd $DIR
+                # unzip -o $(Build.BuildId)-uitests.zip
+
+                # # Téléchargez et installez ChromeDriver si nécessaire
+                # CHROMEDRIVER_PATH=$DIR/chromedriver
+                # if [ ! -f "$CHROMEDRIVER_PATH" ]; then
+                #     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                #     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                #     unzip -o chromedriver_linux64.zip
+                #     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                # fi
+
+                # Exécutez les tests Selenium
                 echo "Starting Selenium Tests"
-                python3 login.py >> $LOG_DIR/selenium.log 2>&1
-                echo "Selenium Tests Finished"
-
-                echo "Displaying selenium.log content:"
-                cat $LOG_DIR/selenium.log
-
+                python3 add_remove_from_cart.py >> selenium.log
+                #python3 login.py >> selenium.log 2>&1
+                # Affichez le contenu du fichier selenium.log
+                #echo "Finish Selenium Test"
+                #cat /home/vsts/work/1/drop-uitests/selenium.log
+                
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Selenium Test Results'
             inputs:
-              pathToPublish: '/home/vsts/work/1/temp-uitests'
+              pathToPublish: '/home/vsts/work/1/drop-uitests/selenium.log'
               artifactName: 'selenium-test-results'
               publishLocation: 'Container'
