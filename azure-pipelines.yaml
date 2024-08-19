@@ -206,6 +206,7 @@ stages:
             displayName: 'Unzip UI Tests'
             inputs:
               targetType: 'inline'
+              
               script: |
                 # Créez un répertoire dans un emplacement accessible pour l'agent
                 mkdir -p /home/vsts/work/1/temp-uitests
