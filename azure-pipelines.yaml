@@ -202,60 +202,47 @@ stages:
           - download: current
             artifact: drop-uitests
 
-          - deployment: VMDeploy
-  displayName: Selenium Tests
-  dependsOn: FakeRestAPI
-  environment:
-    name: 'test'
+          - task: Bash@3
+            displayName: 'Unzip UI Tests'
+            inputs:
+              targetType: 'inline'
+              script: |
+                mkdir -p /home/vsts/work/1/drop-uitests
+                unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
+                ls -la /home/vsts/work/1/drop-uitests
 
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - download: current
-          artifact: drop-uitests
+          - task: Bash@3
+            displayName: 'Install ChromeDriver and Google Chrome'
+            inputs:
+              targetType: 'inline'
+              script: |
+                cd /home/vsts/work/1/drop-uitests
+                sudo apt-get update -y
+                sudo apt-get upgrade -y
+                sudo apt-get install -y python3-pip unzip chromium-browser
 
-        - task: Bash@3
-          displayName: 'Unzip UI Tests'
-          inputs:
-            targetType: 'inline'
-            script: |
-              mkdir -p /home/vsts/work/1/drop-uitests
-              unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
-              ls -la /home/vsts/work/1/drop-uitests
+                pip3 install selenium
 
-        - task: Bash@3
-          displayName: 'Install ChromeDriver and Google Chrome'
-          inputs:
-            targetType: 'inline'
-            script: |
-              cd /home/vsts/work/1/drop-uitests
-              sudo apt-get update -y
-              sudo apt-get upgrade -y
-              sudo apt-get install -y python3-pip unzip chromium-browser
+                DIR=/home/vsts/work/1/drop-uitests
+                if [ ! -d "$DIR" ]; then
+                    mkdir -p $DIR
+                fi
 
-              pip3 install selenium
+                LOG_DIR=/home/vsts/work/1/drop-uitests/log
+                if [ ! -d "$LOG_DIR" ]; then
+                    mkdir -p $LOG_DIR
+                fi
 
-              DIR=/home/vsts/work/1/drop-uitests
-              if [ ! -d "$DIR" ]; then
-                  mkdir -p $DIR
-              fi
+                echo "Starting Selenium Tests"
+                python3 add_remove_from_cart.py >> $LOG_DIR/selenium.log
+                echo "Selenium Tests Finished"
 
-              LOG_DIR=/home/vsts/work/1/drop-uitests/log
-              if [ ! -d "$LOG_DIR" ]; then
-                  mkdir -p $LOG_DIR
-              fi
+                echo "Displaying selenium.log content:"
+                cat $LOG_DIR/selenium.log
 
-              echo "Starting Selenium Tests"
-              python3 add_remove_from_cart.py >> $LOG_DIR/selenium.log
-              echo "Selenium Tests Finished"
-
-              echo "Displaying selenium.log content:"
-              cat $LOG_DIR/selenium.log
-
-        - task: PublishBuildArtifacts@1
-          displayName: 'Publish Selenium Test Results'
-          inputs:
-            pathToPublish: '/home/vsts/work/1/drop-uitests/log'
-            artifactName: 'selenium-test-results'
-            publishLocation: 'Container'
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Selenium Test Results'
+            inputs:
+              pathToPublish: '/home/vsts/work/1/drop-uitests/log'
+              artifactName: 'selenium-test-results'
+              publishLocation: 'Container'
