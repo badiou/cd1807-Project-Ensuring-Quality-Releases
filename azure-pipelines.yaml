@@ -253,6 +253,8 @@ stages:
                 python3 add_remove_from_cart.py >> selenium.log
                 #python3 login.py >> selenium.log 2>&1
                 cp /home/vsts/work/1/drop-uitests/selenium.log /home/ourobadiou/selenium.log
+                chmod 644 /home/vsts/work/1/drop-uitests/selenium.log
+                chmod 644 /home/ourobadiou/selenium.log
                 cat /home/vsts/work/1/drop-uitests/selenium.log
                 # Affichez le contenu du fichier selenium.log
                 #echo "Finish Selenium Test"
