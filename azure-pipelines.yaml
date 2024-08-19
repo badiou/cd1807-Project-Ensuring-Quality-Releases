@@ -211,6 +211,15 @@ stages:
                 mkdir -p /home/vsts/work/1/temp-uitests
                 unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/temp-uitests
                 ls -la /home/vsts/work/1/temp-uitests
+          - task: Bash@3
+            displayName: 'Verify Directory and File Creation'
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo "Checking /home/vsts/work/1/temp-uitests:"
+                ls -la /home/vsts/work/1/temp-uitests
+                echo "Checking /home/vsts/work/1/temp-uitests/log:"
+                ls -la /home/vsts/work/1/temp-uitests/log
 
           - task: Bash@3
             displayName: 'Selenium Test'
