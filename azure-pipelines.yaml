@@ -235,7 +235,7 @@ stages:
                 fi
 
                 echo "Starting Selenium Tests"
-                python3 add_remove_from_cart.py >> $LOG_DIR/selenium.log
+                python3 login.py >> $LOG_DIR/selenium.log
                 echo "Selenium Tests Finished"
 
                 echo "Displaying selenium.log content:"
