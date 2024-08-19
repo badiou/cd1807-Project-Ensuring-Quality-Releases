@@ -222,10 +222,10 @@ stages:
 
                 pip3 install selenium
 
-                DIR=/home/ourobadiou/temp-uitests
-                if [ ! -d "$DIR" ]; then
-                    mkdir -p $DIR
-                fi
+                # DIR=/home/ourobadiou/temp-uitests
+                # if [ ! -d "$DIR" ]; then
+                #     mkdir -p $DIR
+                # fi
 
                 LOG_DIR=/home/ourobadiou/temp-uitests/log
                 if [ ! -d "$LOG_DIR" ]; then
