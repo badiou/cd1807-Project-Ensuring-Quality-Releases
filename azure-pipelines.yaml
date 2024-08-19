@@ -264,6 +264,8 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Selenium Test Results'
             inputs:
-              pathToPublish: '/home/vsts/work/1/drop-uitests/selenium.log'
+              #pathToPublish: '/home/vsts/work/1/drop-uitests/selenium.log'
+              pathToPublish: '/var/logs/selenium.log'
+
               artifactName: 'selenium-test-results'
               publishLocation: 'Container'
