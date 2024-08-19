@@ -220,8 +220,8 @@ stages:
               script: |
                 echo "Checking /home/vsts/work/1/temp-uitests:"
                 ls -la /home/vsts/work/1/temp-uitests
-                echo "Checking /home/vsts/work/1/temp-uitests/:"
-                ls -la /home/vsts/work/1/temp-uitests/log
+                echo "Checking /home/vsts/work/1/temp-uitests:"
+                ls -la /home/vsts/work/1/temp-uitests
 
           - task: Bash@3
             displayName: 'Selenium Test'
