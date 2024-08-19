@@ -119,7 +119,7 @@ stages:
       artifact: drop-perftests
 
 - stage: Deploy
-  dependsOn: Build
+  #dependsOn: Build
   jobs:
   - deployment: FakeRestAPI
     pool:
