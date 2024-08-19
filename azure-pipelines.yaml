@@ -191,7 +191,7 @@ stages:
 
   - deployment: VMDeploy
     displayName: Selenium Tests
-    #dependsOn: FakeRestAPI
+    dependsOn: FakeRestAPI
     environment:
       name: 'test'
 
@@ -201,7 +201,6 @@ stages:
           steps:
           - download: current
             artifact: drop-uitests
-
           - task: Bash@3
             displayName: 'Unzip UI Tests'
             inputs:
@@ -242,7 +241,7 @@ stages:
                 # # Téléchargez et installez ChromeDriver si nécessaire
                 CHROMEDRIVER_PATH=$DIR/chromedriver
                 if [ ! -f "$CHROMEDRIVER_PATH" ]; then
-                     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                #     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
                 #     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
                 #     unzip -o chromedriver_linux64.zip
                 #     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
