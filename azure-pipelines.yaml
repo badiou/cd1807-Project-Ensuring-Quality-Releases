@@ -211,8 +211,19 @@ stages:
                 mkdir -p /home/vsts/work/1/drop-uitests
                 # Décompressez l'archive ZIP
                 unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
-                sudo mkdir /var/logs
-                sudo mv selenium.log /var/logs
+                - task: Bash@3
+            displayName: 'Create a Folder for logs'
+            inputs:
+              targetType: 'inline'
+              script: |
+                mkdir -p $(Agent.BuildDirectory)/vmlogs
+          - task: Bash@3
+            displayName: 'Run Selenium Python Tests'
+            inputs:
+              targetType: 'inline'
+              script: 'python3 login.py | tee -a $(Agent.BuildDirectory)/vmlogs/$(Build.BuildId)-log.txt'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Selenium'   
+                
                 # Listez les fichiers pour vérifier l'extraction
                 ls -la /home/vsts/work/1/drop-uitests
                 
