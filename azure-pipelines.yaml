@@ -119,7 +119,7 @@ stages:
       artifact: drop-perftests
 
 - stage: Deploy
-  #dependsOn: Build
+  dependsOn: Build
   jobs:
   - deployment: FakeRestAPI
     pool:
@@ -190,79 +190,77 @@ stages:
               publishLocation: 'Container'
 
   - deployment: VMDeploy
-  displayName: Selenium Tests
-  dependsOn: FakeRestAPI
-  environment:
-    name: 'test'
+    displayName: Selenium Tests
+    #dependsOn: FakeRestAPI
+    environment:
+      name: 'test'
 
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - download: current
-          artifact: drop-uitests
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop-uitests
 
-        - task: Bash@3
-          displayName: 'Unzip UI Tests'
-          inputs:
-            targetType: 'inline'
-            script: |
-              # Create directory for unzipping files if needed
-              mkdir -p /home/vsts/work/1/drop-uitests
-              # Unzip the ZIP archive
-              unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
-              # List files to verify extraction
-              ls -la /home/vsts/work/1/drop-uitests
+          - task: Bash@3
+            displayName: 'Unzip UI Tests'
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Créez un répertoire pour décompresser les fichiers si nécessaire
+                mkdir -p /home/vsts/work/1/drop-uitests
+                # Décompressez l'archive ZIP
+                unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
+                # Listez les fichiers pour vérifier l'extraction
+                ls -la /home/vsts/work/1/drop-uitests
 
-        - task: Bash@3
-          displayName: 'Run Selenium Test'
-          inputs:
-            targetType: 'inline'
-            script: |
-              # Update the system and install necessary dependencies
-              cd /home/vsts/work/1/drop-uitests
-              sudo apt-get update -y
-              sudo apt-get upgrade -y
-              sudo apt-get install -y python3-pip unzip chromium-browser
+          - task: Bash@3
+            displayName: 'Run Selenium Test'
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Mettez à jour le système et installez les dépendances nécessaires
+                cd /home/vsts/work/1/drop-uitests
+                sudo apt-get update -y
+                sudo apt-get upgrade -y
+                sudo apt-get install -y python3-pip unzip chromium-browser
 
-              # Install Selenium
-              pip3 install selenium
+                # Installez Selenium
+                pip3 install selenium
 
-              # Create a directory for files
-              DIR=/home/vsts/work/1/drop-uitests
-              if [ ! -d "$DIR" ]; then
-                  mkdir -p $DIR
-              fi
+                # Créez un répertoire pour les fichiers
+                DIR=/home/vsts/work/1/drop-uitests
+                if [ ! -d "$DIR" ]; then
+                    mkdir -p $DIR
+                fi
 
-              # Move and unzip the archive ZIP
-              mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
-              cd $DIR
+                # # Déplacez et décompressez l'archive ZIP
+                mv $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip $DIR
+                cd $DIR
+                # unzip -o $(Build.BuildId)-uitests.zip
 
-              # Download and install ChromeDriver if needed
-              CHROMEDRIVER_PATH=$DIR/chromedriver
-              if [ ! -f "$CHROMEDRIVER_PATH" ]; then
-                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-                    unzip -o chromedriver_linux64.zip
-                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
-                    wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w 858c47ad-62cc-4166-b7eb-7583bca19e51 -s TUmPChDRu6Ytg4WmgLy8q3Yrp3i6uMUtmu0WfzcOrAwBCM5QJfXZIMDUR6XiAkUEu3kLQJpfVT+Enm2J/BUC0g== -d opinsights.azure.com
-              fi
+                # # Téléchargez et installez ChromeDriver si nécessaire
+                CHROMEDRIVER_PATH=$DIR/chromedriver
+                if [ ! -f "$CHROMEDRIVER_PATH" ]; then
+                     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                #     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                #     unzip -o chromedriver_linux64.zip
+                #     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                      wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w 858c47ad-62cc-4166-b7eb-7583bca19e51 -s TUmPChDRu6Ytg4WmgLy8q3Yrp3i6uMUtmu0WfzcOrAwBCM5QJfXZIMDUR6XiAkUEu3kLQJpfVT+Enm2J/BUC0g== -d opinsights.azure.com
+                # fi
 
-              # Run Selenium Tests
-              echo "Starting Selenium Tests"
-              python3 add_remove_from_cart.py >> selenium.log 2>&1
+                # Exécutez les tests Selenium
+                echo "Starting Selenium Tests"
+                #python3 login.py >> selenium.log
+                python3 add_remove_from_cart.py >> selenium.log 2>&1
+                cp /home/vsts/work/1/drop-uitests/selenium.log /home/ourobadiou/selenium.log
+                cat /home/vsts/work/1/drop-uitests/selenium.log
+                # Affichez le contenu du fichier selenium.log
+                #echo "Finish Selenium Test"
 
-              # Ensure the /var/logs directory exists and has correct permissions
-              sudo mkdir -p /var/logs
-              sudo chmod 755 /var/logs
-
-              # Copy selenium.log to /var/logs
-              sudo cp /home/vsts/work/1/drop-uitests/selenium.log /var/logs/selenium.log
-              cat /home/vsts/work/1/drop-uitests/selenium.log
-
-        - task: PublishBuildArtifacts@1
-          displayName: 'Publish Selenium Test Results'
-          inputs:
-            pathToPublish: '/home/vsts/work/1/drop-uitests/selenium.log'
-            artifactName: 'selenium-test-results'
-            publishLocation: 'Container'
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Selenium Test Results'
+            inputs:
+              pathToPublish: '/home/vsts/work/1/drop-uitests/selenium.log'
+              artifactName: 'selenium-test-results'
+              publishLocation: 'Container'
