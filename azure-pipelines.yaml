@@ -210,6 +210,7 @@ stages:
                 # Créez un répertoire dans un emplacement accessible pour l'agent
                 mkdir -p /home/vsts/work/1/temp-uitests
                 unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/temp-uitests
+                
                 ls -la /home/vsts/work/1/temp-uitests
           - task: Bash@3
             displayName: 'Verify Directory and File Creation'
@@ -228,15 +229,9 @@ stages:
               script: |
                 cd /home/vsts/work/1/temp-uitests
                 sudo apt-get update -y
-                sudo apt-get upgrade -y
                 sudo apt-get install -y python3-pip unzip chromium-browser
 
                 pip3 install selenium
-
-                DIR=/home/vsts/work/1/temp-uitests
-                if [ ! -d "$DIR" ]; then
-                    mkdir -p $DIR
-                fi
 
                 LOG_DIR=/home/vsts/work/1/temp-uitests/log
                 if [ ! -d "$LOG_DIR" ]; then
@@ -244,11 +239,12 @@ stages:
                 fi
 
                 echo "Starting Selenium Tests"
-                python3 login.py >> $LOG_DIR/selenium.log
+                python3 login.py >> $LOG_DIR/selenium.log 2>&1
                 echo "Selenium Tests Finished"
 
                 echo "Displaying selenium.log content:"
                 cat $LOG_DIR/selenium.log
+
 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Selenium Test Results'
