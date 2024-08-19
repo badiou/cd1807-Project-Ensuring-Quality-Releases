@@ -12,7 +12,6 @@ variable "client_secret" {
 variable "tenant_id" {
     default = "1d4ecdae-1850-4f9b-8f09-aedca77aa0f1"
 }
-
 # Resource Group/Location
 variable "location" {
     default = "East US"

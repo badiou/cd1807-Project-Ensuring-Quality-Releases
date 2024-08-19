@@ -1,0 +1,41 @@
+{
+    "location": "East US",
+    "properties": {
+      "dataSources": {
+        "syslog": [
+          {
+            "name": "mySyslogSource",
+            "streams": [
+              "Microsoft-Syslog"
+            ],
+            "facilityNames": [
+              "auth"
+            ],
+            "logLevels": [
+              "Warning",
+              "Error"
+            ]
+          }
+        ]
+      },
+      "destinations": {
+        "logAnalytics": [
+          {
+            "workspaceResourceId": "/subscriptions/c6b49f87-b44b-4f50-9328-64efe17053d2/resourceGroups/MyResourceGroup/providers/Microsoft.OperationalInsights/workspaces/MyWorkspace",
+            "name": "myLogAnalyticsWorkspace"
+          }
+        ]
+      },
+      "dataFlows": [
+        {
+          "streams": [
+            "Microsoft-Syslog"
+          ],
+          "destinations": [
+            "myLogAnalyticsWorkspace"
+          ]
+        }
+      ]
+    }
+  }
+  
