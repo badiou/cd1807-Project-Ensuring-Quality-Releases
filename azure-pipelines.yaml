@@ -211,22 +211,8 @@ stages:
                 mkdir -p /home/vsts/work/1/drop-uitests
                 # Décompressez l'archive ZIP
                 unzip $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d /home/vsts/work/1/drop-uitests
-                - task: Bash@3
-            displayName: 'Create a Folder for logs'
-            inputs:
-              targetType: 'inline'
-              script: |
-                mkdir -p $(Agent.BuildDirectory)/vmlogs
-          - task: Bash@3
-            displayName: 'Run Selenium Python Tests'
-            inputs:
-              targetType: 'inline'
-              script: 'python3 login.py | tee -a $(Agent.BuildDirectory)/vmlogs/$(Build.BuildId)-log.txt'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Selenium'   
-                
                 # Listez les fichiers pour vérifier l'extraction
                 ls -la /home/vsts/work/1/drop-uitests
-                
 
           - task: Bash@3
             displayName: 'Run Selenium Test'
@@ -264,22 +250,16 @@ stages:
 
                 # Exécutez les tests Selenium
                 echo "Starting Selenium Tests"
-                python3 add_remove_from_cart.py >> selenium.log
+                python3 login.py >> selenium.log
                 #python3 login.py >> selenium.log 2>&1
-               
+                cp /home/vsts/work/1/drop-uitests/selenium.log /home/ourobadiou/selenium.log
                 cat /home/vsts/work/1/drop-uitests/selenium.log
                 # Affichez le contenu du fichier selenium.log
-                echo 'Creation du dossier /var/logs'
-                sudo mkdir /var/logs
-                sudo mv selenium.log /var/logs
-                echo 'Dossier copié avec succès'
                 #echo "Finish Selenium Test"
 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Selenium Test Results'
             inputs:
-              #pathToPublish: '/home/vsts/work/1/drop-uitests/selenium.log'
-              pathToPublish: '/var/logs/selenium.log'
-
+              pathToPublish: '/home/vsts/work/1/drop-uitests/selenium.log'
               artifactName: 'selenium-test-results'
               publishLocation: 'Container'
