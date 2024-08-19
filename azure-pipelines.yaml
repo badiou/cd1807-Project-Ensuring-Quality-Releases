@@ -215,7 +215,7 @@ stages:
                 ls -la /home/vsts/work/1/drop-uitests
 
           - task: Bash@3
-            displayName: 'Install ChromeDriver and Google Chrome'
+            displayName: 'Run Selenium Test'
             inputs:
               targetType: 'inline'
               script: |
