@@ -262,7 +262,6 @@ stages:
               script: |
                 # Définir le répertoire cible sur la machine virtuelle
                 TARGET_DIR="/var/log/selenium"
-
                 # Créer le répertoire si nécessaire
                 if [ ! -d "$TARGET_DIR" ]; then
                     sudo mkdir -p $TARGET_DIR
