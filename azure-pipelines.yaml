@@ -52,7 +52,7 @@ stages:
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-        commandOptions: '-lock=false -auto-approve'
+        commandOptions: '-auto-approve'
 
     - task: CmdLine@2
       displayName: 'Install Newman'
