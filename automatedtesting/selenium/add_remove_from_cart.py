@@ -11,7 +11,8 @@ import login  # Import the login module
 logging.basicConfig(
     filename='selenium.log',
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'  # Define the format of the date
 )
 logger = logging.getLogger()
 
@@ -42,7 +43,6 @@ def add_remove_from_cart(driver):
             logger.info("No 'Add to cart' buttons found on the page.")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
-
 
 # If this file is executed directly, perform the login and add/remove from cart actions
 if __name__ == "__main__":
