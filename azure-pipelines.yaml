@@ -255,7 +255,6 @@ stages:
                 cat /home/vsts/work/1/drop-uitests/selenium.log
                 # Affichez le contenu du fichier selenium.log
                 #echo "Finish Selenium Test"
-
           - task: Bash@3
             displayName: 'Copy Selenium Test Results to VM'
             inputs:
