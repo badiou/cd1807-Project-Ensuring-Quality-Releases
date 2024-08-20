@@ -571,7 +571,8 @@ The button has transformed into Remove
 <img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/7564e02c-9bc3-434f-a496-eb18018eca84">
 
 ## My Custom Log
-<img width="1391" alt="Capture d’écran 2024-08-18 à 21 57 30" src="https://github.com/user-attachments/assets/1c190fef-6e66-4c21-99a7-27a94d8b0a72">
+<img width="1391" alt="Capture d’écran 2024-08-18 à 21 57 30" src="https://github.com/user-attachments/assets/26c3396d-f602-441f-a9ae-35e1abbb6d45">
+
 
 **Free Software, Hell Yeah!**
 
