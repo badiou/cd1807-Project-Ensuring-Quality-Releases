@@ -9,6 +9,7 @@ resource "azurerm_app_service_plan" "test" {
   }
 }
 
+
 resource "azurerm_app_service" "test" {
   name                = "${var.application_type}-${var.resource_type}"
   location            = var.location
