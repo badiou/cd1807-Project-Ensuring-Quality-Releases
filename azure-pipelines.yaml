@@ -269,6 +269,7 @@ stages:
                     sudo mkdir -p $TARGET_DIR
                 fi
 
+
                 # S'assurer que le répertoire a les bonnes permissions
                 sudo chmod 755 $TARGET_DIR
 
