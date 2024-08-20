@@ -252,10 +252,36 @@ stages:
                 echo "Starting Selenium Tests"
                 python3 add_remove_from_cart.py >> selenium.log
                 #python3 login.py >> selenium.log 2>&1
-                cp /home/vsts/work/1/drop-uitests/selenium.log /home/ourobadiou/selenium.log
                 cat /home/vsts/work/1/drop-uitests/selenium.log
                 # Affichez le contenu du fichier selenium.log
                 #echo "Finish Selenium Test"
+
+          - task: Bash@3
+            displayName: 'Copy Selenium Test Results to VM'
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Définir le répertoire cible sur la machine virtuelle
+                TARGET_DIR="/var/log/selenium"
+
+                # Créer le répertoire si nécessaire
+                if [ ! -d "$TARGET_DIR" ]; then
+                    sudo mkdir -p $TARGET_DIR
+                fi
+
+                # S'assurer que le répertoire a les bonnes permissions
+                sudo chmod 755 $TARGET_DIR
+
+                # Copier le fichier selenium.log dans le répertoire cible
+                sudo cp /home/vsts/work/1/drop-uitests/selenium.log $TARGET_DIR
+
+                # Afficher un message confirmant la copie
+                echo "Le fichier selenium.log a été copié dans $TARGET_DIR"
+
+                # Afficher le contenu du fichier dans son nouvel emplacement
+                echo "Contenu du fichier selenium.log dans le nouveau repertoire"
+                cat $TARGET_DIR/selenium.log
+                echo "############# fin d'affichage du contenu #######"
 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Selenium Test Results'
