@@ -276,7 +276,6 @@ stages:
 
                 # Afficher un message confirmant la copie
                 echo "Le fichier selenium.log a été copié dans $TARGET_DIR"
-
                 # Afficher le contenu du fichier dans son nouvel emplacement
                 echo "Contenu du fichier selenium.log dans le nouveau repertoire"
                 cat $TARGET_DIR/selenium.log
