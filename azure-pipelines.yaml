@@ -54,6 +54,7 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
         commandOptions: '-auto-approve'
 
+
     - task: CmdLine@2
       displayName: 'Install Newman'
       inputs:
