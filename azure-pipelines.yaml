@@ -280,6 +280,7 @@ stages:
                 cat $TARGET_DIR/selenium.log
                 echo "############# fin d'affichage du contenu #######"
           - task: PublishBuildArtifacts@1
+          
             displayName: 'Publish Selenium Test Results'
             inputs:
               pathToPublish: '/home/vsts/work/1/drop-uitests/selenium.log'
