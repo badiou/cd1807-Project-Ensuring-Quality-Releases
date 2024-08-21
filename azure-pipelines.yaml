@@ -279,7 +279,6 @@ stages:
                 echo "Contenu du fichier selenium.log dans le nouveau repertoire"
                 cat $TARGET_DIR/selenium.log
                 echo "############# fin d'affichage du contenu #######"
-
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Selenium Test Results'
             inputs:
