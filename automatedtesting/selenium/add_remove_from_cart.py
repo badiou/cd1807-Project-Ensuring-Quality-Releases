@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
@@ -7,14 +8,21 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import login  # Import the login module
 
+# Custom formatter to remove milliseconds from log messages
+class CustomFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        # Format the time to include only up to seconds, excluding milliseconds
+        return datetime.fromtimestamp(record.created).strftime('%Y-%m-%d %H:%M:%S')
+
 # Configure logging
-logging.basicConfig(
-    filename='selenium.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'  # Define the format of the date
-)
+handler = logging.FileHandler('selenium.log')
+formatter = CustomFormatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
 logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
+logger.propagate = False  # Prevent logging messages from being propagated to the root logger
 
 def log_with_newlines(text):
     """Helper function to log multi-line text with timestamps."""

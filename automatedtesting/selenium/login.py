@@ -4,19 +4,25 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
+
+# Custom formatter to remove milliseconds from log messages
+class CustomFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        # Format the time to include only up to seconds, excluding milliseconds
+        return datetime.fromtimestamp(record.created).strftime('%Y-%m-%d %H:%M:%S')
 
 # Configure logging
-logging.basicConfig(
-    filename='selenium.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+handler = logging.FileHandler('selenium.log')
+formatter = CustomFormatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
 logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 def login(user, password):
-    print('Starting the browser...')
     logger.info('Starting the browser...')
-    
     options = ChromeOptions()
     options.add_argument("--headless")  # Exécuter en mode headless
     driver = webdriver.Chrome(options=options)
@@ -45,20 +51,15 @@ def login(user, password):
     try:
         products = driver.find_elements(By.CSS_SELECTOR, ".inventory_item")
         if products:
-            print(f"Number of products found: {len(products)}")
             logger.info(f"Number of products found: {len(products)}")
             for product in products:
-                print(product.text)
                 logger.info(product.text)
         else:
-            print("No products found on the page.")
             logger.info("No products found on the page.")
     except Exception as e:
-        print(f"An error occurred: {e}")
-        logger.info(f"An error occurred: {e}")
+        logger.error(f"An error occurred: {e}")
 
     return driver
-
 
 # If this file is executed directly, perform a login
 if __name__ == "__main__":
