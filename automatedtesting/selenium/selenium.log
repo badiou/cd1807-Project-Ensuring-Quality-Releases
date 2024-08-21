@@ -1,91 +1,45 @@
-DateTime-Level-Message
-2024-08-20 20:58:23-INFO-Starting the browser...
-2024-08-20 20:58:24-INFO-Number of products found: 6
-2024-08-20 20:58:24-INFO-Sauce Labs Backpack
+2024-08-21 19:15:12,709 - INFO - Starting the browser...
+2024-08-21 19:15:13,470 - INFO - Number of products found: 6
+2024-08-21 19:15:13,482 - INFO - Sauce Labs Backpack
 carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.
 $29.99
 Add to cart
-2024-08-20 20:58:24-INFO-Sauce Labs Bike Light
+2024-08-21 19:15:13,489 - INFO - Sauce Labs Bike Light
 A red light isn't the desired state in testing but it sure helps when riding your bike at night. Water-resistant with 3 lighting modes, 1 AAA battery included.
 $9.99
 Add to cart
-2024-08-20 20:58:24-INFO-Sauce Labs Bolt T-Shirt
+2024-08-21 19:15:13,497 - INFO - Sauce Labs Bolt T-Shirt
 Get your testing superhero on with the Sauce Labs bolt T-shirt. From American Apparel, 100% ringspun combed cotton, heather gray with red bolt.
 $15.99
 Add to cart
-2024-08-20 20:58:24-INFO-Sauce Labs Fleece Jacket
+2024-08-21 19:15:13,506 - INFO - Sauce Labs Fleece Jacket
 It's not every day that you come across a midweight quarter-zip fleece jacket capable of handling everything from a relaxing day outdoors to a busy day at the office.
 $49.99
 Add to cart
-2024-08-20 20:58:24-INFO-Sauce Labs Onesie
+2024-08-21 19:15:13,515 - INFO - Sauce Labs Onesie
 Rib snap infant onesie for the junior automation engineer in development. Reinforced 3-snap bottom closure, two-needle hemmed sleeved and bottom won't unravel.
 $7.99
 Add to cart
-2024-08-20 20:58:24-INFO-Test.allTheThings() T-Shirt (Red)
+2024-08-21 19:15:13,524 - INFO - Test.allTheThings() T-Shirt (Red)
 This classic Sauce Labs t-shirt is perfect to wear when cozying up to your keyboard to automate a few tests. Super-soft and comfy ringspun combed cotton.
 $15.99
 Add to cart
-2024-08-20 20:58:24-INFO-Number of 'Add to cart' buttons found: 6
-2024-08-20 20:58:24-INFO-Button found with text: Add to cart
-2024-08-20 20:58:24-INFO-Click on the button with class Add cart successful
-2024-08-20 20:58:24-INFO-The button has transformed into Remove
-2024-08-20 20:58:24-INFO-Button found with text: Add to cart
-2024-08-20 20:58:24-INFO-Click on the button with class Add cart successful
-2024-08-20 20:58:24-INFO-The button has transformed into Remove
-2024-08-20 20:58:24-INFO-Button found with text: Add to cart
-2024-08-20 20:58:24-INFO-Click on the button with class Add cart successful
-2024-08-20 20:58:24-INFO-The button has transformed into Remove
-2024-08-20 20:58:24-INFO-Button found with text: Add to cart
-2024-08-20 20:58:24-INFO-Click on the button with class Add cart successful
-2024-08-20 20:58:24-INFO-The button has transformed into Remove
-2024-08-20 20:58:24-INFO-Button found with text: Add to cart
-2024-08-20 20:58:24-INFO-Click on the button with class Add cart successful
-2024-08-20 20:58:24-INFO-The button has transformed into Remove
-2024-08-20 20:58:24-INFO-Button found with text: Add to cart
-2024-08-20 20:58:24-INFO-Click on the button with class Add cart successful
-2024-08-20 20:58:24-INFO-The button has transformed into Remove
-2024-08-20 20:59:35-INFO-Starting the browser...
-2024-08-20 20:59:36-INFO-Number of products found: 6
-2024-08-20 20:59:36-INFO-Sauce Labs Backpack
-carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.
-$29.99
-Add to cart
-2024-08-20 20:59:36-INFO-Sauce Labs Bike Light
-A red light isn't the desired state in testing but it sure helps when riding your bike at night. Water-resistant with 3 lighting modes, 1 AAA battery included.
-$9.99
-Add to cart
-2024-08-20 20:59:36-INFO-Sauce Labs Bolt T-Shirt
-Get your testing superhero on with the Sauce Labs bolt T-shirt. From American Apparel, 100% ringspun combed cotton, heather gray with red bolt.
-$15.99
-Add to cart
-2024-08-20 20:59:36-INFO-Sauce Labs Fleece Jacket
-It's not every day that you come across a midweight quarter-zip fleece jacket capable of handling everything from a relaxing day outdoors to a busy day at the office.
-$49.99
-Add to cart
-2024-08-20 20:59:36-INFO-Sauce Labs Onesie
-Rib snap infant onesie for the junior automation engineer in development. Reinforced 3-snap bottom closure, two-needle hemmed sleeved and bottom won't unravel.
-$7.99
-Add to cart
-2024-08-20 20:59:36-INFO-Test.allTheThings() T-Shirt (Red)
-This classic Sauce Labs t-shirt is perfect to wear when cozying up to your keyboard to automate a few tests. Super-soft and comfy ringspun combed cotton.
-$15.99
-Add to cart
-2024-08-20 20:59:36-INFO-Number of 'Add to cart' buttons found: 6
-2024-08-20 20:59:36-INFO-Button found with text: Add to cart
-2024-08-20 20:59:36-INFO-Click on the button with class Add cart successful
-2024-08-20 20:59:36-INFO-The button has transformed into Remove
-2024-08-20 20:59:36-INFO-Button found with text: Add to cart
-2024-08-20 20:59:36-INFO-Click on the button with class Add cart successful
-2024-08-20 20:59:36-INFO-The button has transformed into Remove
-2024-08-20 20:59:36-INFO-Button found with text: Add to cart
-2024-08-20 20:59:36-INFO-Click on the button with class Add cart successful
-2024-08-20 20:59:36-INFO-The button has transformed into Remove
-2024-08-20 20:59:36-INFO-Button found with text: Add to cart
-2024-08-20 20:59:36-INFO-Click on the button with class Add cart successful
-2024-08-20 20:59:36-INFO-The button has transformed into Remove
-2024-08-20 20:59:36-INFO-Button found with text: Add to cart
-2024-08-20 20:59:36-INFO-Click on the button with class Add cart successful
-2024-08-20 20:59:36-INFO-The button has transformed into Remove
-2024-08-20 20:59:36-INFO-Button found with text: Add to cart
-2024-08-20 20:59:36-INFO-Click on the button with class Add cart successful
-2024-08-20 20:59:36-INFO-The button has transformed into Remove
+2024-08-21 19:15:13,536 - INFO - Number of 'Add to cart' buttons found: 6
+2024-08-21 19:15:13,540 - INFO - Button found with text: Add to cart
+2024-08-21 19:15:13,554 - INFO - Click on the button with class Add cart successful
+2024-08-21 19:15:13,559 - INFO - The button has transformed into Remove
+2024-08-21 19:15:13,562 - INFO - Button found with text: Add to cart
+2024-08-21 19:15:13,575 - INFO - Click on the button with class Add cart successful
+2024-08-21 19:15:13,578 - INFO - The button has transformed into Remove
+2024-08-21 19:15:13,582 - INFO - Button found with text: Add to cart
+2024-08-21 19:15:13,594 - INFO - Click on the button with class Add cart successful
+2024-08-21 19:15:13,597 - INFO - The button has transformed into Remove
+2024-08-21 19:15:13,601 - INFO - Button found with text: Add to cart
+2024-08-21 19:15:13,613 - INFO - Click on the button with class Add cart successful
+2024-08-21 19:15:13,616 - INFO - The button has transformed into Remove
+2024-08-21 19:15:13,620 - INFO - Button found with text: Add to cart
+2024-08-21 19:15:13,631 - INFO - Click on the button with class Add cart successful
+2024-08-21 19:15:13,634 - INFO - The button has transformed into Remove
+2024-08-21 19:15:13,638 - INFO - Button found with text: Add to cart
+2024-08-21 19:15:13,649 - INFO - Click on the button with class Add cart successful
+2024-08-21 19:15:13,652 - INFO - The button has transformed into Remove
