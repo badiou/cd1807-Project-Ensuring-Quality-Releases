@@ -1,0 +1,77 @@
+{
+    "properties": {
+      "description": "Collecte des logs depuis un fichier spécifique",
+      "dataFlows": [
+        {
+          "streams": [
+            "CustomLog"
+          ],
+          "sources": [
+            {
+              "type": "File",
+              "properties": {
+                "filePath": "/var/log/selenium.log",
+                "filePattern": "*.log",
+                "timestampColumn": "TimeGenerated",
+                "multiline": {
+                  "enabled": true,
+                  "patterns": [
+                    "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} - "
+                  ]
+                }
+              }
+            }
+          ],
+          "transformations": [
+            {
+              "type": "Custom",
+              "properties": {
+                "schema": [
+                  {
+                    "name": "TimeGenerated",
+                    "type": "datetime",
+                    "source": "timestampColumn"
+                  },
+                  {
+                    "name": "LogLevel",
+                    "type": "string",
+                    "source": "LogLevelColumn"
+                  },
+                  {
+                    "name": "Message",
+                    "type": "string",
+                    "source": "MessageColumn"
+                  }
+                ],
+                "transformations": [
+                  {
+                    "type": "Replace",
+                    "properties": {
+                      "patterns": [
+                        {
+                          "pattern": "INFO",
+                          "replacement": "Information"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "outputs": [
+            {
+              "type": "LogAnalytics",
+              "properties": {
+                "workspaceId": "/subscriptions/c6b49f87-b44b-4f50-9328-64efe17053d2/resourceGroups/AzuredevopsRG/providers/Microsoft.OperationalInsights/workspaces/UdacityProject3WS",
+                "tableName": "SeleniumUdacity_CL"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "location": "eastus",
+    "tags": {}
+  }
+  
