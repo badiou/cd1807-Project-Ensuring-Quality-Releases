@@ -2,8 +2,8 @@ resource "azurerm_service_plan" "test" {
   name                = "${var.application_type}-${var.resource_type}"
   location            = var.location
   resource_group_name = var.resource_group
-  os_type             = "Linux" 
-  sku_name            = "Free"
+  sku_name = "B1"
+  
 }
 
 
