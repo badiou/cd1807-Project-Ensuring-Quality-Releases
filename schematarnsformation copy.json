@@ -6,6 +6,7 @@
           "streams": [
             "CustomLog"
           ],
+          
           "sources": [
             {
               "type": "File",
@@ -59,13 +60,13 @@
               }
             }
           ],
-          
+
           "outputs": [
             {
               "type": "LogAnalytics",
               "properties": {
-                "workspaceId": "/subscriptions/c6b49f87-b44b-4f50-9328-64efe17053d2/resourceGroups/AzuredevopsRG/providers/Microsoft.OperationalInsights/workspaces/project3WS",
-                "tableName": "project3_CL"
+                "workspaceId": "/subscriptions/c6b49f87-b44b-4f50-9328-64efe17053d2/resourceGroups/AzuredevopsRG/providers/Microsoft.OperationalInsights/workspaces/MyUdacityLogWS",
+                "tableName": "MyUdacityLog_CL"
               }
             }
           ]
