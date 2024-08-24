@@ -570,8 +570,9 @@ The button has transformed into Remove
 ## Receive an email alert upon receiving an HTTP 404 error.
 <img width="733" alt="Capture d’écran 2024-08-15 à 21 24 54" src="https://github.com/user-attachments/assets/7564e02c-9bc3-434f-a496-eb18018eca84">
 
-## My Custom Log
-<img width="1391" alt="Capture d’écran 2024-08-18 à 21 57 30" src="https://github.com/user-attachments/assets/26c3396d-f602-441f-a9ae-35e1abbb6d45">
+## My Custom Log Monitor Log
+
+<img width="1427" alt="Capture d’écran 2024-08-24 à 11 29 39" src="https://github.com/user-attachments/assets/a96d9c3f-e619-45f6-899e-e52d26b515e2">
 
 
 **Free Software, Hell Yeah!**
