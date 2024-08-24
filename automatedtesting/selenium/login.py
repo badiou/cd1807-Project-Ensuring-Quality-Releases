@@ -13,7 +13,7 @@ class CustomFormatter(logging.Formatter):
         return datetime.fromtimestamp(record.created).strftime('%Y-%m-%d %H:%M:%S')
 
 # Configure logging
-handler = logging.FileHandler('selenium.log')
+handler = logging.FileHandler('selenium.txt')
 formatter = CustomFormatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 
